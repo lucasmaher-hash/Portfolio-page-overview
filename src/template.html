@@ -79,8 +79,10 @@ button,input{font:inherit;color:inherit}
 .map-live{grid-column:1/-1;margin:20px 0 0;text-align:center;font-size:12px;color:#575B65}
 .map-live::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blue-deep);margin-right:8px;vertical-align:1px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.agent-panel{position:absolute;z-index:5;border-radius:18px;width:min(310px,calc(100% - 24px));background:#E9EAEF;border:1px solid var(--blue-deep);padding:18px 18px 16px;font-size:13px;line-height:1.45}
+.agent-panel{position:absolute;z-index:5;border-radius:16px;max-height:calc(100vh - 24px);overflow:auto;box-sizing:border-box;width:min(310px,calc(100% - 24px));background:#E9EAEF;border:1px solid var(--blue-deep);padding:18px 18px 16px;font-size:13px;line-height:1.45}
 .agent-panel[hidden]{display:none}
+.map-main>*,.map-svg,.map-loop{transition:opacity .18s ease}
+.map.has-panel .map-main>*:not(.roles):not(.inputs):not([aria-expanded="true"]),.map.has-panel .map-main [aria-expanded="false"],.map.has-panel .map-svg,.map.has-panel .map-loop{opacity:.35}
 .ap-head{display:flex;align-items:flex-start;gap:12px}.ap-head>div{flex:1;min-width:0}
 .ap-icon{width:40px;height:40px;flex:none;color:var(--blue-deep);padding:9px;border-radius:50%;border:1.5px solid var(--blue-deep);box-sizing:border-box}
 .ap-persona{margin:10px 0 0;color:#3c4049;font-style:italic}.ap-persona[hidden]{display:none}
@@ -636,18 +638,24 @@ button,input{font:inherit;color:inherit}
   const CHAT = { portfolio: 'hermes://open/c/{{botchat:portfolio}}', wireframes: 'hermes://open/c/{{botchat:wireframes}}' };
   const BOT = { orchestrator: 'portfolio', wireframes: 'wireframes' };
   const panel = $('agent-panel'); let opener = null;
-  const close = () => { if (panel.hidden) return; panel.hidden = true; opener?.setAttribute('aria-expanded', 'false'); opener?.focus(); opener = null; };
+  const close = () => { if (panel.hidden) return; panel.hidden = true; map.classList.remove('has-panel'); opener?.setAttribute('aria-expanded', 'false'); opener?.focus(); opener = null; };
   const place = () => {
     if (!opener) return;
-    // Beside the box: right if it fits, else left; only on a narrow phone below it.
-    const m = map.getBoundingClientRect(), b = opener.getBoundingClientRect(), w = panel.offsetWidth, g = 12;
-    const bl = b.left - m.left, br = b.right - m.left, bt = b.top - m.top;
-    let left, top = bt;
-    if (br + g + w <= m.width - 8) left = br + g;
-    else if (bl - g - w >= 8) left = bl - g - w;
-    else { left = Math.max(8, Math.min(bl + b.width / 2 - w / 2, m.width - w - 8)); top = b.bottom - m.top + g; }
-    panel.dataset.side = left > br ? 'right' : left + w < bl ? 'left' : 'below';
-    panel.style.left = left + 'px'; panel.style.top = Math.max(8, top) + 'px';
+    // Beside the box on its outer side (away from the graph's centre), else the other side; on a
+    // narrow phone below it. The panel starts 8px before the neighbouring box and 8px above the
+    // clicked one, so a neighbour it overlaps is hidden completely instead of peeking out at an edge.
+    // Vertically it is clamped into the viewport: it always opens fully visible, the page never scrolls.
+    // Fitting is checked against the window, not the frame, so a panel may reach into the page margin.
+    const m = map.getBoundingClientRect(), b = opener.getBoundingClientRect(), w = panel.offsetWidth, h = panel.offsetHeight, g = 8, edge = 12;
+    const vw = document.documentElement.clientWidth, fitsR = b.right + g + w <= vw - edge, fitsL = b.left - g - w >= edge;
+    const outerRight = b.left + b.width / 2 >= m.left + m.width / 2 + 1;
+    let lv, vt = b.top - 8, side;
+    if (fitsR && (outerRight || !fitsL)) { lv = b.right + g; side = 'right'; }
+    else if (fitsL) { lv = b.left - g - w; side = 'left'; }
+    else { lv = Math.max(edge, Math.min(b.left + b.width / 2 - w / 2, vw - w - edge)); vt = b.bottom + 10; side = 'below'; }
+    vt = Math.max(edge, Math.min(vt, innerHeight - h - edge));
+    panel.dataset.side = side;
+    panel.style.left = (lv - m.left) + 'px'; panel.style.top = (vt - m.top) + 'px';
   };
   const open = btn => {
     const a = A[btn.dataset.agent]; if (!a) return;
@@ -662,8 +670,7 @@ button,input{font:inherit;color:inherit}
     $('ap-chat-txt').textContent = own ? 'Chat in Hermes öffnen' : 'Chat im Portfolio Agent öffnen';
     $('ap-chat-note').textContent = key === 'files' || own ? '' : 'Noch kein eigener Bot; die Aufgabe läuft im Portfolio Agent.';
     $('ap-tasks').replaceChildren(...a.tasks.map(t => Object.assign(document.createElement('li'), { textContent: t })));
-    panel.dataset.state = a.st; panel.hidden = false; place(); panel.querySelector('.ap-close').focus({ preventScroll: true });
-    panel.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    panel.dataset.state = a.st; panel.hidden = false; map.classList.add('has-panel'); place(); panel.querySelector('.ap-close').focus({ preventScroll: true });
   };
   map.querySelectorAll('.agent').forEach(b => b.addEventListener('click', () => open(b)));
   panel.querySelector('.ap-close').addEventListener('click', close);
