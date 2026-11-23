@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Portfolio Agent · UI-Elemente</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23809BBC'/%3E%3Cpath d='M20 17h24M20 32h24M20 47h18' stroke='%231a1a1a' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<!-- Built by claude_background/case-studyer-ui/build.py from template.html. Edit the template, then rebuild.
+     Components marked "@src" are cut out of the current lucasmaher.com source files at build time. -->
+<script>/* to.morrow's own check, copied: MacBook-shaped screen -> html[data-screen="macbook"], read by --page-pad */(function(){try{var w=screen.width,h=screen.height,r=w/h;if(w>h&&r>=1.45&&r<1.7)document.documentElement.setAttribute('data-screen','macbook')}catch(e){}})()</script>
+<style>
+/* Same font files as lucasmaher.com, embedded. url() only: an installed OCR-A cannot win and drop the umlauts. */
+@font-face{font-family:'Roboto Flex';src:url({{asset:fonts/roboto-flex-latin.woff2}}) format('woff2');font-weight:300 600;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Roboto Flex';src:url({{asset:fonts/roboto-flex-latin-ext.woff2}}) format('woff2');font-weight:300 600;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Roboto Flex UI';src:url({{asset:fonts/roboto-flex-latin.woff2}}) format('woff2');font-weight:400 600;font-display:swap;unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2192}
+@font-face{font-family:'OCR-A-BT';src:url({{asset:OCR-A-BT-DE.ttf}}) format('truetype');font-display:swap}
+
+/* ── Tokens: to.morrow2d.html :root, copied at build time ── */
+/*@src:tomorrow:css:root*/
+:root{--mobile-accent-ink:#49627f;--accent-ink:#475F7E;--blue-deep:#475F7E;--hair:rgba(44,50,59,.22);--wire-accent:#607D9E;--shadow-soft:5px 5px 12px rgba(174,174,192,.65),-5px -5px 12px #fff;--block-gap:0px}
+
+/* ── Page shell (preview only) ── */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:400 15px/1.55 'Roboto Flex',Arial,sans-serif}
+/* Page frame = to.morrow2d.html: html/body side padding (0 below 860px, 55px each from 1440px), .page-wrapper card,
+   section padding clamp(32-56px) clamp(40-80px), 160px inline from 1280px (112px on MacBook-shaped screens), 52px 20px on phones. */
+html,body{width:100%;overflow-x:clip;background:var(--bg-surface);color:var(--text-primary);padding:0 clamp(0px,calc(9.483vw - 81.552px),55px)}
+:root{--page-pad:160px}html[data-screen="macbook"]{--page-pad:112px}
+p,h1,h2,h3,h4,figure,blockquote,ul,ol{margin:0;padding:0}
+img,video{display:block;max-width:100%}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.page{border:1px solid var(--border-color);margin:12px auto;max-width:1440px;overflow:clip;background:var(--bg-surface)}
+@media(min-aspect-ratio:17/10){.page{max-width:1390px}}
+@media(max-width:860px){.page{margin:0;border-left:none;border-right:none}}
+.intro{padding:clamp(32px,5vw,56px) clamp(40px,8vw,80px) clamp(20px,3vw,28px)}
+
+.intro h1{font:clamp(40px,7vw,94px)/.98 'OCR-A-BT',monospace;letter-spacing:-.065em;margin:14px 0 20px;overflow-wrap:anywhere}
+.intro h1 span{color:var(--accent-orange)}
+
+
+.chapter{border-top:1px solid var(--border-color);padding:clamp(32px,5vw,56px) clamp(40px,8vw,80px);min-width:0}
+@media(min-width:1280px){.intro,.chapter{padding-inline:var(--page-pad)}}
+@media(max-width:640px){.intro{padding:32px 20px 20px}.chapter{padding:52px 20px}}
+.chapter-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:clamp(20px,3vw,28px)}
+.chapter-heading h2{font:clamp(24px,3vw,38px)/1.08 'OCR-A-BT',monospace;letter-spacing:-.045em}
+.chapter-heading .no{font:14px/1 'OCR-A-BT',monospace;color:var(--blue-deep);flex:none}
+.stack{display:flex;flex-direction:column;gap:clamp(20px,3vw,28px)}
+
+
+/* ── 00 Agent map: one orchestrator; the role boxes are a target picture, not running agents ── */
+.map{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;gap:0 14px;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px);position:relative}
+.map-main{display:flex;flex-direction:column;align-items:center;min-width:0;position:relative;z-index:1}
+.node{display:flex;align-items:center;gap:12px;border:1px solid var(--border-color);border-radius:16px;padding:10px 18px;max-width:100%;background:var(--bg-surface);font:inherit;color:inherit;text-align:left;line-height:1.3}
+.node svg{width:22px;height:22px;flex:none;color:var(--blue-deep)}
+.node.pill{border-radius:100px;font-size:13px}
+.node.core{border-color:var(--blue-deep);border-width:1.5px;padding:14px 22px}.core-txt strong{display:block;font:22px/1.1 'OCR-A-BT',monospace}.core-txt span{font-size:12px;color:#575B65}
+.node.check{border:1.5px solid var(--blue-deep);font-size:14px}.node.check strong{font-weight:600}
+.node.review{border-radius:100px;border:1.5px solid var(--blue-deep);font-size:13px}
+.gap{height:32px;width:100%;position:relative}.gap--bus{height:40px}
+.v-label{position:absolute;left:calc(50% + 10px);top:50%;transform:translateY(-50%);font-size:11px;color:#575B65}
+.roles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;width:100%}
+.inputs{display:grid;grid-template-columns:repeat(2,minmax(0,170px));gap:12px;justify-content:center;width:100%}.inputs .role{min-height:96px}
+.role{border:1px solid var(--border-color);border-radius:16px;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-height:112px;justify-content:center;background:var(--bg-surface);font:inherit;color:inherit}
+.role svg{width:22px;height:22px;color:var(--blue-deep);margin-bottom:2px}.role span{font-size:11.5px;font-weight:600;line-height:1.25}.role small{font-size:10.5px;line-height:1.3;color:var(--text-secondary)}
+.agent{cursor:pointer;transition:border-color .15s ease,background-color .15s ease}
+.agent:hover,.agent[aria-expanded="true"]{border-color:var(--blue-deep);background:#E4E5EB}
+.agent:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
+.agent.is-active{border-color:var(--blue-deep);animation:agent-pulse 1.6s ease-out infinite}
+@keyframes agent-pulse{0%{box-shadow:0 0 0 0 rgba(71,95,126,.45)}70%{box-shadow:0 0 0 10px rgba(71,95,126,0)}100%{box-shadow:0 0 0 0 rgba(71,95,126,0)}}
+@media(prefers-reduced-motion:reduce){.agent.is-active{animation:none;box-shadow:0 0 0 3px rgba(71,95,126,.35)}}
+.map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--border-color)}
+.map-svg .loop{color:var(--blue-deep)}
+.map-loop{position:relative;z-index:1}
+.map-loop .label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(180deg);line-height:1.2;writing-mode:vertical-rl;font-size:11.5px;font-weight:600;color:var(--blue-deep);white-space:nowrap;background:var(--bg-surface);padding:8px 0}
+.map-live{grid-column:1/-1;margin:20px 0 0;text-align:center;font-size:12px;color:#575B65}
+.map-live::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blue-deep);margin-right:8px;vertical-align:1px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.agent-panel{position:absolute;z-index:5;border-radius:18px;width:min(310px,calc(100% - 24px));background:#E9EAEF;border:1px solid var(--blue-deep);padding:18px 18px 16px;font-size:13px;line-height:1.45}
+.agent-panel[hidden]{display:none}
+.ap-head{display:flex;align-items:flex-start;gap:12px}.ap-head>div{flex:1;min-width:0}
+.ap-icon{width:40px;height:40px;flex:none;color:var(--blue-deep);padding:9px;border-radius:50%;border:1.5px solid var(--blue-deep);box-sizing:border-box}
+.ap-persona{margin:10px 0 0;color:#3c4049;font-style:italic}.ap-persona[hidden]{display:none}
+.ap-kicker{margin:0;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--blue-deep)}
+.agent-panel h3{margin:2px 0 0;font-size:17px;font-weight:600;line-height:1.2}
+.ap-close{border:0;background:none;font:400 22px/1 inherit;color:#575B65;cursor:pointer;width:28px;height:28px;border-radius:50%;margin:-4px -6px 0 0}.ap-close:hover{background:#E1E2E8}.ap-close:focus-visible{outline:2px solid var(--blue-deep)}
+.ap-status{margin:12px 0 0;padding-bottom:12px;border-bottom:1px solid var(--hair);display:flex;gap:8px;align-items:baseline;color:#3c4049}
+.ap-dot{width:7px;height:7px;border-radius:50%;flex:none;border:1.5px solid var(--blue-deep);transform:translateY(-1px)}
+.agent-panel[data-state="aktiv"] .ap-dot{background:var(--blue-deep)}
+.ap-lab{display:block;font-size:11px;font-weight:600;color:var(--blue-deep);margin:12px 0 4px}
+.ap-io{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.ap-io li{background:#E1E2E8;border-radius:12px;padding:6px 10px 8px}.ap-io li .ap-lab{margin-top:0}.ap-io li span:last-child{color:#3c4049}
+.ap-tasks{margin:0;padding-left:18px;color:#3c4049}.ap-tasks li+li{margin-top:3px}
+.ap-meta{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--hair)}
+.ap-chat{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:9px 14px;border:1.5px solid var(--blue-deep);border-radius:100px;color:var(--blue-deep);font-weight:600;text-decoration:none}.ap-chat:hover{background:var(--blue-deep);color:#fff}.ap-chat:focus-visible{outline:2px solid var(--blue-deep);outline-offset:2px}.ap-chat svg{width:14px;height:14px;flex:none}.ap-chat[hidden],.ap-chat-note:empty{display:none}
+.ap-chat-note{margin:6px 0 0;font-size:11.5px;color:#575B65;text-align:center}
+.ap-meta dt{font-size:11px;font-weight:600;color:var(--blue-deep)}.ap-meta dd{margin:2px 0 0;color:#3c4049}
+@media(max-width:1000px){.roles{display:flex;flex-wrap:wrap;justify-content:center}.roles .role{flex:0 0 calc((100% - 20px) / 3)}}
+@media(max-width:560px){.map{grid-template-columns:28px minmax(0,1fr) 28px;gap:0 6px}.roles .role{flex-basis:calc((100% - 10px) / 2)}.node{padding:9px 12px}.node.core{padding:12px 14px}.core-txt strong{font-size:18px}.ap-io,.ap-meta{grid-template-columns:1fr;gap:8px}}
+
+/* ── Copied component CSS: to.morrow2d.html and unify2d.html, rules picked by class at build time ── */
+/*@src:tomorrow:css:scrollbar*/
+/*@src:tomorrow:css:wireflow*/
+/*@src:tomorrow:css:components*/
+/*@src:unify:css:charts*/
+/* to.morrow's own phone/tablet reading pass, limited to these components */
+@media(max-width:860px){:root{--text-secondary:#555760}.guide-text{font-size:16px}.meta-inset{font-size:15px;min-width:0;overflow-wrap:anywhere}.meta-label{color:#49627f}.fact-src{font-size:12px;opacity:1}.fact-label{font-size:16px;line-height:1.5}}
+
+/* ── Preview glue: adapts the copies to a catalogue (no new design language) ── */
+.tap-shot{background:transparent}
+.flowmap{display:block;width:100%;min-width:820px;height:auto}
+.flowmap-scroll{padding-bottom:6px}
+.ph-img{width:100%;height:100%;display:grid;place-items:center;background:#4b4e55;color:#d9dae0;font:500 14px/1 'Roboto Flex',Arial,sans-serif;letter-spacing:.02em}
+.ph-hero{aspect-ratio:16/9;height:auto}
+.tap-shot .ph-img{aspect-ratio:400/539;height:auto;border-radius:10px}
+.ph-phone{aspect-ratio:9/19.5;border:6px solid #26272c;border-radius:34px;overflow:hidden;background:#4b4e55}
+.pinned-svg{position:relative;width:min(232px,60vw);margin:0 44px 52px}
+.fact-bar{margin-top:clamp(24px,4vw,44px)}
+.res-caveat{font-size:14.4px;line-height:1.7;color:var(--text-secondary);max-width:75ch}@media(max-width:860px){.res-caveat{font-size:16px}}
+.lead{font-size:clamp(18px,2.1vw,24px);line-height:1.5;max-width:60ch}
+.tap-card.is-us{display:flex!important}
+.taps-cards{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:640px){.taps-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.big-statement{margin:0;-webkit-text-stroke:0}
+.paper img{width:100%;height:auto;filter:url(#sketch-ink)}
+.paper{background:#F3F2EE;padding:clamp(14px,3vw,36px);border-radius:0;box-shadow:none}
+.stat-block{padding-inline:0;padding-bottom:0}.stat-kicker{margin-top:0}
+.statbar-seg.is-main,.statbar-seg.is-main b{color:#16202d}
+.res-block{margin:0;max-width:none;align-items:flex-start;text-align:left}
+.ba-chart{max-width:620px}
+.ba-chart .chart-track{background:#292925}
+.cs-h3{margin:0}
+
+/* ── First-iteration components (Recherchekarten, Nutzungsweg, Matrix, Iterationen, Vorher/Nachher, Grenzen),
+   cut at build time from backup/Case-Studyer-UI-Elemente.vor-Ueberarbeitung-2026-11-22.html ── */
+/*@src:iteration1:css:components*/
+:root{--line:#6f6f6f;--soft:#575B65;--blue:#809BBC;--paper:#DCDCE3}
+
+/* ── One flat language for the whole catalogue: hairline on top, small blue label, plain text.
+   Shadows and frames only where the original component needs them (fact block inset, wireflow band, device frames). ── */
+.tap-card{box-shadow:none;padding:clamp(7px,1vw,11px);border-radius:0}
+.tap-shot{border-radius:10px}
+.ba-chart .chart-track{background:#c4c6ce;box-shadow:none}
+.quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.quotes blockquote{margin:0;border-top:1px solid var(--border-color);padding-top:16px;display:flex;flex-direction:column;gap:14px}
+.quotes p{font-size:clamp(16px,1.5vw,18px);line-height:1.5}
+.quotes cite{font:600 11px/1.3 'Roboto Flex',sans-serif;font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep)}
+.one-wire{width:min(240px,62vw);margin-inline:auto;display:flex;flex-direction:column;gap:12px;text-align:center}
+.version-tabs .mock-button{min-height:40px}
+.before-after{min-height:270px}
+
+/* Shared: phones drawn by to.morrow's wireflow, reused as single screens */
+.screen-svg{display:block;width:100%;height:auto;overflow:visible}
+.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border-color);border-radius:100px;padding:3px 10px;font:600 10.5px/1.3 'Roboto Flex',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#4c5058;width:max-content}
+.tag.blue{background:var(--accent-orange);border-color:var(--accent-orange);color:#16202d}
+.tag.dashed{border-style:dashed}
+.src,.stat-kicker{font:600 11px/1.3 'Roboto Flex',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep)}
+
+
+/* Empathy map: form only, slots stay empty until research exists */
+.empathy{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:0;position:relative;border:1px dashed var(--border-color)}
+.empathy>div{padding:clamp(16px,2.4vw,26px);min-height:150px;display:flex;flex-direction:column;gap:10px}
+.empathy>div:nth-child(1),.empathy>div:nth-child(3){border-right:1px dashed var(--border-color)}
+.empathy>div:nth-child(1),.empathy>div:nth-child(2){border-bottom:1px dashed var(--border-color)}
+.empathy>div:nth-child(2),.empathy>div:nth-child(4){align-items:flex-end;text-align:right}
+.empathy h3{font:600 12px/1.3 'Roboto Flex',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep)}
+.slot{border:1px dashed #9a9ca3;border-radius:8px;padding:9px 12px;font:14px/1.4 'OCR-A-BT',monospace;letter-spacing:-.02em;color:#5f626a;width:max-content;max-width:100%}
+.empathy-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(170px,34%);aspect-ratio:1;border-radius:50%;background:var(--bg-surface);border:1px dashed var(--border-color);display:grid!important;place-items:center;text-align:center;padding:12px;min-height:0!important}
+.empathy-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+
+/* User profile from the page's own target-group sentence */
+.profile{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:start}
+.profile h3{font:400 clamp(24px,3vw,36px)/1.2 'Roboto Flex',sans-serif;letter-spacing:-.02em;margin-top:10px}
+.traits{list-style:none;display:flex;flex-direction:column;border-top:1px solid var(--border-color)}
+.traits li{display:grid;grid-template-columns:36px 1fr;gap:10px;padding:14px 0;border-bottom:1px solid var(--hair);font-size:16px}
+.traits li b{font:16px 'OCR-A-BT',monospace;color:var(--blue-deep)}
+.need{margin-top:22px;border-top:1px solid var(--border-color);padding-top:14px}
+.need .src{display:block;margin-bottom:6px}
+
+
+/* Observation -> decision */
+.derive{display:flex;flex-direction:column;border-top:1px solid var(--border-color)}
+.derive-row{display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr);gap:16px;align-items:center;padding:22px 0;border-bottom:1px solid var(--hair)}
+.derive-row p{font-size:clamp(17px,1.7vw,20px);line-height:1.45}
+.derive-row .src{display:block;margin-bottom:8px}
+.derive-arrow{height:2px;background:var(--wire-accent);position:relative}.derive-arrow::after{content:'';position:absolute;right:0;top:-4px;width:9px;height:9px;border-top:2px solid var(--wire-accent);border-right:2px solid var(--wire-accent);transform:rotate(45deg)}
+.derive-row .decision .src{color:var(--blue-deep)}
+
+
+
+
+/* Screen + callouts */
+.callouts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
+.callouts .ip-shot{width:min(300px,68vw)}
+.pin{position:absolute;z-index:3;pointer-events:none}
+.pin::before{content:'';position:absolute;width:7px;height:7px;border-radius:50%;background:var(--accent-orange);box-shadow:0 0 0 2px #fff}
+.pin b{position:absolute;width:26px;height:26px;border-radius:50%;background:var(--accent-orange);color:#16202d;font:600 13px/26px 'Roboto Flex',sans-serif;text-align:center}
+.pin.r{left:var(--x);right:-40px;top:var(--y);border-top:1.5px solid var(--blue-deep)}.pin.r::before{left:-3.5px;top:-4.5px}.pin.r b{right:-13px;top:-14px}
+.pin.l{left:-40px;right:calc(100% - var(--x));top:var(--y);border-top:1.5px solid var(--blue-deep)}.pin.l::before{right:-3.5px;top:-4.5px}.pin.l b{left:-13px;top:-14px}
+.pin.b{left:var(--x);top:var(--y);bottom:-40px;border-left:1.5px solid var(--blue-deep)}.pin.b::before{top:-3.5px;left:-4.5px}.pin.b b{bottom:-13px;left:-14px}
+.callout-list{list-style:none;display:flex;flex-direction:column;border-top:1px solid var(--border-color)}
+.callout-list li{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--hair)}
+.callout-list li>span{width:26px;height:26px;border-radius:50%;background:var(--accent-orange);font:600 13px/26px 'Roboto Flex',sans-serif;text-align:center;color:#16202d}
+.callout-list strong{display:block;font-weight:600;margin-bottom:2px}
+.callout-list p{font-size:14px;color:#575B65}
+
+/* Feature states */
+.states{display:grid;grid-template-columns:repeat(3,minmax(170px,232px));justify-content:center;gap:clamp(18px,3vw,48px);min-width:min-content}
+.states figure{display:flex;flex-direction:column;gap:12px;scroll-snap-align:start}
+.states figcaption{display:flex;flex-direction:column;gap:6px}
+
+/* Limits + next test, tokens, footer */
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.swatch i{display:block;height:72px;border:1px solid var(--hair)}.swatch small{display:block;font-size:12px;margin-top:8px;line-height:1.4}.swatch code{font:12px 'OCR-A-BT',monospace;color:#575B65}
+.type-samples{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:end;margin-top:8px}
+.type-samples .ocr{font:clamp(34px,5vw,64px)/1 'OCR-A-BT',monospace;letter-spacing:-.05em}
+.type-samples p{font-size:17px;line-height:1.6}
+.type-samples .src{display:block;margin-top:10px}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px clamp(40px,8vw,80px);border-top:1px solid var(--border-color);font-size:12px;color:#575B65}
+
+@media(max-width:860px){.profile,.type-samples,.quotes{grid-template-columns:minmax(0,1fr)}.swatches{grid-template-columns:repeat(3,minmax(0,1fr))}.callouts{grid-template-columns:minmax(0,1fr);justify-items:center}.callout-list{width:100%}}
+@media(max-width:640px){.empathy{grid-template-columns:1fr}.empathy>div{border-right:0!important;border-bottom:1px dashed var(--border-color);align-items:flex-start!important;text-align:left!important;min-height:0}.empathy>div:nth-child(4){border-bottom:0}.empathy-center{position:static;transform:none;width:auto;aspect-ratio:auto;border-radius:0;border:0;border-bottom:1px dashed var(--border-color)!important;order:-1;place-items:start!important}.derive-row{grid-template-columns:minmax(0,1fr);gap:12px}.derive-arrow{width:2px;height:28px;margin-left:10px}.derive-arrow::after{right:auto;left:-4px;top:auto;bottom:0;transform:rotate(135deg)}.swatches{grid-template-columns:repeat(2,minmax(0,1fr))}.chapter-heading h2{font-size:24px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
+  <defs>
+    <!-- to.morrow's ink filter for the scanned sketch: paper turns transparent, pencil turns ink blue -->
+    <filter id="sketch-ink" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.2126 -0.7152 -0.0722 0 1"/><feComponentTransfer result="m"><feFuncA type="linear" slope="1.95"/></feComponentTransfer><feFlood flood-color="#38395c"/><feComposite in2="m" operator="in"/></filter>
+    <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 21c0-4.3 3-7 8-7s8 2.7 8 7" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-core" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 2v3m6-3v3M9 19v3m6-3v3M2 9h3m-3 6h3m14-6h3m-3 6h3" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-log" viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.5" fill="none"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 5h16M4 10h11M4 15h16M4 20h9" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2.5h8.5A1.5 1.5 0 0 1 21 9v9.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z" stroke="currentColor" stroke-width="1.5" fill="none"/></symbol><symbol id="i-ui" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M3 8h18M7 12h4v5H7zM14 12h4M14 15h4" stroke="currentColor" stroke-width="1.5" fill="none"/></symbol><symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="9" r="1.5" fill="currentColor"/><path d="m5 18 6-6 4 3 3-4 2 3" stroke="currentColor" stroke-width="1.5" fill="none"/></symbol>
+    <symbol id="i-wire" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7 7h10M7 11h10M7 15h5" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m7 12 3 3 7-7" stroke="currentColor" stroke-width="1.5" fill="none"/></symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7zm0 10 9-5m-9 5L3 7m9 5v10" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m15 15 6 6" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  </defs>
+</svg>
+
+<div class="page">
+  <div class="intro">
+    <h1>Portfolio Agent<span>.</span></h1>
+    <div class="dot-divider"></div>
+  </div>
+
+  <main>
+    <section class="chapter" id="system" aria-labelledby="h-system">
+      <div class="chapter-heading"><h2 id="h-system">Agentensystem</h2></div>
+      <div class="map" aria-describedby="map-desc">
+        <p id="map-desc" class="sr-only">Zielbild: Project Files und das Projektlog mit täglicher Agent-Überprüfung fließen in den Orchestrator Portfolio Agent. Er verteilt Aufgaben an fünf Rollen: Struktur und Text, UI-Elemente wie Empathy Map, User-Flow und Nutzerprofil, Wireframes mit Figma-Anbindung, optional 3D mit Blender und Bilder mit ComfyUI. Die Ergebnisse ergeben den Case-Study-Output. Bei Abweichung von den Vorgaben schickt der Orchestrator sie zum Nachbessern erneut durch die Rollen. Erst wenn alles passt, prüft Lucas die lokale Vorschau. Jeder Kasten lässt sich für Details anklicken.</p>
+        <div class="map-loop map-loop--in" aria-hidden="true"><span class="label">Abweichung · nachbessern</span></div>
+        <div class="map-main">
+          <div class="inputs" id="map-in">
+            <button type="button" class="role agent" data-agent="files" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-folder"/></svg><span>Project Files</span></button>
+            <button type="button" class="role agent" data-agent="projektlog" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-log"/></svg><span>Projektlog</span><small>Daily Agent Überprüfung</small></button>
+          </div>
+          <div class="gap gap--bus"></div>
+          <button type="button" class="node core agent" id="map-core" data-agent="orchestrator" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-core"/></svg><span class="core-txt"><strong>Portfolio Agent</strong><span>Orchestrator</span></span></button>
+          <div class="gap gap--bus"></div>
+          <div class="roles">
+            <button type="button" class="role agent" data-agent="struktur" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-text"/></svg><span>Struktur &amp; Text</span></button>
+            <button type="button" class="role agent" data-agent="ui" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-ui"/></svg><span>UI-Elemente</span><small>Empathy Map, User&#8209;Flow, Nutzerprofil</small></button>
+            <button type="button" class="role agent" data-agent="wireframes" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-wire"/></svg><span>Wireframes</span><small>Figma-Anbindung</small></button>
+            <button type="button" class="role agent is-optional" data-agent="3d" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-cube"/></svg><span>(3D)</span><small>(Blender)</small></button>
+            <button type="button" class="role agent is-optional" data-agent="bilder" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-image"/></svg><span>(Bilder)</span><small>(ComfyUI)</small></button>
+          </div>
+          <div class="gap gap--bus"></div>
+          <div class="node check" id="map-check"><svg aria-hidden="true"><use href="#i-check"/></svg><strong>Case Study Output</strong></div>
+          <div class="gap"><span class="v-label">passt</span></div>
+          <div class="node review" id="map-review"><svg aria-hidden="true"><use href="#i-eye"/></svg>Lucas prüft die lokale Vorschau</div>
+        </div>
+        <div class="map-loop" aria-hidden="true"></div>
+        <svg class="map-svg" aria-hidden="true"></svg>
+        <p class="map-live" id="map-live" aria-live="polite" hidden></p>
+        <div class="agent-panel" id="agent-panel" role="dialog" aria-modal="false" aria-labelledby="ap-title" hidden>
+          <div class="ap-head"><svg class="ap-icon" aria-hidden="true"><use href="#i-log"/></svg><div><p class="ap-kicker" id="ap-kicker"></p><h3 id="ap-title"></h3></div><button type="button" class="ap-close" aria-label="Schließen">×</button></div>
+          <p class="ap-persona" id="ap-persona"></p>
+          <p class="ap-status"><span class="ap-dot"></span><span id="ap-status"></span></p>
+          <ol class="ap-io"><li><span class="ap-lab">Input</span><span id="ap-in"></span></li><li><span class="ap-lab">Output</span><span id="ap-out"></span></li></ol>
+          <p class="ap-lab">Aufgaben</p>
+          <ul class="ap-tasks" id="ap-tasks"></ul>
+          <dl class="ap-meta"><div><dt>Werkzeug</dt><dd id="ap-tool"></dd></div><div><dt>Modell</dt><dd id="ap-model"></dd></div></dl>
+          <a class="ap-chat" id="ap-chat" href="#"><span id="ap-chat-txt"></span><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M5 3h8v8M13 3 4 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+          <p class="ap-chat-note" id="ap-chat-note"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="auftakt" aria-labelledby="h-auftakt">
+      <div class="chapter-heading"><h2 id="h-auftakt">Projektauftakt</h2></div>
+      <div class="stack">
+        <div class="ph-img ph-hero" role="img" aria-label="Platzhalter für das Titelbild"><span>{placeholder}</span></div>
+        <h3 class="project-title">Projektname</h3>
+        <div class="dot-divider"></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="ueberblick" aria-labelledby="h-ueberblick">
+      <div class="chapter-heading"><h2 id="h-ueberblick">Auf einen Blick</h2></div>
+      <p class="lead">Platzhaltertext für die Kurzbeschreibung: was das Produkt ist, für wen es gedacht ist und was es anders macht. Zwei bis drei Sätze.</p>
+    </section>
+
+    <section class="chapter" id="fakten" aria-labelledby="h-fakten">
+      <div class="chapter-heading"><h2 id="h-fakten">Faktenblock</h2></div>
+      <div class="meta-grid">
+        <div class="meta-tile"><div class="meta-label">Zeitraum</div><div class="meta-inset">Monat Jahr bis Monat Jahr</div></div>
+        <div class="meta-tile"><div class="meta-label">Rolle</div><div class="meta-inset">Rolle A, Rolle B, Rolle C</div></div>
+        <div class="meta-tile"><div class="meta-label">Team</div><div class="meta-inset">Name A, Name B</div></div>
+        <div class="meta-tile"><div class="meta-label">Tools</div><div class="meta-inset">Tool A, Tool B, Tool C</div></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="kapitel" aria-labelledby="h-kapitel">
+      <div class="chapter-heading"><h2 id="h-kapitel">Kapitel &amp; Leitgedanke</h2></div>
+      <div class="stack">
+        <div class="section-heading-row"><h3 class="section-title">Kapitelname</h3><span class="step-badge">1</span></div>
+        <div class="dot-divider"></div>
+        <p class="guide-text">Platzhaltertext für den Leitgedanken des Kapitels. <b class="kw">Ein hervorgehobener Kernbegriff</b> lässt sich beim Überfliegen finden. Ein weiterer Satz führt zum nächsten Element.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="recherche" aria-labelledby="h-recherche">
+      <div class="chapter-heading"><h2 id="h-recherche">Recherchekarten</h2></div>
+      <div class="grid three">
+        <article class="research-card"><svg><use href="#i-search"/></svg><span class="mini-label">Desk Research</span><strong>Platzhalter für eine Erkenntnis</strong><p>Ein bis zwei Sätze, was die Quelle zeigt und warum es für das Projekt zählt.</p></article>
+        <article class="research-card"><svg><use href="#i-person"/></svg><span class="mini-label">Interview</span><strong>Platzhalter für ein Muster</strong><p>Was mehrere Befragte unabhängig voneinander beschrieben haben.</p></article>
+        <article class="research-card"><svg><use href="#i-check"/></svg><span class="mini-label">Beobachtung</span><strong>Platzhalter für ein Verhalten</strong><p>Was im Test sichtbar wurde, unabhängig davon, was gesagt wurde.</p></article>
+      </div>
+    </section>
+    <section class="chapter" id="kennzahl" aria-labelledby="h-kennzahl">
+      <div class="chapter-heading"><h2 id="h-kennzahl">Kennzahl · Umfrage</h2></div>
+      <div class="stat-block">
+        <p class="stat-kicker">Umfrage · 30 Befragte</p>
+        <h3 class="stat-head">Dies ist ein Platzhaltertext für das zentrale Ergebnis einer Umfrage</h3>
+        <div class="statbar" role="img" aria-label="Platzhalter: 9 Personen in Gruppe A, 21 in Gruppe B, 26 von 30 mit Merkmal C">
+          <div class="statbar-track">
+            <span class="statbar-seg is-main" style="--w: 30"><b>9</b><span class="seg-words">Gruppe A</span></span>
+            <span class="statbar-seg" style="--w: 70"><b>21</b><span class="seg-words">Gruppe B</span></span>
+          </div>
+          <div class="statbar-brace" style="--from: 13; --to: 100"><span class="statbar-brace-line"></span><p class="statbar-brace-text"><b>26 von 30 mit Merkmal C</b></p></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="chapter" id="vergleich" aria-labelledby="h-vergleich">
+      <div class="chapter-heading"><h2 id="h-vergleich">Wettbewerbsvergleich</h2></div>
+      <div class="taps-wrap"><h3 class="chart-title">Platzhalter für die verglichene Aufgabe</h3>
+        <div class="taps-cards">
+          <div class="tap-card"><div class="tap-shot"><div class="ph-img"><span>{placeholder}</span></div></div><span class="tap-name">App A</span><span class="tap-n">3 Schritte</span></div>
+          <div class="tap-card"><div class="tap-shot"><div class="ph-img"><span>{placeholder}</span></div></div><span class="tap-name">App B</span><span class="tap-n">3 Schritte</span></div>
+          <div class="tap-card"><div class="tap-shot"><div class="ph-img"><span>{placeholder}</span></div></div><span class="tap-name">App C</span><span class="tap-n">4 Schritte</span></div>
+          <div class="tap-card"><div class="tap-shot"><div class="ph-img"><span>{placeholder}</span></div></div><span class="tap-name">App D</span><span class="tap-n">3 Schritte</span></div>
+          <div class="tap-card is-us"><div class="tap-shot"><div class="ph-img"><span>{placeholder}</span></div></div><span class="tap-name">Eigenes Produkt</span><span class="tap-n">1 Schritt</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="empathy" aria-labelledby="h-empathy">
+      <div class="chapter-heading"><h2 id="h-empathy">Empathy Map</h2></div>
+      <div class="empathy" role="group" aria-label="Leere Empathy Map mit vier Feldern: Sagt, Denkt, Tut, Fühlt">
+        <div><h3>Sagt</h3><span class="slot">[ Zitat aus Interview ]</span><span class="slot">[ Zitat aus Interview ]</span></div>
+        <div><h3>Denkt</h3><span class="slot">[ Annahme, belegt durch … ]</span></div>
+        <div><h3>Tut</h3><span class="slot">[ Beobachtetes Verhalten ]</span><span class="slot">[ Beobachtetes Verhalten ]</span></div>
+        <div><h3>Fühlt</h3><span class="slot">[ Aus Gespräch abgeleitet ]</span></div>
+        <div class="empathy-center"><span class="slot">[ Zielgruppe ]</span></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="profil" aria-labelledby="h-profil">
+      <div class="chapter-heading"><h2 id="h-profil">Nutzerprofil</h2></div>
+      <div class="profile">
+        <div><span class="src">Zielgruppe</span><h3>Platzhalter für die Zielgruppe in einem Satz.</h3>
+          <div class="need"><span class="src">Was sie brauchen</span>Platzhalter für das zentrale Bedürfnis.</div></div>
+        <ul class="traits">
+          <li><b>01</b>Merkmal A</li>
+          <li><b>02</b>Merkmal B</li>
+          <li><b>03</b>Merkmal C</li>
+          <li><b>00</b>Personen in der Stichprobe</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="journey" aria-labelledby="h-journey">
+      <div class="chapter-heading"><h2 id="h-journey">Nutzungsweg · User-Flow</h2></div>
+      <div class="hscroll flowmap-scroll" tabindex="0" role="group" aria-label="User-Flow-Map, auf dem Handy seitlich wischen"><!--FLOWMAP:start--><svg class="flowmap" viewBox="0 0 1000 545" role="img" font-family="'Roboto Flex',Arial,sans-serif" aria-label="Platzhalter-User-Flow: Einstieg, Entscheidung Konto vorhanden, bei nein Registrierung, dann Startseite. Von dort fünf Bereiche mit eigenen Screens, Listen und Optionen. Bereich C führt über Detailansicht und Ergebnis zum Ende, gestrichelte Querverbindungen verbinden Bereiche."><defs><marker id="fm-tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="#475F7E" stroke-width="1.4"/></marker></defs><rect x="435.0" y="7.0" width="130" height="26" rx="5" fill="none" stroke="#475F7E" stroke-width="1.2"/><text x="500" y="24" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Einstieg</text><path d="M500 33 L500 55" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><polygon points="500,55 532,76 500,97 468,76" fill="#DCDCE3" stroke="#475F7E" stroke-width="1.2"/><text x="500" y="80" text-anchor="middle" font-size="10.5" fill="#1A1A1A">Konto?</text><path d="M500 97 L500 119" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><text x="506" y="112" font-size="10.5" fill="#475F7E" font-weight="600">ja</text><path d="M532 76 L623 76" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><text x="556" y="70" font-size="10.5" fill="#475F7E" font-weight="600">nein</text><rect x="625.0" y="63.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="690" y="80" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Registrierung</text><path d="M690 89 L690 134 L567 134" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="435.0" y="121.0" width="130" height="26" rx="5" fill="none" stroke="#475F7E" stroke-width="1.2"/><text x="500" y="138" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Startseite</text><path d="M500 147 L500 168" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M110 168 L890 168" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M110 168 L110 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="45.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="110" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Bereich A</text><path d="M305 168 L305 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="240.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="305" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Bereich B</text><path d="M500 168 L500 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="435.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="500" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Bereich C</text><path d="M695 168 L695 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="630.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="695" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Bereich D</text><path d="M890 168 L890 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="825.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="890" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Bereich E</text><path d="M110 213 L110 228" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M55 228 L170 228" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M55 228 L55 240" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M170 228 L170 240" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="5.0" y="240.0" width="100" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="55" y="257" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Profil</text><rect x="115.0" y="240.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="170" y="257" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Einstellungen</text><path d="M170 266 L170 276 L125 276 L125 366" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M125 294 L130 294" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="130.0" y="281.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="185" y="298" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Option 1</text><path d="M125 330 L130 330" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="130.0" y="317.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="185" y="334" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Option 2</text><path d="M125 366 L130 366" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="130.0" y="353.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="185" y="370" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Option 3</text><path d="M305 213 L305 232 L255 232 L255 320" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M255 250 L260 250" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="260.0" y="237.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="315" y="254" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Liste</text><path d="M255 285 L260 285" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="260.0" y="272.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="315" y="289" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Status</text><path d="M255 320 L260 320" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="260.0" y="307.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="315" y="324" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Kommentar</text><path d="M500 213 L500 232" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M440 232 L560 232" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M440 232 L440 370" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M560 232 L560 370" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="445.0" y="235.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="252" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Aktion 1</text><rect x="445.0" y="268.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="285" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Aktion 2</text><rect x="445.0" y="301.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="318" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Aktion 3</text><rect x="445.0" y="334.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="351" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Aktion 4</text><path d="M440 370 L560 370" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M500 370 L500 385" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="435.0" y="387.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="404" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Detailansicht</text><path d="M500 413 L500 430" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="435.0" y="432.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="449" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Ergebnis speichern</text><path d="M500 458 L500 477" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><circle cx="500" cy="490" r="13" fill="none" stroke="#1A1A1A" stroke-width="1.6"/><text x="520" y="494" font-size="10.5" fill="#475F7E" font-weight="600">Ende</text><rect x="630.0" y="237.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="254" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Kontaktliste</text><path d="M695 263 L695 281" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="630.0" y="282.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="299" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Anruf</text><path d="M695 308 L695 320" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M640 320 L750 320" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M640 320 L640 418" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M750 320 L750 418" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="640.0" y="323.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="340" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Nachricht</text><rect x="640.0" y="353.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="370" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Bildschirm teilen</text><rect x="640.0" y="383.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="400" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Kamera teilen</text><path d="M640 418 L750 418" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M695 418 L695 431" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="630.0" y="432.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="449" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Zusammenfassung</text><path d="M630 445 L600 445 L600 400 L567 400" fill="none" stroke="#475F7E" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#fm-tip)"/><rect x="825.0" y="237.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="890" y="254" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Übersicht</text><path d="M565 452 L585 470 L980 470 L980 250 L957 250" fill="none" stroke="#475F7E" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#fm-tip)"/><g transform="translate(20 528)" font-size="10.5" fill="#575B65"><rect x="0" y="-9" width="22" height="12" rx="3" fill="none" stroke="#475F7E"/><text x="30" y="1">Einstieg</text><rect x="100" y="-9" width="22" height="12" rx="3" fill="#475F7E"/><text x="130" y="1">Bereich</text><rect x="195" y="-9" width="22" height="12" rx="3" fill="#cbd6e5" stroke="#809BBC"/><text x="225" y="1">Screen</text><polygon points="300,-9 311,-3 300,3 289,-3" fill="none" stroke="#475F7E"/><text x="320" y="1">Entscheidung</text><path d="M410 -3 H440" stroke="#475F7E" stroke-dasharray="3 3"/><text x="448" y="1">Querverbindung</text></g></svg><!--FLOWMAP:end--></div>
+    </section>
+
+    <section class="chapter" id="ableitung" aria-labelledby="h-ableitung">
+      <div class="chapter-heading"><h2 id="h-ableitung">Beobachtung → Entscheidung</h2></div>
+      <div class="derive">
+        <div class="derive-row"><div><span class="src">Interview · Methode</span><p>Platzhalter für eine Beobachtung aus Test oder Interview.</p></div><span class="derive-arrow" aria-hidden="true"></span><div class="decision"><span class="src">Entscheidung</span><p>Platzhalter für die Entscheidung, die daraus folgt.</p></div></div>
+        <div class="derive-row"><div><span class="src">Test · Methode</span><p>Platzhalter für eine zweite Beobachtung.</p></div><span class="derive-arrow" aria-hidden="true"></span><div class="decision"><span class="src">Entscheidung</span><p>Platzhalter für die zweite Entscheidung.</p></div></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="alternativen" aria-labelledby="h-alternativen">
+      <div class="chapter-heading"><h2 id="h-alternativen">Alternativenmatrix</h2></div>
+      <div class="matrix" role="table" aria-label="Platzhalter: drei Optionen nach fünf Kriterien">
+        <div class="head" role="columnheader">Kriterium</div><div class="head" role="columnheader">Option A</div><div class="head" role="columnheader">Option B</div><div class="head selected" role="columnheader">Option C</div>
+        <div role="rowheader">Kriterium 1</div><div>Hoch</div><div>Mittel</div><div class="selected">Niedrig</div>
+        <div role="rowheader">Kriterium 2</div><div>Nein</div><div>Ja</div><div class="selected"><span class="tick">✓</span></div>
+        <div role="rowheader">Kriterium 3</div><div>3 Schritte</div><div>2 Schritte</div><div class="selected">1 Schritt</div>
+        <div role="rowheader">Ergebnis im Test</div><div>–</div><div>Platzhalter</div><div class="selected">Umgesetzt</div>
+      </div>
+    </section>
+
+
+    <section class="chapter" id="iterationen" aria-labelledby="h-iterationen">
+      <div class="chapter-heading"><h2 id="h-iterationen">Iterationen</h2></div>
+      <div class="version-tabs" role="tablist" aria-label="Entwurfsstand"><button class="mock-button" id="tab-v1" type="button" role="tab" aria-selected="true" aria-controls="panel-v1" data-version="v1">01 · Erster Entwurf</button><button class="mock-button" id="tab-v2" type="button" role="tab" aria-selected="false" aria-controls="panel-v2" data-version="v2">02 · Neue Version</button></div><div class="version-stage" id="panel-v1" role="tabpanel" aria-labelledby="tab-v1"><div class="phone"><div class="ph-top">Titel <span>•••</span></div><div class="ph-list"><span class="current">Tab A</span><span>Tab B</span><span>Tab C</span></div><div class="task"><span class="circle"></span><b>Eintrag 1</b></div><div class="task"><span class="circle"></span><b>Eintrag 2</b></div><div class="task"><span class="circle"></span><b>Eintrag 3</b></div></div><p>Platzhaltertext: was diese Version ausmacht und was sich gezeigt hat.</p></div><div class="version-stage" id="panel-v2" role="tabpanel" aria-labelledby="tab-v2" hidden><div class="phone"><div class="ph-top">Titel <span>•••</span></div><div class="ph-list"><span class="current">Tab A</span><span>Tab B</span><span>Tab C</span></div><div class="task"><span class="circle"></span><b>Eintrag 2</b></div><div class="task highlight"><span class="circle"></span><b>Eintrag 2 →</b></div></div><p>Platzhaltertext: was sich geändert hat und warum.</p></div>
+    </section>
+
+    <section class="chapter" id="vorher" aria-labelledby="h-vorher">
+      <div class="chapter-heading"><h2 id="h-vorher">Vorher / Nachher</h2></div>
+      <div class="before-after" id="compare" role="img" aria-label="Platzhalter: links früher Entwurf, rechts aktueller Screen"><div class="scene before"><div class="sketch" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div><div class="scene after"><div class="phone" aria-hidden="true"><div class="ph-top">Titel</div><div class="ph-list"><span class="current">Tab A</span><span>Tab B</span><span>Tab C</span></div><div class="task"><span class="circle"></span><b>Eintrag 1</b></div><div class="task highlight"><span class="circle"></span><b>Eintrag 2</b></div></div></div><div class="divider"></div></div><div class="range-row"><span class="mini-label">Vorher</span><input type="range" min="5" max="95" value="50" id="split" aria-label="Vorher-Nachher-Vergleich verschieben"><span class="mini-label">Nachher</span></div>
+    </section>
+
+    <section class="chapter" id="flow" aria-labelledby="h-flow">
+      <div class="chapter-heading"><h2 id="h-flow">Wireflow</h2></div>
+      <!--@src:tomorrow:wireflow:reschedule-->
+    </section>
+
+
+
+    <section class="chapter" id="screen" aria-labelledby="h-screen">
+      <div class="chapter-heading"><h2 id="h-screen">Screen &amp; Callouts</h2></div>
+      <div class="callouts">
+        <div class="pinned-svg"><div class="ph-phone" role="img" aria-label="Platzhalter für einen Screen mit drei markierten Stellen"><div class="ph-img"><span>{placeholder}</span></div></div>
+          <span class="pin r" style="--x:80%;--y:70%" aria-hidden="true"><b>1</b></span>
+          <span class="pin b" style="--x:55%;--y:93%" aria-hidden="true"><b>2</b></span>
+          <span class="pin l" style="--x:18%;--y:88%" aria-hidden="true"><b>3</b></span></div>
+        <ol class="callout-list">
+          <li><span>1</span><div><strong>Funktion A</strong><p>Platzhaltertext: was dieses Element tut und warum es dort sitzt.</p></div></li>
+          <li><span>2</span><div><strong>Funktion B</strong><p>Platzhaltertext für die zweite Markierung.</p></div></li>
+          <li><span>3</span><div><strong>Funktion C</strong><p>Platzhaltertext für die dritte Markierung.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="chapter" id="states" aria-labelledby="h-states">
+      <div class="chapter-heading"><h2 id="h-states">Feature-Zustände</h2></div>
+      <div class="hscroll" tabindex="0" role="group" aria-label="Drei Zustände eines Elements">
+        <div class="states">
+          <figure><!--@src:tomorrow:screen:live:2@s1--><figcaption><span class="tag">Zustand A</span><span class="cap">Platzhalter für den Ausgangszustand</span></figcaption></figure>
+          <figure><!--@src:tomorrow:screen:live:3@s2--><figcaption><span class="tag">Zustand B</span><span class="cap">Platzhalter für den Zwischenzustand</span></figcaption></figure>
+          <figure><!--@src:tomorrow:screen:live:4@s3--><figcaption><span class="tag blue">Zustand C</span><span class="cap">Platzhalter für den Endzustand</span></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="kernsatz" aria-labelledby="h-kernsatz">
+      <div class="chapter-heading"><h2 id="h-kernsatz">Kernsatz</h2></div>
+      <p class="big-statement">Platzhalter für die zentrale Erkenntnis in einem Satz.</p>
+    </section>
+
+    <section class="chapter" id="ergebnisse" aria-labelledby="h-ergebnisse">
+      <div class="chapter-heading"><h2 id="h-ergebnisse">Ergebnisblock</h2></div>
+      <p class="res-caveat">Platzhaltertext für die Einordnung: woher die Zahlen stammen, wie groß die Gruppe war und was sie <b class="kw">nicht</b> zeigen.</p>
+      <div class="fact-bar">
+        <div class="fact"><span class="fact-num">3 → 1</span><span class="fact-label">Platzhalter für eine Vorher-nachher-Kennzahl</span></div>
+        <div class="fact"><span class="fact-num">X von Y</span><span class="fact-label">Platzhalter für einen Anteil</span><span class="fact-src">Quelle · Stichprobe</span></div>
+        <div class="fact"><span class="fact-num">000</span><span class="fact-label">Platzhalter für eine Gesamtzahl</span><span class="fact-src">(Stand: Monat Jahr)</span></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="statistik" aria-labelledby="h-statistik">
+      <div class="chapter-heading"><h2 id="h-statistik">Vergleichsbalken</h2></div>
+      <div class="res-block">
+        <span class="src">Test · 00 Personen · 0 Wochen</span>
+        <h3 class="cs-sub">Platzhalter für die verglichene Kennzahl</h3>
+        <div class="ba-chart" role="img" aria-label="Platzhalter: Kennzahl A steigt von 4 auf 6, Kennzahl B von 1 auf 2">
+          <div class="ba-legend"><span><i></i>Vorher</span><span><i class="is-after"></i>Nachher</span></div>
+          <div class="ba-group"><span class="chart-key">Kennzahl A</span>
+            <div class="ba-row"><span class="chart-track"><span class="chart-fill" style="--v: 40;"></span></span><span class="chart-val">4</span></div>
+            <div class="ba-row is-after"><span class="chart-track"><span class="chart-fill" style="--v: 60;"></span></span><span class="chart-val">6</span></div></div>
+          <div class="ba-group"><span class="chart-key">Kennzahl B</span>
+            <div class="ba-row"><span class="chart-track"><span class="chart-fill" style="--v: 10;"></span></span><span class="chart-val">1</span></div>
+            <div class="ba-row is-after"><span class="chart-track"><span class="chart-fill" style="--v: 20;"></span></span><span class="chart-val">2</span></div></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="chapter" id="beleg" aria-labelledby="h-beleg">
+      <div class="chapter-heading"><h2 id="h-beleg">Feedback</h2></div>
+      <div class="quotes">
+        <blockquote><p>„Platzhalter für ein Zitat aus einem Interview oder Test.“</p><cite>Person A · sinngemäß</cite></blockquote>
+        <blockquote><p>„Platzhalter für ein zweites Zitat, das einen anderen Aspekt zeigt.“</p><cite>Person B · sinngemäß</cite></blockquote>
+        <blockquote><p>„Platzhalter für ein drittes Zitat.“</p><cite>Person C · sinngemäß</cite></blockquote>
+      </div>
+    </section>
+
+    <section class="chapter" id="ausblick" aria-labelledby="h-ausblick">
+      <div class="chapter-heading"><h2 id="h-ausblick">Grenzen &amp; Ausblick</h2></div>
+      <div class="closing">
+        <article><span class="mini-label">Grenze</span><h3>Platzhalter für eine Grenze</h3><p>Platzhaltertext: was die Ergebnisse nicht zeigen und warum.</p></article>
+        <article><span class="mini-label">Nächste Frage</span><h3>Platzhalter für die nächste Frage?</h3><p>Platzhaltertext: wie sich das prüfen ließe.</p></article>
+      </div>
+    </section>
+
+    <section class="chapter" id="tokens" aria-labelledby="h-tokens">
+      <div class="chapter-heading"><h2 id="h-tokens">Farbe &amp; Typografie</h2></div>
+      <div class="stack">
+        <div class="swatches">
+          <div class="swatch"><i style="background:#DCDCE3"></i><small>Fläche<br><code>#DCDCE3</code></small></div>
+          <div class="swatch"><i style="background:#1A1A1A"></i><small>Text<br><code>#1A1A1A</code></small></div>
+          <div class="swatch"><i style="background:#8E8E93"></i><small>Text 2<br><code>#8E8E93</code></small></div>
+          <div class="swatch"><i style="background:#809BBC"></i><small>Akzent<br><code>#809BBC</code></small></div>
+          <div class="swatch"><i style="background:#6F6F6F"></i><small>Linie<br><code>#6F6F6F</code></small></div>
+        </div>
+        <div class="type-samples">
+          <div><div class="ocr">Aa Ää 0123</div><span class="src">OCR-A-BT · Titel und Zahlen</span></div>
+          <div><p>Platzhaltertext in der Fließtextschrift, damit Zeilenlänge und Grauwert sichtbar werden.</p><span class="src">Roboto Flex · Fließtext</span></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+// Iteration tabs: click, arrow keys, Home/End (WAI-ARIA tabs pattern).
+(() => {
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  const select = tab => tabs.forEach(t => {
+    const on = t === tab;
+    t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+  });
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', e => {
+      const n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (n === undefined) return;
+      e.preventDefault(); const next = tabs[(n + tabs.length) % tabs.length]; select(next); next.focus();
+    });
+  });
+})();
+// Before/after (first-iteration markup): the range moves the split.
+(() => {
+  const range = document.getElementById('split'), box = document.getElementById('compare');
+  const set = () => { box.style.setProperty('--split', range.value + '%'); range.setAttribute('aria-valuetext', range.value + ' Prozent'); };
+  range.addEventListener('input', set); set();
+})();
+// Agent map: every connector is measured from the real boxes, so lines meet edges at any width.
+// Roles are buttons that open one info panel. Optional live status: when the page is served over
+// http and a case-studyer-status.json sits next to it, active agents pulse. No file, no pulse.
+(() => {
+  const map = document.querySelector('.map'), svg = map.querySelector('.map-svg'), main = map.querySelector('.map-main');
+  const $ = id => document.getElementById(id);
+  const draw = () => {
+    const m = map.getBoundingClientRect(), R = el => { const b = el.getBoundingClientRect(); return { l: b.left - m.left, r: b.right - m.left, t: b.top - m.top, b: b.bottom - m.top, cx: b.left - m.left + b.width / 2, cy: b.top - m.top + b.height / 2 }; };
+    const ins = [...$('map-in').children].map(R), core = R($('map-core')), out = R($('map-check')), rev = R($('map-review'));
+    const roles = [...map.querySelectorAll('.roles .role')].map(R), box = R(map.querySelector('.roles'));
+    const oneRow = roles.every(r => Math.abs(r.t - roles[0].t) < 2), x = core.cx, k = 12;
+    const arrow = (x1, y1, x2, y2) => `<path d="M${x1} ${y1} L${x2} ${y2 - 1}" marker-end="url(#tip)"/>`;
+    // Vertical - horizontal - vertical with rounded corners; identical trunks overlap invisibly.
+    const elbow = (xa, ya, ym, xb, yb, tip) => {
+      const dx = xb - xa, s = Math.sign(dx), r = Math.min(k, Math.abs(dx) / 2, Math.abs(ym - ya), Math.abs(yb - ym));
+      const p = Math.abs(dx) < 1 ? `M${xa} ${ya} V${yb - (tip ? 1 : 0)}`
+        : `M${xa} ${ya} V${ym - r} Q${xa} ${ym} ${xa + s * r} ${ym} H${xb - s * r} Q${xb} ${ym} ${xb} ${ym + r} V${yb - (tip ? 1 : 0)}`;
+      return `<path d="${p}"${tip ? ' marker-end="url(#tip)"' : ''}/>`;
+    };
+    const yi = (Math.max(...ins.map(i => i.b)) + core.t) / 2;
+    let d = ins.map(i => elbow(i.cx, i.b, yi, x, core.t, false)).join('') + arrow(x, yi, x, core.t);
+    if (oneRow) {
+      const top = (core.b + box.t) / 2, bot = (box.b + out.t) / 2;
+      d += roles.map(r => elbow(x, core.b, top, r.cx, r.t, true)).join('');
+      d += roles.map(r => elbow(r.cx, r.b, bot, x, out.t, false)).join('') + arrow(x, bot, x, out.t);
+    } else {
+      d += arrow(x, core.b, x, box.t) + arrow(x, box.b, x, out.t);
+    }
+    d += arrow(x, out.b, x, rev.t);
+    const xi = R(map.querySelector('.map-loop--in .label')).cx;
+    const loop = `M${out.l - 4} ${out.cy} H${xi + k} Q${xi} ${out.cy} ${xi} ${out.cy - k} V${core.cy + k} Q${xi} ${core.cy} ${xi + k} ${core.cy} H${core.l - 6}`;
+    svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
+    svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--blue-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
+      `<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
+      `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>`;
+  };
+  new ResizeObserver(draw).observe(map); document.fonts?.ready.then(draw); draw();
+
+  // Facts per role from Design-Tool/Plan.md (22.11.2026); persona = how each agent introduces itself.
+  // "Status" says what really exists today.
+  const A = {
+    orchestrator: { k: 'Orchestrator', t: 'Portfolio Agent', i: '#i-core', s: 'Eingerichtet als Hermes-Bot', st: 'aktiv',
+      p: '„Ich bin der Projektleiter. Ich lese die Regeln, verteile die Arbeit an mein Team und lasse nichts zu Lucas durch, was nicht zu den Vorgaben passt.“',
+      in: 'Project Files, Projektlog, Lucas’ Freigaben', out: 'Status und Übergabe je Projekt',
+      tasks: ['Liest gemeinsame Regeln und den case-study-Skill', 'Fragt Lucas je eine offene Entscheidung', 'Verteilt nur freigegebene Schritte', 'Gleicht den Output ab und schickt Abweichungen zurück'],
+      tool: 'Hermes-Profil „portfolio“', model: 'Offen, Test je Rolle' },
+    files: { k: 'Quelle', t: 'Project Files', i: '#i-folder', s: 'Nur Quellwurzeln, die Lucas freigibt', st: 'aktiv',
+      in: 'Repo, Screens, Notizen, Rohtext', out: 'Lesezugriff für Portfolio und Log Agent',
+      tasks: ['Lucas nennt zu Projektstart die Quellwurzeln', 'Andere Ordner erst nach eigener Freigabe', 'Originale bleiben unverändert'],
+      tool: 'Lokale Dateien', model: '–' },
+    projektlog: { k: 'Sub-Agent · Projektlog', t: 'Log Agent', i: '#i-log', s: 'Läuft für ApartScan: täglicher Check 20:00', st: 'aktiv',
+      p: '„Ich bin das Gedächtnis des Projekts. Jeden Abend schaue ich, was sich geändert hat, und schreibe nur auf, was ich belegen kann.“',
+      in: 'Projektstart, Arbeitssitzungen, Quelländerungen', out: 'Ein log.md pro Projekt',
+      tasks: ['Prüft täglich das freigegebene Repo', 'Schreibt nur belegte, datierte Einträge', 'Trennt echte Datierung von späterer Erfassung', 'Liest keine fremden Chats'],
+      tool: 'Git-Metadaten-Skript + Cron', model: 'Offen, Test je Rolle' },
+    struktur: { k: 'Sub-Agent · Struktur & Text', t: 'Text Agent', i: '#i-text', s: 'In zwei CLI-Durchläufen getestet', st: 'getestet',
+      p: '„Ich bin der Redakteur. Ich mache aus Log und Rohtext eine Geschichte, in der jedes Kapitel genau eine Frage beantwortet.“',
+      in: 'Rohtext, ganzes Log, geprüfte Quellen', out: 'gliederung.md, textentwurf.md',
+      tasks: ['Gliedert nach dem case-study-Skill', 'Gleicht Fakten mit den Originalquellen ab', 'Schreibstil und humanizer-Durchgang', 'Wartet auf Lucas’ Freigabe vor dem HTML'],
+      tool: 'case-study- und humanizer-Skill', model: 'Offen, Test je Rolle' },
+    ui: { k: 'Sub-Agent · UI-Elemente', t: 'UI Agent', i: '#i-ui', s: 'Baustein-Katalog vorbereitet (diese Seite)', st: 'vorbereitet',
+      p: '„Ich bin der Seitenbauer. Ich setze freigegebenen Text in Bausteine wie Empathy Map, User-Flow und Nutzerprofil um.“',
+      in: 'Freigegebener Text, reale Medien', out: 'Lokale HTML-Vorschau',
+      tasks: ['Baut die UI-Bausteine der Case Study', 'Nimmt to.morrow und Unify als Codebeispiele', 'Rendert Desktop und Handy und prüft sie', 'Kein Live-Deploy'],
+      tool: 'HTML, CSS, JS', model: 'Offen, Test je Rolle' },
+    wireframes: { k: 'Sub-Agent · Wireframes', t: 'Wireframe Agent', i: '#i-wire', s: 'Bot eingerichtet (Profil „wireframes“), Figma noch nicht verbunden', st: 'vorbereitet',
+      p: '„Ich bin der Zeichner. Ich übersetze echte Screens und Abläufe in klare Wireframes und Wireflows, eine Aussage pro Bild.“',
+      in: 'Echte Screens und Flows', out: 'SVG/PNG, später mit Figma-Link',
+      tasks: ['Zeichnet im Stil des wireframes-Skills', 'Erfindet keine Screens oder Schritte', 'Prüft jeden Export auf Desktop und Handy', 'Liefert an den Portfolio Agent'],
+      tool: 'Hermes-Profil „wireframes“; Figma folgt', model: 'Offen, Test je Rolle' },
+    '3d': { k: 'Sub-Agent · optional', t: '3D Agent', i: '#i-cube', s: 'Später, noch nicht eingerichtet', st: 'geplant',
+      p: '„Ich bin der Modellbauer. Ich komme nur, wenn eine Skizze nicht reicht und Haltung oder Blickwinkel genau stimmen müssen.“',
+      in: 'Echte Interaktion, Referenzen', out: 'Stills oder Clips',
+      tasks: ['Räumlich präzise Posen und Blickwinkel', 'Mechanik gegen das Ausgangsmaterial prüfen'],
+      tool: 'Blender-Plugin', model: 'Offen' },
+    bilder: { k: 'Sub-Agent · optional', t: 'Bild Agent', i: '#i-image', s: 'Später, nicht verbunden', st: 'geplant',
+      p: '„Ich bin der Bildgestalter. Ich zeige, wo und wie ein Produkt genutzt wird, ohne das Original zu verändern.“',
+      in: 'Vorhandene Bilder, definierter Zweck', out: 'Bildstil oder Nutzungsszenen',
+      tasks: ['Kontextuelle Nutzungsszenen', 'Original immer erhalten', 'Lucas gibt Look und Einsatz frei'],
+      tool: 'ComfyUI-Workflow', model: 'Offen' },
+  };
+  // Bot Chat ids are read from each Hermes profile at build time (build.py, botchat marker).
+  const CHAT = { portfolio: 'hermes://open/c/{{botchat:portfolio}}', wireframes: 'hermes://open/c/{{botchat:wireframes}}' };
+  const BOT = { orchestrator: 'portfolio', wireframes: 'wireframes' };
+  const panel = $('agent-panel'); let opener = null;
+  const close = () => { if (panel.hidden) return; panel.hidden = true; opener?.setAttribute('aria-expanded', 'false'); opener?.focus(); opener = null; };
+  const place = () => {
+    if (!opener) return;
+    // Beside the box: right if it fits, else left; only on a narrow phone below it.
+    const m = map.getBoundingClientRect(), b = opener.getBoundingClientRect(), w = panel.offsetWidth, g = 12;
+    const bl = b.left - m.left, br = b.right - m.left, bt = b.top - m.top;
+    let left, top = bt;
+    if (br + g + w <= m.width - 8) left = br + g;
+    else if (bl - g - w >= 8) left = bl - g - w;
+    else { left = Math.max(8, Math.min(bl + b.width / 2 - w / 2, m.width - w - 8)); top = b.bottom - m.top + g; }
+    panel.dataset.side = left > br ? 'right' : left + w < bl ? 'left' : 'below';
+    panel.style.left = left + 'px'; panel.style.top = Math.max(8, top) + 'px';
+  };
+  const open = btn => {
+    const a = A[btn.dataset.agent]; if (!a) return;
+    if (opener === btn) return close();
+    opener?.setAttribute('aria-expanded', 'false'); opener = btn; btn.setAttribute('aria-expanded', 'true');
+    panel.querySelector('.ap-icon use').setAttribute('href', a.i);
+    $('ap-kicker').textContent = a.k; $('ap-title').textContent = a.t; $('ap-persona').textContent = a.p || ''; $('ap-persona').hidden = !a.p; $('ap-status').textContent = a.s;
+    $('ap-in').textContent = a.in; $('ap-out').textContent = a.out; $('ap-tool').textContent = a.tool; $('ap-model').textContent = a.model;
+    const key = btn.dataset.agent, own = BOT[key], link = $('ap-chat');
+    link.hidden = key === 'files';
+    link.href = CHAT[own || 'portfolio'];
+    $('ap-chat-txt').textContent = own ? 'Chat in Hermes öffnen' : 'Chat im Portfolio Agent öffnen';
+    $('ap-chat-note').textContent = key === 'files' || own ? '' : 'Noch kein eigener Bot; die Aufgabe läuft im Portfolio Agent.';
+    $('ap-tasks').replaceChildren(...a.tasks.map(t => Object.assign(document.createElement('li'), { textContent: t })));
+    panel.dataset.state = a.st; panel.hidden = false; place(); panel.querySelector('.ap-close').focus({ preventScroll: true });
+    panel.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  };
+  map.querySelectorAll('.agent').forEach(b => b.addEventListener('click', () => open(b)));
+  panel.querySelector('.ap-close').addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  document.addEventListener('pointerdown', e => { if (!panel.hidden && !panel.contains(e.target) && !e.target.closest('.agent')) close(); });
+  new ResizeObserver(place).observe(map);
+
+  // Live status (optional): {"updated": ISO, "active": {"projektlog": "what it does now", ...}}
+  if (!location.protocol.startsWith('http')) return;
+  const live = $('map-live');
+  const poll = async () => {
+    try {
+      const r = await fetch('case-studyer-status.json', { cache: 'no-store' });
+      if (!r.ok) throw 0;
+      const j = await r.json(), act = j.active || {};
+      map.querySelectorAll('.agent').forEach(b => { const on = b.dataset.agent in act; b.classList.toggle('is-active', on); b.title = on ? act[b.dataset.agent] : ''; });
+      const names = Object.keys(act).map(k => A[k]?.t).filter(Boolean);
+      live.textContent = (names.length ? 'Gerade aktiv: ' + names.join(', ') : 'Kein Agent aktiv') + (j.updated ? ' · Stand ' + new Date(j.updated).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '');
+      live.hidden = false;
+    } catch { map.querySelectorAll('.agent.is-active').forEach(b => b.classList.remove('is-active')); live.hidden = true; }
+  };
+  poll(); setInterval(poll, 4000);
+})();
+</script>
+<script>/*@src:tomorrow:js:wireflow-connectors*/</script>
+<!--@src:tomorrow:scroll-track-->
+<script>/*@src:tomorrow:js:scroll-dots*/</script>
+</body>
+</html>
