@@ -79,24 +79,32 @@ main>.chapter:first-child{border-top:0}
 .map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--border-color)}
 .map-svg .loop{color:var(--blue-deep)}
 .map-svg g[data-step]:not(.on){display:none}
-.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.22)}
-.map-svg g[data-step].on{color:var(--flow);stroke-width:2.4}
-.map-svg g[data-step].on path{stroke:var(--flow);stroke-dasharray:1;stroke-dashoffset:1;animation:flow-draw 1.6s cubic-bezier(.45,0,.25,1) forwards}
-.map-svg g[data-step].on path[marker-end]{marker-end:none}.map-svg g[data-step].on.done path[marker-end]{marker-end:url(#tip-on)}
-.map-svg g[data-step="loop"].on path{stroke-width:2.4}
+.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.22);--draw:2.8s}
+.map-svg g[data-step].on{color:var(--flow);stroke-width:2.4;opacity:.4;transition:opacity .5s ease}
+.map-svg g[data-step].on.now{opacity:1}
+.map-svg g[data-step].on path{stroke:var(--flow)}
+.map-svg g[data-step].now path{stroke-dasharray:1;stroke-dashoffset:1;animation:flow-draw var(--draw) cubic-bezier(.45,0,.25,1) forwards}
+.map-svg g[data-step].on path[marker-end]{marker-end:url(#tip-on)}.map-svg g[data-step].now:not(.done) path[marker-end]{marker-end:none}
 @keyframes flow-draw{to{stroke-dashoffset:0}}
-.map .is-lit{border-color:var(--flow)!important;background:var(--flow-soft)!important;box-shadow:0 0 0 5px var(--flow-ring);transition:background-color .5s ease,border-color .5s ease,box-shadow .5s ease}
+.map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.45}
+.map .is-lit{border-color:var(--flow)!important;background:var(--flow-soft)!important;transition:background-color .5s ease,border-color .5s ease,box-shadow .5s ease,opacity .5s ease}
 .map .is-lit svg{color:var(--flow)}
-.map.is-playing .agent,.map.is-playing .node{transition:background-color .25s ease,border-color .25s ease,box-shadow .25s ease,opacity .25s ease}
-.map.is-playing .map-main .agent:not(.is-lit),.map.is-playing .map-main .node:not(.is-lit){opacity:.7}
+.map .is-current{box-shadow:0 0 0 5px var(--flow-ring)}
+.map.is-playing .agent,.map.is-playing .node{transition:background-color .5s ease,border-color .5s ease,box-shadow .5s ease,opacity .5s ease}
+.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){opacity:.4}
+.map.is-playing .map-main .is-lit:not(.is-current){opacity:.6}
+.map.is-playing .v-label,.map.is-playing .map-loop{opacity:.4;transition:opacity .5s ease}
+.flow-cap{position:absolute;z-index:4;margin:0;width:max-content;max-width:min(240px,calc(100% - 24px));padding:8px 12px;border:1.5px solid var(--flow);border-radius:12px;background:#fff;color:#2c3038;font-size:13px;line-height:1.4;opacity:0;transform:translateY(4px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
+.flow-cap.show{opacity:1;transform:none}.flow-cap[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){.flow-cap{transition:none;transform:none}}
 .map-play{position:absolute;right:14px;bottom:14px;z-index:4;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 11px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font:600 12.5px/1 inherit;cursor:pointer;transition:background-color .15s ease}
 .map-play:hover{background:#34475F}.map-play:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
 .map-play svg{width:14px;height:14px}.map-play .i-stop,.map-play[aria-pressed="true"] .i-play{display:none}.map-play[aria-pressed="true"] .i-stop{display:block}
 .map-play:disabled{background:#8A97A8;cursor:default}
 @media(max-width:560px){.map-play{right:10px;bottom:10px;height:32px;padding:0 10px}.map-play-txt{display:none}}
-@media(prefers-reduced-motion:reduce){.map-svg g[data-step].on path{animation:none;stroke-dasharray:none;stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.map-svg g[data-step].now path{animation:none;stroke-dasharray:none;stroke-dashoffset:0}}
 .map-loop{position:relative;z-index:1}
-.map-loop .label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(180deg);line-height:1.2;writing-mode:vertical-rl;font-size:11.5px;font-weight:600;color:var(--blue-deep);white-space:nowrap;background:var(--bg-surface);padding:8px 0}
+.map-loop .label{position:absolute;left:2px;top:50%;transform:translateY(-50%) rotate(180deg);line-height:1.2;writing-mode:vertical-rl;font-size:11.5px;font-weight:600;color:var(--blue-deep);white-space:nowrap}
 .map-live{grid-column:1/-1;margin:20px 0 0;text-align:center;font-size:12px;color:#575B65}
 .map-live::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blue-deep);margin-right:8px;vertical-align:1px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -291,6 +299,7 @@ main>.chapter:first-child{border-top:0}
         </div>
         <div class="map-loop" aria-hidden="true"></div>
         <svg class="map-svg" aria-hidden="true"></svg>
+        <p class="flow-cap" id="flow-cap" aria-live="polite" hidden></p>
         <button type="button" class="map-play" id="map-play" aria-label="Workflow abspielen" aria-pressed="false"><svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg><svg class="i-stop" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1.5" fill="currentColor"/></svg><span class="map-play-txt">Workflow abspielen</span></button>
         <p class="map-live" id="map-live" aria-live="polite" hidden></p>
         <div class="agent-panel" id="agent-panel" tabindex="-1" role="dialog" aria-modal="false" aria-labelledby="ap-title" hidden>
@@ -572,7 +581,7 @@ main>.chapter:first-child{border-top:0}
     map.style.removeProperty('--role-h');
     map.style.setProperty('--role-h', Math.ceil(Math.max(...boxes.map(b => b.offsetHeight))) + 'px');
   };
-  const lit = new Set(), doneSet = new Set();   // lit connector groups; those fully drawn (survive redraws)
+  const seen = new Set(), now = new Set(), doneSet = new Set(), GEO = {};   // connector groups lit / drawing now / drawn (survive redraws)
   const draw = () => {
     equalise();
     const m = map.getBoundingClientRect(), R = el => { const b = el.getBoundingClientRect(); return { l: b.left - m.left, r: b.right - m.left, t: b.top - m.top, b: b.bottom - m.top, cx: b.left - m.left + b.width / 2, cy: b.top - m.top + b.height / 2 }; };
@@ -591,33 +600,42 @@ main>.chapter:first-child{border-top:0}
         const p = outer
           ? (down ? `M${x} ${yBar} H${cx + dir * r} Q${cx} ${yBar} ${cx} ${yBar + r} V${end}`
                   : `M${cx} ${yBox} V${yBar - r} Q${cx} ${yBar} ${cx + dir * r} ${yBar} H${x}`)
-          : `M${cx} ${down ? yBar : yBox} V${down ? end : yBar}`;
+          : (down ? `M${x} ${yBar} H${cx} V${end}` : `M${cx} ${yBox} V${yBar}`);
         return `<path d="${p}"${tips ? ' marker-end="url(#tip)"' : ''}/>`;
-      }).join('');
+      });
     };
     const yi = (Math.max(...ins.map(i => i.b)) + core.t) / 2;
     // Each workflow step is its own <g data-step>, so the demo and live view can light one at a time.
     const G = {};
-    G.in = bus(ins.map(i => i.cx), yi, Math.max(...ins.map(i => i.b)), false, false) + arrow(x, yi, x, core.t);
+    G.in = bus(ins.map(i => i.cx), yi, Math.max(...ins.map(i => i.b)), false, false).join('') + arrow(x, yi, x, core.t);
+    const keys = [...map.querySelectorAll('.roles .role')].map(r => r.dataset.agent);
+    GEO.in = { x, y1: yi, y2: core.t };
     if (oneRow) {
       const top = (core.b + box.t) / 2, bot = (box.b + out.t) / 2;
-      G.fan = `<path d="M${x} ${core.b} V${top}"/>` + bus(roles.map(r => r.cx), top, box.t, true, true);
-      G.join = bus(roles.map(r => r.cx), bot, box.b, false, false) + arrow(x, bot, x, out.t);
+      G.trunk = `<path d="M${x} ${core.b} V${top}"/>`;
+      bus(roles.map(r => r.cx), top, box.t, true, true).forEach((p, i) => { G['fan-' + keys[i]] = p; });
+      G.join = bus(roles.map(r => r.cx), bot, box.b, false, false).join('') + arrow(x, bot, x, out.t);
+      GEO.trunk = { x, y1: core.b, y2: top }; GEO.join = { x, y1: bot, y2: out.t };
     } else {
-      G.fan = arrow(x, core.b, x, box.t); G.join = arrow(x, box.b, x, out.t);
+      G.trunk = arrow(x, core.b, x, box.t); keys.forEach(k => { G['fan-' + k] = ''; }); G.join = arrow(x, box.b, x, out.t);
+      GEO.trunk = { x, y1: core.b, y2: box.t }; GEO.join = { x, y1: box.b, y2: out.t };
     }
-    G.rev = arrow(x, out.b, x, rev.t);
+    G.rev = arrow(x, out.b, x, rev.t); GEO.rev = { x, y1: out.b, y2: rev.t };
     const d = Object.values(G).join('');
-    const ov = k => `<g data-step="${k}"${lit.has(k) ? (doneSet.has(k) ? ' class="on done"' : ' class="on"') : ''}>${(k === 'loop' ? `<path d="${loop}"/>` : G[k]).replaceAll('<path ', '<path pathLength="1" ')}</g>`;
-    const xi = R(map.querySelector('.map-loop--in .label')).cx;
+    const cls = k => [seen.has(k) && 'on', now.has(k) && 'now', doneSet.has(k) && 'done'].filter(Boolean).join(' ');
+    const ov = k => `<g data-step="${k}" class="${cls(k)}">${(k === 'loop' ? `<path d="${loop}"/>` : G[k]).replaceAll('<path ', '<path pathLength="1" ')}</g>`;
+    const lab = map.querySelector('.map-loop--in .label'), cell = lab.parentElement.getBoundingClientRect();
+    lab.style.top = ((core.cy + out.cy) / 2 + m.top - cell.top) + 'px';
+    const xi = R(lab).r + 10;
     const loop = `M${out.l - 4} ${out.cy} H${xi + k} Q${xi} ${out.cy} ${xi} ${out.cy - k} V${core.cy + k} Q${xi} ${core.cy} ${xi + k} ${core.cy} H${core.l - 6}`;
+    GEO.loop = { x: xi, y1: core.cy, y2: out.cy };
     svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
     svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--flow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--blue-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
-      `<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
+      `<g class="base" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
       `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>` +
-      `<g class="flow" fill="none" stroke-linecap="butt" stroke-linejoin="round">${['in', 'fan', 'join', 'rev', 'loop'].map(ov).join('')}</g>`;
+      `<g class="flow" fill="none" stroke-linecap="butt" stroke-linejoin="round">${['in', 'trunk', ...keys.map(k => 'fan-' + k), 'join', 'rev', 'loop'].map(ov).join('')}</g>`;
   };
-  new ResizeObserver(draw).observe(map); document.fonts?.ready.then(draw); draw();
+  new ResizeObserver(() => { draw(); placeCap(); }).observe(map); document.fonts?.ready.then(draw); draw();
 
   // Facts per role from Design-Tool/Plan.md (22.11.2026); persona = how each agent introduces itself.
   // "Status" says what really exists today.
@@ -692,36 +710,84 @@ main>.chapter:first-child{border-top:0}
   document.addEventListener('pointerdown', e => { if (!panel.hidden && !panel.contains(e.target) && !e.target.closest('.agent')) close(); });
   new ResizeObserver(place).observe(map);
 
-  // Demo: one pass through the workflow, incl. one correction loop. Live status always wins.
-  const play = $('map-play'), node = k => map.querySelector(`[data-agent="${k}"]`);
-  const ROLES = ['struktur', 'ui', 'wireframes', '3d', 'bilder'];
+  // Demo: the workflow step by step, with a short caption beside each line or box.
+  // Explained boxes and lines stay pink; the current step is full strength, the rest dims.
+  const play = $('map-play'), cap = $('flow-cap'), node = k => k.startsWith('#') ? map.querySelector(k) : map.querySelector(`[data-agent="${k}"]`);
   const STEPS = [
-    { on: ['files', 'projektlog'] }, { lines: ['in'] }, { on: ['orchestrator'] }, { lines: ['fan'] },
-    { on: ROLES, stagger: 220 }, { lines: ['join'] }, { on: ['output'] },
-    { lines: ['loop'], label: 'Abweichung · nachbessern' }, { on: ['orchestrator'] }, { lines: ['fan'] }, { on: ['wireframes'] },
-    { lines: ['join'] }, { on: ['output'] }, { lines: ['rev'] }, { on: ['#map-review'], hold: 2200 },
+    { cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], read: 1200 },
+    { lines: ['in'], cur: ['files', 'projektlog'], to: ['orchestrator'], cap: { box: 'projektlog', t: 'Projektdateien und Log werden an den Portfolio Agent übergeben.' } },
+    { lines: ['trunk'], cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Er zerlegt die Arbeit und delegiert sie an die Sub-Agenten.' } },
+    { lines: ['fan-struktur'], to: ['struktur'], cap: { box: 'struktur', t: 'Gliedert die Case Study und schreibt den Text.' } },
+    { lines: ['fan-ui'], to: ['ui'], cap: { box: 'ui', t: 'Baut die UI-Bausteine: Empathy Map, User-Flow, Nutzerprofil.' } },
+    { lines: ['fan-wireframes'], to: ['wireframes'], cap: { box: 'wireframes', t: 'Zeichnet Wireframes und Wireflows aus echten Screens.' } },
+    { lines: ['fan-3d'], to: ['3d'], cap: { box: '3d', t: 'Optional: baut räumliche Ansichten in Blender.' } },
+    { lines: ['fan-bilder'], to: ['bilder'], cap: { box: 'bilder', t: 'Optional: erzeugt Nutzungsszenen mit ComfyUI.' } },
+    { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], cap: { box: 'output', t: 'Alle Ergebnisse laufen im Case Study Output zusammen.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'output', t: 'Weicht etwas von den Vorgaben ab, geht es zurück an den Portfolio Agent.' } },
+    { lines: ['trunk', 'fan-wireframes'], cur: ['orchestrator'], to: ['wireframes'], cap: { box: 'wireframes', t: 'Nur der betroffene Agent bessert nach.' } },
+    { lines: ['join'], cur: ['wireframes'], to: ['output'], cap: { box: 'output', t: 'Erneut geprüft: jetzt passt alles.' } },
+    { lines: ['rev'], cur: ['output'], to: ['#map-review'], cap: { box: '#map-review', t: 'Lucas prüft die lokale Vorschau und gibt frei.' }, read: 3000 },
   ];
-  let timers = [], liveOn = false;
-  const setLines = keys => { lit.clear(); doneSet.clear(); keys.forEach(k => lit.add(k)); svg.querySelectorAll('g[data-step]').forEach(g => { const on = lit.has(g.dataset.step); g.classList.toggle('on', on); g.classList.remove('done'); }); timers.push(setTimeout(() => { lit.forEach(k => doneSet.add(k)); svg.querySelectorAll('g[data-step].on').forEach(g => g.classList.add('done')); }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1600)); };
-  const setLit = els => map.querySelectorAll('.is-lit').forEach(e => els.includes(e) || e.classList.remove('is-lit'));
-  const stop = () => { timers.forEach(clearTimeout); timers = []; setLines([]); setLit([]); map.classList.remove('is-playing'); play.setAttribute('aria-pressed', 'false'); play.setAttribute('aria-label', 'Workflow abspielen'); play.querySelector('.map-play-txt').textContent = 'Workflow abspielen'; };
+  let timers = [], liveOn = false, capAt = null;
+  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+  const paint = () => svg.querySelectorAll('g[data-step]').forEach(g => { const k = g.dataset.step; g.setAttribute('class', [seen.has(k) && 'on', now.has(k) && 'now', doneSet.has(k) && 'done'].filter(Boolean).join(' ')); });
+  const drawLines = (keys, ms) => {
+    now.clear(); keys.forEach(k => { seen.add(k); now.add(k); doneSet.delete(k); });
+    svg.querySelectorAll('g.now').forEach(g => g.setAttribute('class', 'on')); svg.getBoundingClientRect();   // restart a redrawn line
+    paint(); later(() => { keys.forEach(k => doneSet.add(k)); paint(); }, ms);
+  };
+  const setCurrent = els => map.querySelectorAll('.agent, .node').forEach(e => e.classList.toggle('is-current', els.includes(e)));
+  const placeCap = () => {
+    if (!capAt || cap.hidden) return;
+    const m = map.getBoundingClientRect(), w = cap.offsetWidth, h = cap.offsetHeight, g = 14;
+    let left, top;
+    if (capAt.line) {
+      const geo = GEO[capAt.line]; if (!geo) return;
+      left = capAt.side === 'left' ? geo.x - g - w : geo.x + g; top = (geo.y1 + geo.y2) / 2 - h / 2;
+    } else {
+      const b = node(capAt.box).getBoundingClientRect(), bl = b.left - m.left, br = b.right - m.left, vw = document.documentElement.clientWidth;
+      const fitsR = b.right + g + w <= vw - 12, fitsL = b.left - g - w >= 12;
+      if (fitsR) left = br + g; else if (fitsL) left = bl - g - w;
+      else { left = bl + b.width / 2 - w / 2; top = b.bottom - m.top + g; }
+      if (top === undefined) top = b.top - m.top + b.height / 2 - h / 2;
+      left = Math.max(12 - m.left, Math.min(left, vw - m.left - w - 12));
+    }
+    cap.style.left = left + 'px'; cap.style.top = top + 'px';
+  };
+  const showCap = c => {
+    cap.classList.remove('show');
+    if (!c) { capAt = null; later(() => { cap.hidden = true; }, 450); return; }
+    later(() => { capAt = c; cap.textContent = c.t; cap.hidden = false; placeCap(); requestAnimationFrame(() => cap.classList.add('show')); }, cap.hidden ? 0 : 300);
+  };
+  const stop = () => {
+    timers.forEach(clearTimeout); timers = []; seen.clear(); now.clear(); doneSet.clear(); paint();
+    map.querySelectorAll('.is-lit, .is-current').forEach(e => e.classList.remove('is-lit', 'is-current'));
+    capAt = null; cap.classList.remove('show'); cap.hidden = true;
+    map.classList.remove('is-playing'); play.setAttribute('aria-pressed', 'false'); play.setAttribute('aria-label', 'Workflow abspielen'); play.querySelector('.map-play-txt').textContent = 'Workflow abspielen';
+  };
   const start = () => {
     if (liveOn) return; close(); stop();
     map.classList.add('is-playing'); play.setAttribute('aria-pressed', 'true'); play.setAttribute('aria-label', 'Animation stoppen'); play.querySelector('.map-play-txt').textContent = 'Stopp';
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, beat = reduce ? 1400 : 1100, lineBeat = reduce ? 1400 : 1900;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, drawMs = reduce ? 0 : 2800, readMs = 2600;
+    map.style.setProperty('--draw', drawMs / 1000 + 's');
     let t = 0;
     STEPS.forEach(st => {
-      timers.push(setTimeout(() => {
-        if (st.lines) { setLines(st.lines); }
-        if (st.on) {
-          const els = st.on.map(k => k.startsWith('#') ? map.querySelector(k) : node(k)).filter(Boolean);
-          setLit(els);
-          els.forEach((e, i) => timers.push(setTimeout(() => e.classList.add('is-lit'), reduce ? 0 : i * (st.stagger || 0))));
-        }
-      }, t));
-      t += (st.lines ? lineBeat : beat) + (st.on && st.stagger && !reduce ? st.on.length * st.stagger : 0) + (st.hold || 0);
+      const lineMs = st.lines && st.lines.some(k => svg.querySelector(`g[data-step="${k}"] path`)) ? drawMs : 0;
+      later(() => {
+        const cur = (st.cur || st.to || []).map(node).filter(Boolean);
+        (st.lit || []).map(node).forEach(e => e && e.classList.add('is-lit'));
+        setCurrent(cur); showCap(st.cap);
+        if (st.lines) drawLines(st.lines, lineMs);
+        later(() => {
+          const to = (st.to || []).map(node).filter(Boolean);
+          to.forEach(e => e.classList.add('is-lit'));
+          if (to.length) setCurrent(to);
+        }, lineMs);
+      }, t);
+      t += lineMs + (st.read || readMs);
     });
-    timers.push(setTimeout(stop, t));
+    later(() => { showCap(null); setCurrent([]); }, t);
+    later(stop, t + 900);
   };
   play.addEventListener('click', () => play.getAttribute('aria-pressed') === 'true' ? stop() : start());
   const setLive = on => {
