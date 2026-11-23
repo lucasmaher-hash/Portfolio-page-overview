@@ -101,22 +101,16 @@ main>.chapter:first-child{border-top:0}
 .agent-panel[hidden]{display:none}
 .map-main>*,.map-svg,.map-loop{transition:opacity .18s ease}
 .map.has-panel .map-main>*:not(.roles):not(.inputs):not([aria-expanded="true"]),.map.has-panel .map-main [aria-expanded="false"],.map.has-panel .map-svg,.map.has-panel .map-loop{opacity:.35}
-.ap-head{display:flex;align-items:flex-start;gap:12px}.ap-head>div{flex:1;min-width:0}
+.ap-head{display:flex;align-items:center;gap:12px}.ap-head h3{flex:1;min-width:0}
 .ap-icon{width:40px;height:40px;flex:none;color:var(--blue-deep);padding:9px;border-radius:50%;border:1.5px solid var(--blue-deep);box-sizing:border-box}
-.ap-persona{margin:10px 0 0;color:#3c4049;font-style:italic}.ap-persona[hidden]{display:none}
-.ap-kicker{margin:0;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--blue-deep)}
-.agent-panel h3{margin:2px 0 0;font-size:17px;font-weight:600;line-height:1.2}
+.ap-desc{margin:14px 0 0;color:#3c4049}
+.agent-panel h3{margin:0;font-size:17px;font-weight:600;line-height:1.2}
 .ap-close{border:0;background:none;font:400 22px/1 inherit;color:#575B65;cursor:pointer;width:28px;height:28px;border-radius:50%;margin:-4px -6px 0 0}.ap-close:hover{background:#E1E2E8}.ap-close:focus-visible{outline:2px solid var(--blue-deep)}
-.ap-status{margin:12px 0 0;padding-bottom:12px;border-bottom:1px solid var(--hair);display:flex;gap:8px;align-items:baseline;color:#3c4049}
-.ap-dot{width:7px;height:7px;border-radius:50%;flex:none;border:1.5px solid var(--blue-deep);transform:translateY(-1px)}
-.agent-panel[data-state="aktiv"] .ap-dot{background:var(--blue-deep)}
 .ap-lab{display:block;font-size:11px;font-weight:600;color:var(--blue-deep);margin:12px 0 4px}
-.ap-io{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.ap-io{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
 .ap-io li{background:var(--bg-surface);border-radius:12px;padding:6px 10px 8px}.ap-io li .ap-lab{margin-top:0}.ap-io li span:last-child{color:#3c4049}
-.ap-tasks{margin:0;padding-left:18px;color:#3c4049}.ap-tasks li+li{margin-top:3px}
 .ap-meta{display:grid;grid-template-columns:1fr;gap:0 16px;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--hair)}
-.ap-chat{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:9px 14px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font-weight:600;text-decoration:none;transition:background-color .15s ease}.ap-chat:hover{background:#34475F}.ap-chat:focus-visible{outline:2px solid var(--blue-deep);outline-offset:2px}.ap-chat svg{width:14px;height:14px;flex:none}.ap-chat[hidden],.ap-chat-note:empty{display:none}
-.ap-chat-note{margin:6px 0 0;font-size:11.5px;color:#575B65;text-align:center}
+.ap-chat{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:9px 14px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font-weight:600;text-decoration:none;transition:background-color .15s ease}.ap-chat:hover{background:#34475F}.ap-chat:focus-visible{outline:2px solid var(--blue-deep);outline-offset:2px}.ap-chat svg{width:14px;height:14px;flex:none}.ap-chat[hidden]{display:none}
 .ap-meta dt{font-size:11px;font-weight:600;color:var(--blue-deep)}.ap-meta dd{margin:2px 0 0;color:#3c4049}
 @media(max-width:1000px){.roles{display:flex;flex-wrap:wrap;justify-content:center}.roles .role,.inputs .role{flex:0 0 calc((100% - 20px) / 3)}}
 @media(max-width:560px){.map{grid-template-columns:28px minmax(0,1fr) 28px;gap:0 6px}.roles .role,.inputs .role{flex-basis:calc((100% - 10px) / 2)}.node{padding:9px 12px}.node.core{padding:12px 14px}.core-txt strong{font-size:18px}.ap-io,.ap-meta{grid-template-columns:1fr;gap:8px}}
@@ -669,15 +663,11 @@ b.kw{font-weight: inherit; color: inherit;}
         <button type="button" class="map-play" id="map-play" aria-label="Workflow abspielen" aria-pressed="false"><svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg><svg class="i-stop" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1.5" fill="currentColor"/></svg><span class="map-play-txt">Workflow abspielen</span></button>
         <p class="map-live" id="map-live" aria-live="polite" hidden></p>
         <div class="agent-panel" id="agent-panel" role="dialog" aria-modal="false" aria-labelledby="ap-title" hidden>
-          <div class="ap-head"><svg class="ap-icon" aria-hidden="true"><use href="#i-log"/></svg><div><p class="ap-kicker" id="ap-kicker"></p><h3 id="ap-title"></h3></div><button type="button" class="ap-close" aria-label="Schließen">×</button></div>
-          <p class="ap-persona" id="ap-persona"></p>
-          <p class="ap-status"><span class="ap-dot"></span><span id="ap-status"></span></p>
+          <div class="ap-head"><svg class="ap-icon" aria-hidden="true"><use href="#i-log"/></svg><h3 id="ap-title"></h3><button type="button" class="ap-close" aria-label="Schließen">×</button></div>
+          <p class="ap-desc" id="ap-desc"></p>
           <ol class="ap-io"><li><span class="ap-lab">Input</span><span id="ap-in"></span></li><li><span class="ap-lab">Output</span><span id="ap-out"></span></li></ol>
-          <p class="ap-lab">Aufgaben</p>
-          <ul class="ap-tasks" id="ap-tasks"></ul>
-          <dl class="ap-meta"><div><dt>Werkzeug</dt><dd id="ap-tool"></dd></div></dl>
+          <dl class="ap-meta"><div><dt>Werkzeuge</dt><dd id="ap-tool"></dd></div></dl>
           <a class="ap-chat" id="ap-chat" href="#"><span id="ap-chat-txt"></span><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M5 3h8v8M13 3 4 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-          <p class="ap-chat-note" id="ap-chat-note"></p>
         </div>
       </div>
     </section>
@@ -1008,53 +998,38 @@ b.kw{font-weight: inherit; color: inherit;}
   // Facts per role from Design-Tool/Plan.md (22.11.2026); persona = how each agent introduces itself.
   // "Status" says what really exists today.
   const A = {
-    orchestrator: { k: 'Orchestrator', t: 'Portfolio Agent', i: '#i-core', s: 'Eingerichtet als Hermes-Bot', st: 'aktiv',
-      p: '„Ich bin der Projektleiter. Ich lese die Regeln, verteile die Arbeit an mein Team und lasse nichts zu Lucas durch, was nicht zu den Vorgaben passt.“',
-      in: 'Project Files, Projektlog, Lucas’ Freigaben', out: 'Status und Übergabe je Projekt',
-      tasks: ['Liest gemeinsame Regeln und den case-study-Skill', 'Fragt Lucas je eine offene Entscheidung', 'Verteilt nur freigegebene Schritte', 'Gleicht den Output ab und schickt Abweichungen zurück'],
-      tool: 'Hermes-Profil „portfolio“', model: 'Offen, Test je Rolle' },
-    output: { k: 'Ergebnis', t: 'Case Study Output', i: '#i-check', s: 'Noch keine Case Study fertig; das ApartScan-Log läuft', st: 'vorbereitet',
-      in: 'Ergebnisse aller Agenten', out: 'Lokale HTML-Vorschau für Lucas',
-      tasks: ['Portfolio Agent setzt die Teile zur Case Study zusammen', 'Prüft gegen Skill, Portfolio-Regeln und Quellen', 'Bei Abweichung zurück an den zuständigen Agenten', 'Erst wenn alles passt, prüft Lucas'],
-      tool: 'case-study-Skill, Portfolio-Regeln' },
-    files: { k: 'Quelle', t: 'Project Files', i: '#i-folder', s: 'Nur Quellwurzeln, die Lucas freigibt', st: 'aktiv',
-      in: 'Repo, Screens, Notizen, Rohtext', out: 'Lesezugriff für Portfolio und Log Agent',
-      tasks: ['Lucas nennt zu Projektstart die Quellwurzeln', 'Andere Ordner erst nach eigener Freigabe', 'Originale bleiben unverändert'],
-      tool: 'Lokale Dateien', model: '–' },
-    projektlog: { k: 'Sub-Agent', t: 'Log Agent', i: '#i-log', s: 'Läuft für ApartScan: täglicher Check 20:00', st: 'aktiv',
-      p: '„Ich bin das Gedächtnis des Projekts. Jeden Abend schaue ich, was sich geändert hat, und schreibe nur auf, was ich belegen kann.“',
-      in: 'Projektstart, Arbeitssitzungen, Quelländerungen', out: 'Ein log.md pro Projekt',
-      tasks: ['Prüft täglich das freigegebene Repo', 'Schreibt nur belegte, datierte Einträge', 'Trennt echte Datierung von späterer Erfassung', 'Liest keine fremden Chats'],
-      tool: 'Git-Metadaten-Skript + Cron', model: 'Offen, Test je Rolle' },
-    struktur: { k: 'Sub-Agent', t: 'Text Agent', i: '#i-text', s: 'In zwei CLI-Durchläufen getestet', st: 'getestet',
-      p: '„Ich bin der Redakteur. Ich mache aus Log und Rohtext eine Geschichte, in der jedes Kapitel genau eine Frage beantwortet.“',
-      in: 'Rohtext, ganzes Log, geprüfte Quellen', out: 'gliederung.md, textentwurf.md',
-      tasks: ['Gliedert nach dem case-study-Skill', 'Gleicht Fakten mit den Originalquellen ab', 'Schreibstil und humanizer-Durchgang', 'Wartet auf Lucas’ Freigabe vor dem HTML'],
-      tool: 'case-study- und humanizer-Skill', model: 'Offen, Test je Rolle' },
-    ui: { k: 'Sub-Agent', t: 'UI Agent', i: '#i-ui', s: 'Baustein-Katalog vorbereitet (diese Seite)', st: 'vorbereitet',
-      p: '„Ich bin der Seitenbauer. Ich setze freigegebenen Text in Bausteine wie Empathy Map, User-Flow und Nutzerprofil um.“',
-      in: 'Freigegebener Text, reale Medien', out: 'Lokale HTML-Vorschau',
-      tasks: ['Baut die UI-Bausteine der Case Study', 'Nimmt to.morrow und Unify als Codebeispiele', 'Rendert Desktop und Handy und prüft sie', 'Kein Live-Deploy'],
-      tool: 'HTML, CSS, JS', model: 'Offen, Test je Rolle' },
-    wireframes: { k: 'Sub-Agent', t: 'Wireframe Agent', i: '#i-wire', s: 'Bot eingerichtet (Profil „wireframes“), Figma noch nicht verbunden', st: 'vorbereitet',
-      p: '„Ich bin der Zeichner. Ich übersetze echte Screens und Abläufe in klare Wireframes und Wireflows, eine Aussage pro Bild.“',
-      in: 'Echte Screens und Flows', out: 'SVG/PNG, später mit Figma-Link',
-      tasks: ['Zeichnet im Stil des wireframes-Skills', 'Erfindet keine Screens oder Schritte', 'Prüft jeden Export auf Desktop und Handy', 'Liefert an den Portfolio Agent'],
-      tool: 'Hermes-Profil „wireframes“; Figma folgt', model: 'Offen, Test je Rolle' },
-    '3d': { k: 'Sub-Agent · optional', t: '3D Agent', i: '#i-cube', s: 'Später, noch nicht eingerichtet', st: 'geplant',
-      p: '„Ich bin der Modellbauer. Ich komme nur, wenn eine Skizze nicht reicht und Haltung oder Blickwinkel genau stimmen müssen.“',
-      in: 'Echte Interaktion, Referenzen', out: 'Stills oder Clips',
-      tasks: ['Räumlich präzise Posen und Blickwinkel', 'Mechanik gegen das Ausgangsmaterial prüfen'],
-      tool: 'Blender-Plugin', model: 'Offen' },
-    bilder: { k: 'Sub-Agent · optional', t: 'Bild Agent', i: '#i-image', s: 'Später, nicht verbunden', st: 'geplant',
-      p: '„Ich bin der Bildgestalter. Ich zeige, wo und wie ein Produkt genutzt wird, ohne das Original zu verändern.“',
-      in: 'Vorhandene Bilder, definierter Zweck', out: 'Bildstil oder Nutzungsszenen',
-      tasks: ['Kontextuelle Nutzungsszenen', 'Original immer erhalten', 'Lucas gibt Look und Einsatz frei'],
-      tool: 'ComfyUI-Workflow', model: 'Offen' },
+    orchestrator: { t: 'Portfolio Agent', i: '#i-core',
+      d: 'Leitet das System. Er liest die gemeinsamen Regeln und den case-study-Skill, fragt Lucas offene Entscheidungen einzeln ab und gibt nur freigegebene Schritte an die Sub-Agenten weiter. Jedes Ergebnis gleicht er mit den Vorgaben ab und schickt Abweichungen zurück. Als Hermes-Bot eingerichtet.',
+      in: 'Project Files, Projektlog, Lucas’ Freigaben', out: 'Aufträge an die Sub-Agenten, Status je Projekt', tool: 'Hermes-Profil „portfolio“' },
+    files: { t: 'Project Files', i: '#i-folder',
+      d: 'Die Quellen eines Projekts: Repo, Screens, Notizen und Rohtext. Gelesen wird nur, was Lucas zu Projektstart freigibt; die Originale bleiben unverändert.',
+      in: 'Lucas’ freigegebene Ordner', out: 'Lesezugriff für Portfolio und Projektlog Agent', tool: 'Lokale Dateien' },
+    projektlog: { t: 'Projektlog Agent', i: '#i-log',
+      d: 'Führt das Gedächtnis eines Projekts. Er prüft täglich das freigegebene Repo auf Änderungen und schreibt nur belegte, datierte Einträge, getrennt nach echter Datierung und späterer Erfassung. Läuft für ApartScan täglich um 20:00.',
+      in: 'Projektstart, Arbeitssitzungen, Quelländerungen', out: 'Ein log.md pro Projekt', tool: 'Git-Metadaten-Skript, Cron' },
+    struktur: { t: 'Struktur & Text Agent', i: '#i-text',
+      d: 'Macht aus Rohtext und vollständigem Log eine Gliederung und einen Textentwurf, in dem jedes Kapitel eine Frage beantwortet. Fakten gleicht er mit den Originalquellen ab; der Text durchläuft Schreibstil und humanizer, bevor Lucas ihn freigibt. In zwei CLI-Durchläufen getestet.',
+      in: 'Rohtext, ganzes Log, geprüfte Quellen', out: 'gliederung.md, textentwurf.md', tool: 'case-study- und humanizer-Skill' },
+    ui: { t: 'UI-Elemente Agent', i: '#i-ui',
+      d: 'Setzt freigegebenen Text in die UI-Bausteine der Case Study um, etwa Empathy Map, User-Flow und Nutzerprofil, mit to.morrow und Unify als Codevorbild. Jede Vorschau rendert und prüft er auf Desktop und Handy; live geht nichts. Diese Seite ist sein Baustein-Katalog.',
+      in: 'Freigegebener Text, reale Medien', out: 'Lokale HTML-Vorschau', tool: 'HTML, CSS, JS' },
+    wireframes: { t: 'Wireframe Agent', i: '#i-wire',
+      d: 'Übersetzt echte Screens und Abläufe in Wireframes und Wireflows, eine Aussage pro Bild, im Stil des wireframes-Skills. Er erfindet keine Screens oder Schritte und liefert an den Portfolio Agent. Als eigener Hermes-Bot eingerichtet; Figma ist noch nicht verbunden.',
+      in: 'Echte Screens und Flows', out: 'SVG/PNG, später mit Figma-Link', tool: 'Hermes-Profil „wireframes“, wireframes-Skill; Figma folgt' },
+    '3d': { t: '3D Agent', i: '#i-cube',
+      d: 'Optional. Baut räumlich präzise Posen und Blickwinkel, wenn eine Skizze nicht reicht, und prüft die Mechanik gegen das Ausgangsmaterial. Noch nicht eingerichtet.',
+      in: 'Echte Interaktion, Referenzen', out: 'Stills oder Clips', tool: 'Blender-Plugin' },
+    bilder: { t: 'Bild Agent', i: '#i-image',
+      d: 'Optional. Zeigt Nutzungsszenen und Bildstil, ohne das Original zu verändern; Look und Einsatz gibt Lucas frei. Noch nicht verbunden.',
+      in: 'Vorhandene Bilder, definierter Zweck', out: 'Bildstil oder Nutzungsszenen', tool: 'ComfyUI-Workflow' },
+    output: { t: 'Case Study Output', i: '#i-check',
+      d: 'Der Portfolio Agent setzt die Ergebnisse der Sub-Agenten zur Case Study zusammen und prüft sie gegen Skill, Portfolio-Regeln und Quellen. Bei Abweichung gehen sie zurück an den zuständigen Agenten; erst danach prüft Lucas. Noch ist keine Case Study fertig.',
+      in: 'Ergebnisse aller Sub-Agenten', out: 'Lokale HTML-Vorschau für Lucas', tool: 'case-study-Skill, Portfolio-Regeln' },
   };
+
   // Bot Chat ids are read from each Hermes profile at build time (build.py, botchat marker).
   const CHAT = { portfolio: 'hermes://open/c/local-5638ca3618b1b563854f70ec87607aa8ccf05f16ba41d5c69435982d367364c7', wireframes: 'hermes://open/c/local-da3218c92a1757803fca4558941dd37c71d22e9a55040ef0ac9bfbdebd5d3a52' };
-  const BOT = { orchestrator: 'portfolio', wireframes: 'wireframes' }, VIA_PORTFOLIO = { output: 1 };
+  const BOT = { orchestrator: 'portfolio', wireframes: 'wireframes' };
   const panel = $('agent-panel'); let opener = null;
   const close = () => { if (panel.hidden) return; panel.hidden = true; map.classList.remove('has-panel'); opener?.setAttribute('aria-expanded', 'false'); opener?.focus(); opener = null; };
   const place = () => {
@@ -1080,15 +1055,13 @@ b.kw{font-weight: inherit; color: inherit;}
     if (opener === btn) return close();
     opener?.setAttribute('aria-expanded', 'false'); opener = btn; btn.setAttribute('aria-expanded', 'true');
     panel.querySelector('.ap-icon use').setAttribute('href', a.i);
-    $('ap-kicker').textContent = a.k; $('ap-title').textContent = a.t; $('ap-persona').textContent = a.p || ''; $('ap-persona').hidden = !a.p; $('ap-status').textContent = a.s;
+    $('ap-title').textContent = a.t; $('ap-desc').textContent = a.d;
     $('ap-in').textContent = a.in; $('ap-out').textContent = a.out; $('ap-tool').textContent = a.tool;
     const key = btn.dataset.agent, own = BOT[key], link = $('ap-chat');
     link.hidden = key === 'files';
     link.href = CHAT[own || 'portfolio'];
     $('ap-chat-txt').textContent = own ? 'Chat in Hermes öffnen' : 'Chat im Portfolio Agent öffnen';
-    $('ap-chat-note').textContent = key === 'files' || own || VIA_PORTFOLIO[key] ? '' : 'Noch kein eigener Bot; die Aufgabe läuft im Portfolio Agent.';
-    $('ap-tasks').replaceChildren(...a.tasks.map(t => Object.assign(document.createElement('li'), { textContent: t })));
-    panel.dataset.state = a.st; panel.hidden = false; map.classList.add('has-panel'); place(); panel.querySelector('.ap-close').focus({ preventScroll: true });
+    panel.hidden = false; map.classList.add('has-panel'); place(); panel.querySelector('.ap-close').focus({ preventScroll: true });
   };
   map.querySelectorAll('.agent').forEach(b => b.addEventListener('click', () => open(b)));
   panel.querySelector('.ap-close').addEventListener('click', close);
