@@ -69,7 +69,7 @@ main>.chapter:first-child{border-top:0}
 .role{border:1px solid var(--border-color);border-radius:16px;padding:14px 6px;height:var(--role-h,auto);box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-height:112px;justify-content:center;background:#fff;font:inherit;color:inherit}
 .role svg{width:22px;height:22px;color:var(--blue-deep);margin-bottom:2px}.role span{font-size:11.5px;font-weight:600;line-height:1.25}.role small{font-size:10.5px;line-height:1.3;color:var(--text-secondary)}
 .agent{cursor:pointer;transition:transform .18s cubic-bezier(.2,.7,.2,1),border-color .18s ease,background-color .18s ease}
-.agent:hover{transform:scale(1.04);background:#F1F1F5;border-color:var(--blue-deep)}
+.agent:hover{transform:scale(1.04)}
 .agent[aria-expanded="true"]{border-color:var(--blue-deep)}
 @media(prefers-reduced-motion:reduce){.agent:hover{transform:none}}
 .agent:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
@@ -87,15 +87,16 @@ main>.chapter:first-child{border-top:0}
 .map-svg g[data-step].on path[marker-end]{marker-end:url(#tip-on)}.map-svg g[data-step].now:not(.done) path[marker-end]{marker-end:none}
 @keyframes flow-draw{to{stroke-dashoffset:0}}
 .map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.45}
-.map .is-lit{border-color:var(--flow)!important;background:var(--flow-soft)!important;transition:background-color .5s ease,border-color .5s ease,box-shadow .5s ease,opacity .5s ease}
+.map .is-lit{border-color:var(--flow)!important;background:#fff!important;transition:background-color .5s ease,border-color .5s ease,box-shadow .5s ease,opacity .5s ease}
 .map .is-lit svg{color:var(--flow)}
-.map .is-current{box-shadow:0 0 0 5px var(--flow-ring)}
+.map.is-playing .is-current{border-color:var(--flow)!important;background:var(--flow-soft)!important;box-shadow:0 0 0 5px var(--flow-ring)}.map.is-playing .is-current svg{color:var(--flow)}
 .map.is-playing .agent,.map.is-playing .node{transition:background-color .5s ease,border-color .5s ease,box-shadow .5s ease,opacity .5s ease}
 .map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){opacity:.4}
-.map.is-playing .map-main .is-lit:not(.is-current){opacity:.6}
+.map.is-playing .map-main .is-lit:not(.is-current){opacity:.8}
 .map.is-playing .v-label,.map.is-playing .map-loop{opacity:.4;transition:opacity .5s ease}
 .flow-cap{position:absolute;z-index:4;margin:0;width:max-content;max-width:min(240px,calc(100% - 24px));padding:8px 12px;border:1.5px solid var(--flow);border-radius:12px;background:#fff;color:#2c3038;font-size:13px;line-height:1.4;opacity:0;transform:translateY(4px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
 .flow-cap.show{opacity:1;transform:none}.flow-cap[hidden]{display:none}
+.flow-cap.cap-dock{position:fixed;left:12px!important;right:58px;top:auto!important;bottom:16px;width:auto;max-width:none}
 @media(prefers-reduced-motion:reduce){.flow-cap{transition:none;transform:none}}
 .map-play{position:absolute;right:14px;bottom:14px;z-index:4;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 11px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font:600 12.5px/1 inherit;cursor:pointer;transition:background-color .15s ease}
 .map-play:hover{background:#34475F}.map-play:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
@@ -713,20 +714,32 @@ main>.chapter:first-child{border-top:0}
   // Demo: the workflow step by step, with a short caption beside each line or box.
   // Explained boxes and lines stay pink; the current step is full strength, the rest dims.
   const play = $('map-play'), cap = $('flow-cap'), node = k => k.startsWith('#') ? map.querySelector(k) : map.querySelector(`[data-agent="${k}"]`);
+  // Every box and every line is explained once; then the result is checked and three deviations
+  // are fixed, each by the agent responsible. cap.box = caption beside a box, cap.line = beside a line.
+  const fix = (agent, t) => [
+    { lines: ['trunk', 'fan-' + agent], cur: ['orchestrator'], to: [agent], cap: { box: agent, t } },
+    { lines: ['join'], cur: [agent], to: ['output'], cap: { line: 'join', t: 'Der korrigierte Teil wird wieder in die HTML-Seite eingebaut.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Der Portfolio Agent prüft die Seite erneut.' } },
+  ];
   const STEPS = [
-    { cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], read: 1200 },
-    { lines: ['in'], cur: ['files', 'projektlog'], to: ['orchestrator'], cap: { box: 'projektlog', t: 'Projektdateien und Log werden an den Portfolio Agent übergeben.' } },
-    { lines: ['trunk'], cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Er zerlegt die Arbeit und delegiert sie an die Sub-Agenten.' } },
-    { lines: ['fan-struktur'], to: ['struktur'], cap: { box: 'struktur', t: 'Gliedert die Case Study und schreibt den Text.' } },
-    { lines: ['fan-ui'], to: ['ui'], cap: { box: 'ui', t: 'Baut die UI-Bausteine: Empathy Map, User-Flow, Nutzerprofil.' } },
-    { lines: ['fan-wireframes'], to: ['wireframes'], cap: { box: 'wireframes', t: 'Zeichnet Wireframes und Wireflows aus echten Screens.' } },
-    { lines: ['fan-3d'], to: ['3d'], cap: { box: '3d', t: 'Optional: baut räumliche Ansichten in Blender.' } },
-    { lines: ['fan-bilder'], to: ['bilder'], cap: { box: 'bilder', t: 'Optional: erzeugt Nutzungsszenen mit ComfyUI.' } },
-    { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], cap: { box: 'output', t: 'Alle Ergebnisse laufen im Case Study Output zusammen.' } },
-    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'output', t: 'Weicht etwas von den Vorgaben ab, geht es zurück an den Portfolio Agent.' } },
-    { lines: ['trunk', 'fan-wireframes'], cur: ['orchestrator'], to: ['wireframes'], cap: { box: 'wireframes', t: 'Nur der betroffene Agent bessert nach.' } },
-    { lines: ['join'], cur: ['wireframes'], to: ['output'], cap: { box: 'output', t: 'Erneut geprüft: jetzt passt alles.' } },
-    { lines: ['rev'], cur: ['output'], to: ['#map-review'], cap: { box: '#map-review', t: 'Lucas prüft die lokale Vorschau und gibt frei.' }, read: 3000 },
+    { cur: ['files'], lit: ['files'], cap: { box: 'files', t: 'Project Files: Repo, Screens, Notizen und Rohtext des Projekts, so weit Lucas sie freigibt.' } },
+    { cur: ['projektlog'], lit: ['projektlog'], cap: { box: 'projektlog', t: 'Projektlog: Der Projektlog Agent prüft täglich, was sich geändert hat, und hält jede Entscheidung belegt und datiert fest.' } },
+    { lines: ['in'], cur: ['files', 'projektlog'], to: ['orchestrator'], cap: { line: 'in', t: 'Beide sind die Quelle und der Input. Sie gehen an den Portfolio Agent.' } },
+    { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Der Portfolio Agent erstellt einen Plan und das Gerüst der Seite und zerlegt die Arbeit in Aufgaben.' } },
+    { lines: ['trunk'], cur: ['orchestrator'], cap: { line: 'trunk', t: 'Er verteilt die Aufgaben an die Sub-Agenten.' } },
+    { lines: ['fan-struktur'], to: ['struktur'], cap: { box: 'struktur', t: 'Struktur & Text Agent: gliedert die Case Study und schreibt den Text, jede Aussage mit Quelle.' } },
+    { lines: ['fan-ui'], to: ['ui'], cap: { box: 'ui', t: 'UI-Elemente Agent: baut die Bausteine der Seite, etwa Empathy Map, User-Flow und Nutzerprofil.' } },
+    { lines: ['fan-wireframes'], to: ['wireframes'], cap: { box: 'wireframes', t: 'Wireframe Agent: zeichnet Wireframes und Wireflows aus echten Screens.' } },
+    { lines: ['fan-3d'], to: ['3d'], cap: { box: '3d', t: '3D Agent (optional): baut räumliche Ansichten in Blender, wenn eine Skizze nicht reicht.' } },
+    { lines: ['fan-bilder'], to: ['bilder'], cap: { box: 'bilder', t: 'Bild Agent (optional): erzeugt Nutzungsszenen mit ComfyUI, ohne das Original zu verändern.' } },
+    { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], cap: { line: 'join', t: 'Alle Teile werden zu einer HTML-Seite zusammengesetzt.' } },
+    { cur: ['output'], cap: { box: 'output', t: 'Case Study Output: die lokale HTML-Seite der Case Study.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Das Ergebnis geht zurück an den Portfolio Agent. Er prüft es gegen Skill, Portfolio-Regeln und Quellen.' } },
+    ...fix('struktur', 'Abweichung 1: Eine Aussage im Text ist nicht belegt. Der Struktur & Text Agent korrigiert sie.'),
+    ...fix('wireframes', 'Abweichung 2: Ein Wireframe zeigt einen Screen, den es so nicht gibt. Der Wireframe Agent zeichnet ihn neu.'),
+    ...fix('ui', 'Abweichung 3: Ein Baustein bricht am Handy um. Der UI-Elemente Agent passt ihn an.'),
+    { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Keine Abweichung mehr: Die Seite passt zu den Vorgaben.' } },
+    { lines: ['rev'], cur: ['output'], to: ['#map-review'], cap: { box: '#map-review', t: 'Erst jetzt geht die Seite an Lucas. Er prüft die lokale Vorschau und gibt frei.' }, read: 1500 },
   ];
   let timers = [], liveOn = false, capAt = null;
   const later = (fn, ms) => timers.push(setTimeout(fn, ms));
@@ -740,18 +753,32 @@ main>.chapter:first-child{border-top:0}
   const placeCap = () => {
     if (!capAt || cap.hidden) return;
     const m = map.getBoundingClientRect(), w = cap.offsetWidth, h = cap.offsetHeight, g = 14;
-    let left, top;
+    let left, top, dock = false;
+    cap.classList.remove('cap-dock');
     if (capAt.line) {
       const geo = GEO[capAt.line]; if (!geo) return;
-      left = capAt.side === 'left' ? geo.x - g - w : geo.x + g; top = (geo.y1 + geo.y2) / 2 - h / 2;
+      const vw = document.documentElement.clientWidth, y = (geo.y1 + geo.y2) / 2;
+      top = y - h / 2;
+      const band = [...map.querySelectorAll('.map-main .agent, .map-main .node')].map(e => e.getBoundingClientRect())
+        .filter(r => r.bottom - m.top > top - 6 && r.top - m.top < top + h + 6);
+      const rEdge = Math.max(geo.x, ...band.map(r => r.right - m.left)), lEdge = Math.min(geo.x, ...band.map(r => r.left - m.left));
+      if (m.left + rEdge + g + w <= vw - 12) left = rEdge + g;
+      else if (m.left + lEdge - g - w >= 12) left = lEdge - g - w;
+      else dock = true;
+      left = Math.max(12 - m.left, Math.min(left, vw - m.left - w - 12));
     } else {
-      const b = node(capAt.box).getBoundingClientRect(), bl = b.left - m.left, br = b.right - m.left, vw = document.documentElement.clientWidth;
-      const fitsR = b.right + g + w <= vw - 12, fitsL = b.left - g - w >= 12;
-      if (fitsR) left = br + g; else if (fitsL) left = bl - g - w;
-      else { left = bl + b.width / 2 - w / 2; top = b.bottom - m.top + g; }
-      if (top === undefined) top = b.top - m.top + b.height / 2 - h / 2;
+      const b = node(capAt.box).getBoundingClientRect(), vw = document.documentElement.clientWidth;
+      top = b.top - m.top + b.height / 2 - h / 2;
+      const band = [...map.querySelectorAll('.map-main .agent, .map-main .node, .map-loop--in .label')].map(e => e.getBoundingClientRect())
+        .filter(r => r.bottom - m.top > top - 6 && r.top - m.top < top + h + 6);
+      const rEdge = Math.max(b.right, ...band.map(r => r.right)) - m.left, lEdge = Math.min(b.left, ...band.map(r => r.left), GEO.loop ? GEO.loop.x - 6 + m.left : Infinity) - m.left;
+      const fitsR = m.left + rEdge + g + w <= vw - 12, fitsL = m.left + lEdge - g - w >= 12;
+      if (fitsR) left = rEdge + g;
+      else if (fitsL) left = lEdge - g - w;
+      else dock = true;
       left = Math.max(12 - m.left, Math.min(left, vw - m.left - w - 12));
     }
+    if (dock) { cap.classList.add('cap-dock'); return; }
     cap.style.left = left + 'px'; cap.style.top = top + 'px';
   };
   const showCap = c => {
@@ -768,7 +795,7 @@ main>.chapter:first-child{border-top:0}
   const start = () => {
     if (liveOn) return; close(); stop();
     map.classList.add('is-playing'); play.setAttribute('aria-pressed', 'true'); play.setAttribute('aria-label', 'Animation stoppen'); play.querySelector('.map-play-txt').textContent = 'Stopp';
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, drawMs = reduce ? 0 : 2800, readMs = 2600;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, drawMs = reduce ? 0 : 2800, readMs = 2200;
     map.style.setProperty('--draw', drawMs / 1000 + 's');
     let t = 0;
     STEPS.forEach(st => {
@@ -784,7 +811,7 @@ main>.chapter:first-child{border-top:0}
           if (to.length) setCurrent(to);
         }, lineMs);
       }, t);
-      t += lineMs + (st.read || readMs);
+      t += lineMs + (st.cap ? Math.max(readMs, 900 + st.cap.t.length * 30) : readMs) + (st.read || 0);
     });
     later(() => { showCap(null); setCurrent([]); }, t);
     later(stop, t + 900);
