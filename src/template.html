@@ -378,8 +378,8 @@ main>.chapter:not(#system){scroll-margin-top:92px}
             <button type="button" class="role agent" data-agent="struktur" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-text"/></svg><span>Struktur &amp; Text</span></button>
             <button type="button" class="role agent" data-agent="ui" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-ui"/></svg><span>UI-Elemente</span><small>Empathy Map, User&#8209;Flow, Nutzerprofil</small></button>
             <button type="button" class="role agent" data-agent="wireframes" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-wire"/></svg><span>Wireframes</span><small>Figma-Anbindung</small></button>
-            <button type="button" class="role agent is-optional" data-agent="3d" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-cube"/></svg><span>(3D)</span><small>(Blender)</small></button>
             <button type="button" class="role agent is-optional" data-agent="bilder" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-image"/></svg><span>(Bilder)</span><small>(ComfyUI)</small></button>
+            <button type="button" class="role agent is-optional" data-agent="3d" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-cube"/></svg><span>(3D)</span><small>(Blender)</small></button>
           </div>
           <div class="gap gap--bus"></div>
           <button type="button" class="node check agent" id="map-check" data-agent="output" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-check"/></svg><strong>Case Study Output</strong></button>
@@ -962,8 +962,8 @@ main>.chapter:not(#system){scroll-margin-top:92px}
     { lines: ['fan-struktur'], to: ['struktur'], cap: { box: 'struktur', t: 'Struktur & Text Agent: gliedert die Case Study und schreibt den Text, jede Aussage mit Quelle.' } },
     { lines: ['fan-ui'], to: ['ui'], cap: { box: 'ui', t: 'UI-Elemente Agent: baut die Bausteine der Seite, etwa Empathy Map, User-Flow und Nutzerprofil.' } },
     { lines: ['fan-wireframes'], to: ['wireframes'], cap: { box: 'wireframes', t: 'Wireframe Agent: zeichnet Wireframes und Wireflows aus echten Screens.' } },
-    { lines: ['fan-3d'], to: ['3d'], cap: { box: '3d', t: '3D Agent (optional): baut räumliche Ansichten in Blender, wenn eine Skizze nicht reicht.' } },
     { lines: ['fan-bilder'], to: ['bilder'], cap: { box: 'bilder', t: 'Bild Agent (optional): erzeugt Nutzungsszenen mit ComfyUI, ohne das Original zu verändern.' } },
+    { lines: ['fan-3d'], to: ['3d'], cap: { box: '3d', t: '3D Agent (optional): baut räumliche Ansichten in Blender, wenn eine Skizze nicht reicht.' } },
     { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], cap: { box: 'output', t: 'Alle Teile werden zu einer HTML-Seite zusammengesetzt.' } },
     { cur: ['output'], cap: { box: 'output', t: 'Case Study Output: die lokale HTML-Seite der Case Study.' } },
     { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Das Ergebnis geht zurück an den Portfolio Orchestrator. Er prüft es gegen Skill, Portfolio-Regeln und Quellen.' } },
