@@ -998,10 +998,7 @@ main>.chapter:not(#system){scroll-margin-top:92px}
     p.style.strokeDasharray = progress < 1 ? '1 1' : '';
     p.style.strokeDashoffset = progress < 1 ? String(1 - progress) : '';
   });
-  const setCurrent = key => {
-    const current = key ? node(key) : null;
-    map.querySelectorAll('.agent, .node').forEach(e => e.classList.toggle('is-current', e === current));
-  };
+  const setCurrent = els => map.querySelectorAll('.agent, .node').forEach(e => e.classList.toggle('is-current', els.includes(e)));
   // Captions never leave the frame (the page clips overflow). Plain text sits in the free space beside
   // its anchor box; role captions use the space beside output, clear of other boxes and connectors.
   const placeCap = () => {
@@ -1102,11 +1099,11 @@ main>.chapter:not(#system){scroll-margin-top:92px}
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     total = 0;
     timeline = STEPS.map(st => {
-      const lines = st.lines || [], to = st.to?.[0];
+      const lines = st.lines || [], to = (st.to || []).map(node).filter(Boolean);
       const fan = lines.some(k => k.startsWith('fan-'));
       const keep = st.keep || (fan ? ['trunk'] : []);
       const lineMs = reduce || !lines.length ? 0
-        : (fan || lines.includes('trunk') ? 360 : 500);
+        : (fan || lines.includes('trunk') ? 1440 : 2400);
       const start = total;
       total += lineMs + Math.max(1800, 700 + (st.cap?.t.length || 0) * 19) + (st.read || 0);
       return { st, lines, keep, to, lineMs, start };
@@ -1125,19 +1122,21 @@ main>.chapter:not(#system){scroll-margin-top:92px}
       map.querySelectorAll('.is-lit').forEach(e => e.classList.remove('is-lit'));
       const complete = k => { seen.add(k); doneSet.add(k); };
       timeline.slice(0, i).forEach(({st, lines, keep}) => { lines.forEach(complete); keep.forEach(complete); mark([...(st.lit || []), ...(st.to || [])]); });
-      const {st, lines, keep, lineMs} = activeStep;
+      const {st, lines, keep, to, lineMs} = activeStep;
       mark(st.lit || []);
       keep.forEach(k => { complete(k); now.add(k); });
       lines.forEach(k => { seen.add(k); now.add(k); doneSet.delete(k); });
       paint(); lineStages = stage();
-      if (lineMs) setCurrent(st.cur?.[0] ?? 'orchestrator');
-      showCap(st.cap);
+      if (lineMs) {
+        setCurrent((st.cur || []).map(node).filter(Boolean));
+        showCap(!to.length || st.cap?.line || st.cap?.side === 'right' ? st.cap : null);
+      }
     }
     const {st, to, lines, lineMs, start} = activeStep;
     drawProgress(lineElapsed = Math.min(lineMs, position - start));
     if (!arrived && lineElapsed >= lineMs) {
       arrived = true; lines.forEach(k => doneSet.add(k)); paint();
-      mark(st.to || []); setCurrent(to ?? st.cur?.[0]);
+      mark(st.to || []); setCurrent(to.length ? to : (st.cur || []).map(node).filter(Boolean));
       if (capAt !== st.cap) showCap(st.cap);
     }
   };
