@@ -956,19 +956,27 @@ b.kw{font-weight: inherit; color: inherit;}
     const roles = [...map.querySelectorAll('.roles .role')].map(R), box = R(map.querySelector('.roles'));
     const oneRow = roles.every(r => Math.abs(r.t - roles[0].t) < 2), x = core.cx, k = 12;
     const arrow = (x1, y1, x2, y2) => `<path d="M${x1} ${y1} L${x2} ${y2 - 1}" marker-end="url(#tip)"/>`;
-    // Vertical - horizontal - vertical with rounded corners; identical trunks overlap invisibly.
-    const elbow = (xa, ya, ym, xb, yb, tip) => {
-      const dx = xb - xa, s = Math.sign(dx), r = Math.min(k, Math.abs(dx) / 2, Math.abs(ym - ya), Math.abs(yb - ym));
-      const p = Math.abs(dx) < 1 ? `M${xa} ${ya} V${yb - (tip ? 1 : 0)}`
-        : `M${xa} ${ya} V${ym - r} Q${xa} ${ym} ${xa + s * r} ${ym} H${xb - s * r} Q${xb} ${ym} ${xb} ${ym + r} V${yb - (tip ? 1 : 0)}`;
-      return `<path d="${p}"${tip ? ' marker-end="url(#tip)"' : ''}/>`;
+    // Buses: a straight trunk meets a straight bar in a clean T. Only the two OUTER ends of a bar
+    // turn their corner with a radius; inner branches drop straight from the bar.
+    // down = true: bar sits above the boxes (fan-out); false: bar sits below them (fan-in).
+    const bus = (xs, yBar, yBox, down, tips) => {
+      const lo = Math.min(...xs), hi = Math.max(...xs);
+      return xs.map(cx => {
+        const outer = Math.abs(cx - x) > 1 && (cx === lo || cx === hi), dir = cx < x ? 1 : -1;
+        const r = Math.min(k, Math.abs(yBox - yBar), Math.abs(cx - x) / 2), end = yBox + (tips ? (down ? -1 : 0) : 0);
+        const p = outer
+          ? (down ? `M${x} ${yBar} H${cx + dir * r} Q${cx} ${yBar} ${cx} ${yBar + r} V${end}`
+                  : `M${cx} ${yBox} V${yBar - r} Q${cx} ${yBar} ${cx + dir * r} ${yBar} H${x}`)
+          : `M${cx} ${down ? yBar : yBox} V${down ? end : yBar}`;
+        return `<path d="${p}"${tips ? ' marker-end="url(#tip)"' : ''}/>`;
+      }).join('');
     };
     const yi = (Math.max(...ins.map(i => i.b)) + core.t) / 2;
-    let d = ins.map(i => elbow(i.cx, i.b, yi, x, core.t, false)).join('') + arrow(x, yi, x, core.t);
+    let d = bus(ins.map(i => i.cx), yi, Math.max(...ins.map(i => i.b)), false, false) + arrow(x, yi, x, core.t);
     if (oneRow) {
       const top = (core.b + box.t) / 2, bot = (box.b + out.t) / 2;
-      d += roles.map(r => elbow(x, core.b, top, r.cx, r.t, true)).join('');
-      d += roles.map(r => elbow(r.cx, r.b, bot, x, out.t, false)).join('') + arrow(x, bot, x, out.t);
+      d += `<path d="M${x} ${core.b} V${top}"/>` + bus(roles.map(r => r.cx), top, box.t, true, true);
+      d += bus(roles.map(r => r.cx), bot, box.b, false, false) + arrow(x, bot, x, out.t);
     } else {
       d += arrow(x, core.b, x, box.t) + arrow(x, box.b, x, out.t);
     }
