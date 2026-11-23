@@ -52,7 +52,7 @@ button,input{font:inherit;color:inherit}
 
 
 /* ── 00 Agent map: one orchestrator; the role boxes are a target picture, not running agents ── */
-.map-intro{margin:0 0 clamp(20px,2.4vw,28px);text-align:center;text-wrap:balance;font-size:16px;line-height:1.6;color:var(--text-secondary)}
+.map-intro{margin:0 0 clamp(20px,2.4vw,28px);font-size:16px;line-height:1.6;color:var(--text-secondary)}
 .map{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;gap:0 14px;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px);position:relative}
 .map-main{display:flex;flex-direction:column;align-items:center;min-width:0;position:relative;z-index:1}
 .node{display:flex;align-items:center;gap:12px;border:1px solid var(--border-color);border-radius:16px;padding:10px 18px;max-width:100%;background:#fff;font:inherit;color:inherit;text-align:left;line-height:1.3}
@@ -68,7 +68,7 @@ button,input{font:inherit;color:inherit}
 .role{border:1px solid var(--border-color);border-radius:16px;padding:14px 6px;height:var(--role-h,auto);box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-height:112px;justify-content:center;background:#fff;font:inherit;color:inherit}
 .role svg{width:22px;height:22px;color:var(--blue-deep);margin-bottom:2px}.role span{font-size:11.5px;font-weight:600;line-height:1.25}.role small{font-size:10.5px;line-height:1.3;color:var(--text-secondary)}
 .agent{cursor:pointer;transition:transform .18s cubic-bezier(.2,.7,.2,1),border-color .18s ease,background-color .18s ease}
-.agent:hover{transform:scale(1.04);background:var(--bg-surface);border-color:var(--blue-deep)}
+.agent:hover{transform:scale(1.04);background:#F1F1F5;border-color:var(--blue-deep)}
 .agent[aria-expanded="true"]{border-color:var(--blue-deep)}
 @media(prefers-reduced-motion:reduce){.agent:hover{transform:none}}
 .agent:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
@@ -99,8 +99,8 @@ button,input{font:inherit;color:inherit}
 .ap-io{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
 .ap-io li{background:var(--bg-surface);border-radius:12px;padding:6px 10px 8px}.ap-io li .ap-lab{margin-top:0}.ap-io li span:last-child{color:#3c4049}
 .ap-tasks{margin:0;padding-left:18px;color:#3c4049}.ap-tasks li+li{margin-top:3px}
-.ap-meta{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--hair)}
-.ap-chat{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:9px 14px;border:1.5px solid var(--blue-deep);border-radius:100px;color:var(--blue-deep);font-weight:600;text-decoration:none}.ap-chat:hover{background:var(--blue-deep);color:#fff}.ap-chat:focus-visible{outline:2px solid var(--blue-deep);outline-offset:2px}.ap-chat svg{width:14px;height:14px;flex:none}.ap-chat[hidden],.ap-chat-note:empty{display:none}
+.ap-meta{display:grid;grid-template-columns:1fr;gap:0 16px;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--hair)}
+.ap-chat{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:9px 14px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font-weight:600;text-decoration:none;transition:background-color .15s ease}.ap-chat:hover{background:#34475F}.ap-chat:focus-visible{outline:2px solid var(--blue-deep);outline-offset:2px}.ap-chat svg{width:14px;height:14px;flex:none}.ap-chat[hidden],.ap-chat-note:empty{display:none}
 .ap-chat-note{margin:6px 0 0;font-size:11.5px;color:#575B65;text-align:center}
 .ap-meta dt{font-size:11px;font-weight:600;color:var(--blue-deep)}.ap-meta dd{margin:2px 0 0;color:#3c4049}
 @media(max-width:1000px){.roles{display:flex;flex-wrap:wrap;justify-content:center}.roles .role,.inputs .role{flex:0 0 calc((100% - 20px) / 3)}}
@@ -650,7 +650,7 @@ b.kw{font-weight: inherit; color: inherit;}
             <button type="button" class="role agent is-optional" data-agent="bilder" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-image"/></svg><span>(Bilder)</span><small>(ComfyUI)</small></button>
           </div>
           <div class="gap gap--bus"></div>
-          <div class="node check" id="map-check"><svg aria-hidden="true"><use href="#i-check"/></svg><strong>Case Study Output</strong></div>
+          <button type="button" class="node check agent" id="map-check" data-agent="output" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-check"/></svg><strong>Case Study Output</strong></button>
           <div class="gap"><span class="v-label">passt</span></div>
           <div class="node review" id="map-review"><svg aria-hidden="true"><use href="#i-eye"/></svg>Lucas prüft die lokale Vorschau</div>
         </div>
@@ -664,7 +664,7 @@ b.kw{font-weight: inherit; color: inherit;}
           <ol class="ap-io"><li><span class="ap-lab">Input</span><span id="ap-in"></span></li><li><span class="ap-lab">Output</span><span id="ap-out"></span></li></ol>
           <p class="ap-lab">Aufgaben</p>
           <ul class="ap-tasks" id="ap-tasks"></ul>
-          <dl class="ap-meta"><div><dt>Werkzeug</dt><dd id="ap-tool"></dd></div><div><dt>Modell</dt><dd id="ap-model"></dd></div></dl>
+          <dl class="ap-meta"><div><dt>Werkzeug</dt><dd id="ap-tool"></dd></div></dl>
           <a class="ap-chat" id="ap-chat" href="#"><span id="ap-chat-txt"></span><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M5 3h8v8M13 3 4 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
           <p class="ap-chat-note" id="ap-chat-note"></p>
         </div>
@@ -990,6 +990,10 @@ b.kw{font-weight: inherit; color: inherit;}
       in: 'Project Files, Projektlog, Lucas’ Freigaben', out: 'Status und Übergabe je Projekt',
       tasks: ['Liest gemeinsame Regeln und den case-study-Skill', 'Fragt Lucas je eine offene Entscheidung', 'Verteilt nur freigegebene Schritte', 'Gleicht den Output ab und schickt Abweichungen zurück'],
       tool: 'Hermes-Profil „portfolio“', model: 'Offen, Test je Rolle' },
+    output: { k: 'Ergebnis', t: 'Case Study Output', i: '#i-check', s: 'Noch keine Case Study fertig; das ApartScan-Log läuft', st: 'vorbereitet',
+      in: 'Ergebnisse aller Agenten', out: 'Lokale HTML-Vorschau für Lucas',
+      tasks: ['Portfolio Agent setzt die Teile zur Case Study zusammen', 'Prüft gegen Skill, Portfolio-Regeln und Quellen', 'Bei Abweichung zurück an den zuständigen Agenten', 'Erst wenn alles passt, prüft Lucas'],
+      tool: 'case-study-Skill, Portfolio-Regeln' },
     files: { k: 'Quelle', t: 'Project Files', i: '#i-folder', s: 'Nur Quellwurzeln, die Lucas freigibt', st: 'aktiv',
       in: 'Repo, Screens, Notizen, Rohtext', out: 'Lesezugriff für Portfolio und Log Agent',
       tasks: ['Lucas nennt zu Projektstart die Quellwurzeln', 'Andere Ordner erst nach eigener Freigabe', 'Originale bleiben unverändert'],
@@ -1027,7 +1031,7 @@ b.kw{font-weight: inherit; color: inherit;}
   };
   // Bot Chat ids are read from each Hermes profile at build time (build.py, botchat marker).
   const CHAT = { portfolio: 'hermes://open/c/local-5638ca3618b1b563854f70ec87607aa8ccf05f16ba41d5c69435982d367364c7', wireframes: 'hermes://open/c/local-da3218c92a1757803fca4558941dd37c71d22e9a55040ef0ac9bfbdebd5d3a52' };
-  const BOT = { orchestrator: 'portfolio', wireframes: 'wireframes' };
+  const BOT = { orchestrator: 'portfolio', wireframes: 'wireframes' }, VIA_PORTFOLIO = { output: 1 };
   const panel = $('agent-panel'); let opener = null;
   const close = () => { if (panel.hidden) return; panel.hidden = true; map.classList.remove('has-panel'); opener?.setAttribute('aria-expanded', 'false'); opener?.focus(); opener = null; };
   const place = () => {
@@ -1054,12 +1058,12 @@ b.kw{font-weight: inherit; color: inherit;}
     opener?.setAttribute('aria-expanded', 'false'); opener = btn; btn.setAttribute('aria-expanded', 'true');
     panel.querySelector('.ap-icon use').setAttribute('href', a.i);
     $('ap-kicker').textContent = a.k; $('ap-title').textContent = a.t; $('ap-persona').textContent = a.p || ''; $('ap-persona').hidden = !a.p; $('ap-status').textContent = a.s;
-    $('ap-in').textContent = a.in; $('ap-out').textContent = a.out; $('ap-tool').textContent = a.tool; $('ap-model').textContent = a.model;
+    $('ap-in').textContent = a.in; $('ap-out').textContent = a.out; $('ap-tool').textContent = a.tool;
     const key = btn.dataset.agent, own = BOT[key], link = $('ap-chat');
     link.hidden = key === 'files';
     link.href = CHAT[own || 'portfolio'];
     $('ap-chat-txt').textContent = own ? 'Chat in Hermes öffnen' : 'Chat im Portfolio Agent öffnen';
-    $('ap-chat-note').textContent = key === 'files' || own ? '' : 'Noch kein eigener Bot; die Aufgabe läuft im Portfolio Agent.';
+    $('ap-chat-note').textContent = key === 'files' || own || VIA_PORTFOLIO[key] ? '' : 'Noch kein eigener Bot; die Aufgabe läuft im Portfolio Agent.';
     $('ap-tasks').replaceChildren(...a.tasks.map(t => Object.assign(document.createElement('li'), { textContent: t })));
     panel.dataset.state = a.st; panel.hidden = false; map.classList.add('has-panel'); place(); panel.querySelector('.ap-close').focus({ preventScroll: true });
   };
