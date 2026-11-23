@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Portfolio Agent · UI-Elemente</title>
+<title>Portfolio Orchestrator · UI-Elemente</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23809BBC'/%3E%3Cpath d='M20 17h24M20 32h24M20 47h18' stroke='%231a1a1a' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
 <!-- Built by claude_background/case-studyer-ui/build.py from template.html. Edit the template, then rebuild.
      Components marked "@src" are cut out of the current lucasmaher.com source files at build time. -->
@@ -42,13 +42,55 @@ button,input{font:inherit;color:inherit}
 .intro h1 span{color:var(--accent-orange)}
 
 
-.chapter{border-top:1px solid var(--border-color);padding:clamp(32px,5vw,56px) clamp(40px,8vw,80px);min-width:0}
+.chapter{--chapter-inset:clamp(40px,8vw,80px);border-top:1px solid var(--border-color);padding:clamp(32px,5vw,56px) var(--chapter-inset);min-width:0}
 main>.chapter:first-child{border-top:0}
-@media(min-width:1280px){.intro,.chapter{padding-inline:var(--page-pad)}}
-@media(max-width:640px){.intro{padding:32px 20px 20px}.chapter{padding:52px 20px}}
+@media(min-width:1280px){.intro{padding-inline:var(--page-pad)}.chapter{--chapter-inset:var(--page-pad)}}
+@media(max-width:640px){.intro{padding:32px 20px 20px}.chapter{--chapter-inset:20px;padding-block:52px}}
 .chapter-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:clamp(20px,3vw,28px)}
 .chapter-heading h2{font:clamp(24px,3vw,38px)/1.08 'OCR-A-BT',monospace;letter-spacing:-.045em}
 .chapter-heading .no{font:14px/1 'OCR-A-BT',monospace;color:var(--blue-deep);flex:none}
+/* Lab chrome only: identify the specimen, not a heading inside it. */
+main>.chapter:not(#system){padding-block-start:0}
+/* Give the transition from the agent diagram to the UI catalog its own break. */
+main>#system{padding-block-end:clamp(28px,5vw,64px)}
+main>#auftakt>.chapter-heading{margin-block-end:0}
+main>.chapter:not(#system)>.chapter-heading{margin-inline:calc(-1 * var(--chapter-inset));padding:11px clamp(20px,2.5vw,32px);background:var(--blue-deep);color:#fff}
+main>.chapter:not(#system)>.chapter-heading h2{min-width:0;font:600 clamp(14px,1.2vw,16px)/1.35 'Roboto Flex',sans-serif;letter-spacing:.015em;overflow-wrap:anywhere}
+
+/*@src:portfolio:css:nav*/
+/* Keep the island in flow and slide it above the viewport only after docking. */
+.agent-nav{position:sticky;top:var(--island-edge-top);z-index:7;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;width:min(calc(100% - 24px),calc(100vw - 2 * (var(--island-edge-x) + 10px)));margin-block-end:12px;transition:transform 300ms ease,box-shadow 260ms var(--ease)}
+.agent-nav.is-hidden:not(:focus-within){transform:translateY(calc(-100% - var(--island-edge-top) - 24px));pointer-events:none}
+
+.agent-nav:focus-within{transition:none}
+main>.agent-nav:first-child{margin-block-start:var(--island-edge-top)}
+.agent-nav-light{z-index:6}
+.agent-nav .pill__seg{min-width:0;align-self:stretch;text-align:center;line-height:1.15;font-weight:500}
+@media(min-aspect-ratio:17/10){.agent-nav{max-width:1330px}}
+@media(max-width:640px){.agent-nav{--island-edge-x:19px;padding:8px}.agent-nav .pill__seg{padding:7.4px 2px;font-size:clamp(11px,3.1vw,15px)}}
+@media(prefers-reduced-motion:reduce){.agent-nav,.agent-nav-light,.agent-nav .pill__seg{transition:none}}
+.agent-nav+.chapter{border-top:0}
+/* Give the raised island enough plain surface before a contrasting title band. */
+.agent-nav:has(+.chapter:not(#system)){margin-block-end:36px}
+main>.chapter:not(#system){scroll-margin-top:92px}
+#agent-images{min-height:calc(100svh - 92px)}
+.agent-example-source{margin-block:-6px 20px;color:#555760;font-size:14px}
+/* Keep Figma annotations readable rather than shrinking the whole flow on phones. */
+.figma-flow-scroll{overflow-x:auto;max-width:100%;border-radius:10px}
+.figma-flow-scroll .wireflow-svg{display:block;width:100%;min-width:760px;height:auto}
+.wireframe-figma{text-decoration:underline;text-underline-offset:2px;color:var(--blue-deep)}
+.wireframe-figma[aria-disabled=true]{color:#555760;cursor:default}
+.agent-drawings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,3vw,28px)}
+.agent-drawings svg{display:block;width:100%;height:auto;border-radius:6px;background:#16181c;color:#e4e7ec}
+.agent-drawings figcaption{margin-top:9px;color:#343b47;font-size:14px}
+@media(max-width:640px){.agent-drawings{grid-template-columns:minmax(0,1fr)}}
+
+.copy-section{align-self:center;margin-inline-start:auto;flex:none;border:1px solid currentColor;border-radius:5px;background:transparent;color:inherit;padding:3px 8px;font-size:11px;line-height:1.3;font-weight:600;cursor:pointer;white-space:nowrap}
+.copy-section:hover{background:rgba(127,127,127,.2)}
+.copy-section:focus-visible{outline-color:currentColor}
+.copy-section[aria-busy=true]{opacity:.75}
+.copy-status{position:fixed;z-index:20;left:50%;bottom:14px;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);padding:9px 13px;border-radius:6px;background:var(--blue-deep);color:white;font-size:13px}
+
 .stack{display:flex;flex-direction:column;gap:clamp(20px,3vw,28px)}
 
 
@@ -73,39 +115,54 @@ main>.chapter:first-child{border-top:0}
 .agent[aria-expanded="true"]{border-color:var(--blue-deep)}
 @media(prefers-reduced-motion:reduce){.agent:hover{transform:none}}
 .agent:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
-.agent.is-active{border-color:var(--blue-deep);animation:agent-pulse 1.6s ease-out infinite}
-@keyframes agent-pulse{0%{box-shadow:0 0 0 0 rgba(71,95,126,.45)}70%{box-shadow:0 0 0 10px rgba(71,95,126,0)}100%{box-shadow:0 0 0 0 rgba(71,95,126,0)}}
-@media(prefers-reduced-motion:reduce){.agent.is-active{animation:none;box-shadow:0 0 0 3px rgba(71,95,126,.35)}}
+.agent.is-active{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(71,95,126,.35)}
 .map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--border-color)}
 .map-svg .loop{color:var(--blue-deep)}
 .map-svg g[data-step]:not(.on){display:none}
-.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.22);--draw:2.8s}
-.map-svg g[data-step].on{color:var(--flow);stroke-width:2.4;opacity:.4;transition:opacity .5s ease}
+.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.22);--focus-fade:160ms}
+.map.is-fast{--focus-fade:80ms}
+.map-svg g[data-step].on{color:var(--flow);stroke-width:2.4;opacity:.16}
 .map-svg g[data-step].on.now{opacity:1}
-.map-svg g[data-step].on path{stroke:var(--flow)}
-.map-svg g[data-step].now path{stroke-dasharray:1;stroke-dashoffset:1;animation-name:flow-draw;animation-duration:var(--draw);animation-timing-function:cubic-bezier(.4,0,.2,1);animation-fill-mode:forwards}
-.map-svg g[data-step].on path[marker-end]{marker-end:url(#tip-on)}.map-svg g[data-step].now:not(.done) path[marker-end]{marker-end:none}
-@keyframes flow-draw{to{stroke-dashoffset:0}}
-.map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.45}
-.map .is-lit{border-color:var(--flow)!important;background:#fff!important;transition:background-color .5s ease,border-color .5s ease,box-shadow .5s ease,opacity .5s ease}
+.map-svg g[data-step].on>path{stroke:var(--flow)}
+.map-svg g[data-step] path[marker-end]{marker-end:none}.map-svg g[data-step].done path[marker-end]{marker-end:url(#tip-on)}
+.map-svg g[data-step].done>path{mask:none}
+.map-svg:has([data-step="loop"].on)>.loop{marker-end:none}
+.map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.25}
+.map .is-lit{border-color:var(--flow)!important;background:#fff!important}
 .map .is-lit svg{color:var(--flow)}
 .map.is-playing .is-current{border-color:var(--flow)!important;background:var(--flow-soft)!important;box-shadow:0 0 0 5px var(--flow-ring)}.map.is-playing .is-current svg{color:var(--flow)}
-.map.is-playing .agent,.map.is-playing .node{transition:background-color .5s ease,border-color .5s ease,box-shadow .5s ease,opacity .5s ease}
-.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){opacity:.4}
-.map.is-playing .map-main .is-lit:not(.is-current){opacity:.8}
-.map.is-playing .v-label,.map.is-playing .map-loop{opacity:.4;transition:opacity .5s ease}
-.flow-cap{position:absolute;z-index:4;margin:0;box-sizing:border-box;padding:0;color:var(--flow);font-size:14px;font-weight:650;line-height:1.4;opacity:0;transform:translateY(4px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
-.flow-cap.is-card{padding:9px 13px;border:1px solid var(--border-color);border-radius:14px;background:#fff}
+.map.is-playing .agent,.map.is-playing .node{transition:opacity var(--focus-fade)}
+.map.is-playing .is-current{opacity:1;transition:none}
+.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){opacity:.25}
+.map.is-playing .map-main .is-lit:not(.is-current){opacity:.48}
+.map.is-playing .map-main .role.cap-covered:not(.is-current){opacity:.09}
+.map.is-playing .role.cap-covered:not(.is-current)>*{opacity:0}
+.map.is-playing .v-label,.map.is-playing .map-loop{opacity:.28;transition:opacity var(--focus-fade)}
+.flow-cap{position:absolute;z-index:4;margin:0;box-sizing:border-box;padding:2px 4px;color:#842448;font-size:14px;font-weight:650;line-height:1.4;pointer-events:none}
+.flow-cap.cap-role,.flow-cap.cap-dock,.flow-cap.cap-loop-narrow{background:color-mix(in srgb,var(--bg-page,#dcdce3) 46%,transparent)}
+.flow-cap.cap-loop-narrow{font-size:13px;line-height:1.25}
 .flow-cap.to-left{text-align:right}
-.flow-cap.show{opacity:1;transform:none}.flow-cap[hidden]{display:none}
-.flow-cap.cap-dock{position:fixed;left:12px!important;right:58px;top:auto!important;bottom:16px;width:auto!important;max-width:none;text-align:left;padding:9px 13px;border:1px solid var(--border-color);border-radius:14px;background:#fff}
-@media(prefers-reduced-motion:reduce){.flow-cap{transition:none;transform:none}}
+.flow-cap[hidden]{display:none}
+.flow-cap.cap-dock{position:fixed;left:12px!important;right:12px;top:auto!important;bottom:64px;width:auto!important;max-width:none;text-align:left}
+.map-speed{position:absolute;z-index:4;top:9px;right:14px;color:#842448;font-size:13px;font-weight:650;pointer-events:none}
+.map:not(.is-fast) .map-speed{display:none}
+.map.is-playing{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .map-play{position:absolute;right:14px;bottom:14px;z-index:4;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 11px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font:600 12.5px/1 inherit;cursor:pointer;transition:background-color .15s ease}
 .map-play:hover{background:#34475F}.map-play:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
-.map-play svg{width:14px;height:14px}.map-play .i-stop,.map-play[aria-pressed="true"] .i-play{display:none}.map-play[aria-pressed="true"] .i-stop{display:block}
+.map-play svg{width:14px;height:14px}.map-play .i-pause,.map-play[aria-pressed="true"] .i-play{display:none}.map-play[aria-pressed="true"] .i-pause{display:block}
 .map-play:disabled{background:#8A97A8;cursor:default}
 @media(max-width:560px){.map-play{right:10px;bottom:10px;height:32px;padding:0 10px}.map-play-txt{display:none}}
-@media(prefers-reduced-motion:reduce){.map-svg g[data-step].now path{animation:none;stroke-dasharray:none;stroke-dashoffset:0}}
+.map-controls{position:absolute;z-index:5;left:14px;right:14px;bottom:14px;display:flex;gap:8px;align-items:center;pointer-events:none}
+.map-controls .map-play{position:static;margin-left:auto;pointer-events:auto}
+.map-controls [hidden]{display:none}
+.map.is-playing .map-controls{pointer-events:auto;border-radius:100px;padding:2px 4px;background:color-mix(in srgb,var(--bg-page,#dcdce3) 86%,#fff)}
+.map.is-playing .map-play,.map-close{margin:0;width:34px;height:34px;padding:0;display:grid;place-items:center;flex:none}
+.map.is-playing .map-play-txt{display:none}
+.map-seek{min-width:0;height:24px;margin:0;flex:1;accent-color:#a42c58;cursor:pointer}
+.map-close{border:0;border-radius:100px;background:transparent;color:var(--blue-deep);cursor:pointer;font-size:20px;line-height:1}
+.map-close:hover{background:#fff}.map-close:focus-visible,.map-seek:focus-visible{outline:2px solid var(--blue-deep);outline-offset:2px}
+@media(max-width:560px){.map-controls{left:10px;right:10px;bottom:10px}}
+@media(prefers-reduced-motion:reduce){.map{--focus-fade:0ms}.map.is-fast{--focus-fade:0ms}}
 .map-loop{position:relative;z-index:1}
 .map-loop .label{position:absolute;left:2px;top:50%;transform:translateY(-50%) rotate(180deg);line-height:1.2;writing-mode:vertical-rl;font-size:11.5px;font-weight:600;color:var(--blue-deep);white-space:nowrap}
 .map-live{grid-column:1/-1;margin:20px 0 0;text-align:center;font-size:12px;color:#575B65}
@@ -127,7 +184,7 @@ main>.chapter:first-child{border-top:0}
 .ap-chat{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:9px 14px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font-weight:600;text-decoration:none;transition:background-color .15s ease}.ap-chat:hover{background:#34475F}.ap-chat:focus-visible{outline:2px solid var(--blue-deep);outline-offset:2px}.ap-chat svg{width:14px;height:14px;flex:none}.ap-chat[hidden]{display:none}
 .ap-meta dt{font-size:11px;font-weight:600;color:var(--blue-deep)}.ap-meta dd{margin:2px 0 0;color:#3c4049}
 @media(max-width:1000px){.roles{display:flex;flex-wrap:wrap;justify-content:center}.roles .role,.inputs .role{flex:0 0 calc((100% - 20px) / 3)}}
-@media(max-width:560px){.map{grid-template-columns:28px minmax(0,1fr) 28px;gap:0 6px}.roles .role,.inputs .role{flex-basis:calc((100% - 10px) / 2)}.node{padding:9px 12px}.node.core{padding:12px 14px}.core-txt strong{font-size:18px}.ap-io,.ap-meta{grid-template-columns:1fr;gap:8px}}
+@media(max-width:560px){.map{grid-template-columns:28px minmax(0,1fr) 28px;gap:0 6px}.roles .role,.inputs .role{flex-basis:calc((100% - 10px) / 2)}.node{padding:9px 12px}.node.core{padding:12px 14px}.core-txt strong{font-size:clamp(13px,4vw,18px)}.ap-io,.ap-meta{grid-template-columns:1fr;gap:8px}}
 
 /* ── Copied component CSS: to.morrow2d.html and unify2d.html, rules picked by class at build time ── */
 /*@src:tomorrow:css:scrollbar*/
@@ -142,19 +199,36 @@ main>.chapter:first-child{border-top:0}
 .flowmap{display:block;width:100%;min-width:820px;height:auto}
 .flowmap-scroll{padding-bottom:6px}
 .ph-img{width:100%;height:100%;display:grid;place-items:center;background:#4b4e55;color:#d9dae0;font:500 14px/1 'Roboto Flex',Arial,sans-serif;letter-spacing:.02em}
-.ph-hero{aspect-ratio:16/9;height:auto}
+.ph-hero{aspect-ratio:16/9;height:auto;width:auto;margin-inline:calc(-1 * var(--chapter-inset))}
 .tap-shot .ph-img{aspect-ratio:400/539;height:auto;border-radius:10px}
 .ph-phone{aspect-ratio:9/19.5;border:6px solid #26272c;border-radius:34px;overflow:hidden;background:#4b4e55}
 .pinned-svg{position:relative;width:min(232px,60vw);margin:0 44px 52px}
 .fact-bar{margin-top:clamp(24px,4vw,44px)}
 .res-caveat{font-size:14.4px;line-height:1.7;color:var(--text-secondary);max-width:75ch}@media(max-width:860px){.res-caveat{font-size:16px}}
-.lead{font-size:clamp(18px,2.1vw,24px);line-height:1.5;max-width:60ch}
+.lead{font-size:clamp(18px,2.1vw,24px);line-height:1.5;max-width:60ch;color:var(--text-secondary)}
 .tap-card.is-us{display:flex!important}
 .taps-cards{grid-template-columns:repeat(5,minmax(0,1fr))}
 @media(max-width:640px){.taps-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .big-statement{margin:0;-webkit-text-stroke:0}
 .paper img{width:100%;height:auto;filter:url(#sketch-ink)}
 .paper{background:#F3F2EE;padding:clamp(14px,3vw,36px);border-radius:0;box-shadow:none}
+.research-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.6vw,20px)}
+.research-grid .research-card{border:1px solid var(--border-color);border-radius:14px;background:rgba(255,255,255,.26);padding:clamp(16px,2vw,24px);min-width:0}
+.research-grid .research-card svg{display:block;width:30px;height:30px;margin-bottom:18px}
+.research-grid h3{font:600 17px/1.3 'Roboto Flex',sans-serif;margin:0 0 8px;overflow-wrap:anywhere}
+.research-grid .research-card p{font-size:14px;line-height:1.5;color:#555760;overflow-wrap:anywhere}
+@media(max-width:1000px){.research-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.research-grid{grid-template-columns:1fr}}
+
+.competitor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,42px)}
+.competitor-profile{min-width:0;text-align:center}
+.competitor-picture{aspect-ratio:7/8;height:auto;border-radius:12px}
+.competitor-profile h3{font:600 clamp(17px,1.5vw,21px)/1.25 'Roboto Flex',sans-serif;margin:16px 0 5px}
+.competitor-name,.competitor-profile dd{color:#555760;font-size:14px;line-height:1.5}
+.competitor-profile dl,.competitor-profile dd{margin:0}
+.competitor-profile dt{margin:16px 0 3px;color:var(--blue-deep);font-size:13px;font-weight:700}
+@media(max-width:640px){.competitor-grid{grid-template-columns:1fr;gap:32px}.competitor-profile{width:min(100%,340px);margin-inline:auto}}
+
 .stat-block{padding-inline:0;padding-bottom:0}.stat-kicker{margin-top:0}
 .statbar-seg.is-main,.statbar-seg.is-main b{color:#16202d}
 .res-block{margin:0;max-width:none;align-items:flex-start;text-align:left}
@@ -186,6 +260,7 @@ main>.chapter:first-child{border-top:0}
 .tag.blue{background:var(--accent-orange);border-color:var(--accent-orange);color:#16202d}
 .tag.dashed{border-style:dashed}
 .src,.stat-kicker{font:600 11px/1.3 'Roboto Flex',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep)}
+.stat-kicker{font-size:12.9px}
 
 
 /* Empathy map: form only, slots stay empty until research exists */
@@ -198,6 +273,16 @@ main>.chapter:first-child{border-top:0}
 .slot{border:1px dashed #9a9ca3;border-radius:8px;padding:9px 12px;font:14px/1.4 'OCR-A-BT',monospace;letter-spacing:-.02em;color:#5f626a;width:max-content;max-width:100%}
 .empathy-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(170px,34%);aspect-ratio:1;border-radius:50%;background:var(--bg-surface);border:1px dashed var(--border-color);display:grid!important;place-items:center;text-align:center;padding:12px;min-height:0!important}
 .empathy-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+
+/* Research synthesis: one shared surface, equal space for positive signals and concerns. */
+.insights-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4.5vw,64px);padding:clamp(20px,3.4vw,44px);border:1px solid #a0aec0;border-radius:16px;background:#e5e9ef}
+.insights-panel h3{margin-bottom:18px;font-size:clamp(17px,1.5vw,21px);font-weight:600;line-height:1.25}
+.insights-panel ul{list-style:none;display:grid;gap:12px}
+.insights-panel li{display:grid;grid-template-columns:24px minmax(0,1fr);align-items:start;gap:11px;font-size:clamp(15px,1.3vw,17px);color:#434a56}
+.insights-panel strong{font-weight:600;color:var(--text-primary)}
+.insights-mark{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font-size:17px;font-weight:600;line-height:1;background:#cbdcda;color:#27554b}
+.insights-concerns .insights-mark{background:#e8dcc6;color:#6f4b16}
+@media(max-width:600px){.insights-panel{grid-template-columns:minmax(0,1fr);gap:22px}.insights-concerns{border-top:1px solid var(--hair);padding-top:21px}}
 
 /* User profile from the page's own target-group sentence */
 .profile{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:start}
@@ -272,13 +357,14 @@ main>.chapter:first-child{border-top:0}
   </defs>
 </svg>
 
+<div class="agent-nav-light" aria-hidden="true"><div class="agent-nav-light-shape"></div></div>
 <div class="page">
   <main>
     <section class="chapter" id="system" aria-labelledby="h-system">
-      <div class="chapter-heading"><h2 id="h-system">Portfolio Agentensystem</h2></div>
-      <p class="map-intro">Das Portfolio Agent System ist ein Agentensystem, das aus Projektdateien und einem täglich geführten Projektlog Case Studies für Lucas’ Portfolio vorbereitet: Ein Orchestrator verteilt Text, UI-Elemente, Wireframes und optional 3D und Bilder an spezialisierte Agenten und prüft jedes Ergebnis gegen feste Vorgaben, bevor Lucas es freigibt.</p>
+      <div class="chapter-heading"><h2 id="h-system">Portfolio Orchestrator</h2></div>
+      <p class="map-intro">Der Portfolio Orchestrator plant Case Studies aus Projektdateien und einem täglich geführten Projektlog. Er verteilt Aufgaben für Text, UI-Elemente, Wireframes und optional 3D und Bilder an spezialisierte Agenten. Er prüft ihre Ergebnisse, bevor Lucas die Vorschau freigibt.</p>
       <div class="map" aria-describedby="map-desc">
-        <p id="map-desc" class="sr-only">Zielbild: Project Files und das Projektlog mit täglicher Agent-Überprüfung fließen in den Orchestrator Portfolio Agent. Er verteilt Aufgaben an fünf Rollen: Struktur und Text, UI-Elemente wie Empathy Map, User-Flow und Nutzerprofil, Wireframes mit Figma-Anbindung, optional 3D mit Blender und Bilder mit ComfyUI. Die Ergebnisse ergeben den Case-Study-Output. Bei Abweichung von den Vorgaben schickt der Orchestrator sie zum Nachbessern erneut durch die Rollen. Erst wenn alles passt, prüft Lucas die lokale Vorschau. Jeder Kasten lässt sich für Details anklicken.</p>
+        <p id="map-desc" class="sr-only">Zielbild: Project Files und das Projektlog mit täglicher Agent-Überprüfung fließen in den Portfolio Orchestrator. Er verteilt Aufgaben an fünf Rollen: Struktur und Text, UI-Elemente wie Empathy Map, User-Flow und Nutzerprofil, Wireframes mit Figma-Anbindung, optional 3D mit Blender und Bilder mit ComfyUI. Die Ergebnisse ergeben den Case-Study-Output. Bei Abweichung von den Vorgaben schickt der Orchestrator sie zum Nachbessern erneut durch die Rollen. Erst wenn alles passt, prüft Lucas die lokale Vorschau. Jeder Kasten lässt sich für Details anklicken.</p>
         <div class="map-loop map-loop--in" aria-hidden="true"><span class="label">Abweichung · nachbessern</span></div>
         <div class="map-main">
           <div class="inputs" id="map-in">
@@ -286,7 +372,7 @@ main>.chapter:first-child{border-top:0}
             <button type="button" class="role agent" data-agent="projektlog" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-log"/></svg><span>Projektlog</span><small>Daily Agent Überprüfung</small></button>
           </div>
           <div class="gap gap--bus"></div>
-          <button type="button" class="node core agent" id="map-core" data-agent="orchestrator" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-core"/></svg><span class="core-txt"><strong>Portfolio Agent</strong><span>Orchestrator</span></span></button>
+          <button type="button" class="node core agent" id="map-core" data-agent="orchestrator" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-core"/></svg><span class="core-txt"><strong>Portfolio Orchestrator</strong><span>Create plan</span></span></button>
           <div class="gap gap--bus"></div>
           <div class="roles">
             <button type="button" class="role agent" data-agent="struktur" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-text"/></svg><span>Struktur &amp; Text</span></button>
@@ -303,7 +389,11 @@ main>.chapter:first-child{border-top:0}
         <div class="map-loop" aria-hidden="true"></div>
         <svg class="map-svg" aria-hidden="true"></svg>
         <p class="flow-cap" id="flow-cap" aria-live="polite" hidden></p>
-        <button type="button" class="map-play" id="map-play" aria-label="Workflow abspielen" aria-pressed="false"><svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg><svg class="i-stop" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1.5" fill="currentColor"/></svg><span class="map-play-txt">Workflow abspielen</span></button>
+        <div class="map-controls">
+          <button type="button" class="map-play" id="map-play" aria-label="Workflow abspielen" aria-pressed="false"><svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 4v8m6-8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="map-play-txt">Workflow abspielen</span></button>
+          <input type="range" class="map-seek" id="map-seek" min="0" max="1" step="1" value="0" aria-label="Position in der Workflow-Animation" hidden>
+          <button type="button" class="map-close" id="map-close" aria-label="Animation beenden" hidden>×</button>
+        </div>
         <p class="map-live" id="map-live" aria-live="polite" hidden></p>
         <div class="agent-panel" id="agent-panel" tabindex="-1" role="dialog" aria-modal="false" aria-labelledby="ap-title" hidden>
           <div class="ap-head"><svg class="ap-icon" aria-hidden="true"><use href="#i-log"/></svg><h3 id="ap-title"></h3></div>
@@ -315,7 +405,11 @@ main>.chapter:first-child{border-top:0}
       </div>
     </section>
 
-    <section class="chapter" id="auftakt" aria-labelledby="h-auftakt">
+    <nav class="agent-nav" aria-label="Beispiele der Subagenten">
+      <!-- Agent page links -->
+    </nav>
+
+    <section class="chapter" id="auftakt" aria-labelledby="h-auftakt" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-auftakt">Hero Image + Header</h2></div>
       <div class="stack">
         <div class="ph-img ph-hero" role="img" aria-label="Platzhalter für das Titelbild"><span>{placeholder}</span></div>
@@ -350,14 +444,15 @@ main>.chapter:first-child{border-top:0}
 
     <section class="chapter" id="recherche" aria-labelledby="h-recherche">
       <div class="chapter-heading"><h2 id="h-recherche">Recherchekarten</h2></div>
-      <div class="grid three">
-        <article class="research-card"><svg><use href="#i-search"/></svg><span class="mini-label">Desk Research</span><strong>Platzhalter für eine Erkenntnis</strong><p>Ein bis zwei Sätze, was die Quelle zeigt und warum es für das Projekt zählt.</p></article>
-        <article class="research-card"><svg><use href="#i-person"/></svg><span class="mini-label">Interview</span><strong>Platzhalter für ein Muster</strong><p>Was mehrere Befragte unabhängig voneinander beschrieben haben.</p></article>
-        <article class="research-card"><svg><use href="#i-check"/></svg><span class="mini-label">Beobachtung</span><strong>Platzhalter für ein Verhalten</strong><p>Was im Test sichtbar wurde, unabhängig davon, was gesagt wurde.</p></article>
+      <div class="research-grid">
+        <article class="research-card"><svg aria-hidden="true"><use href="#i-search"/></svg><h3>Desk Research</h3><p>Was bestehende Quellen über das Problem zeigen.</p></article>
+        <article class="research-card"><svg aria-hidden="true"><use href="#i-person"/></svg><h3>Interviews</h3><p>Welches Muster in mehreren Gesprächen wiederkehrt.</p></article>
+        <article class="research-card"><svg aria-hidden="true"><use href="#i-eye"/></svg><h3>Beobachtung</h3><p>Was Personen in einer konkreten Situation tun.</p></article>
+        <article class="research-card"><svg aria-hidden="true"><use href="#i-check"/></svg><h3>Nutzungstest</h3><p>Welche Hürde beim Ausprobieren des Entwurfs sichtbar wird.</p></article>
       </div>
     </section>
     <section class="chapter" id="kennzahl" aria-labelledby="h-kennzahl">
-      <div class="chapter-heading"><h2 id="h-kennzahl">Kennzahl · Umfrage</h2></div>
+      <div class="chapter-heading"><h2 id="h-kennzahl">Umfrage</h2></div>
       <div class="stat-block">
         <p class="stat-kicker">Umfrage · 30 Befragte</p>
         <h3 class="stat-head">Dies ist ein Platzhaltertext für das zentrale Ergebnis einer Umfrage</h3>
@@ -385,6 +480,33 @@ main>.chapter:first-child{border-top:0}
       </div>
     </section>
 
+    <section class="chapter" id="wettbewerbsanalyse" aria-labelledby="h-wettbewerbsanalyse">
+      <div class="chapter-heading"><h2 id="h-wettbewerbsanalyse">Wettbewerbsanalyse</h2></div>
+      <div class="competitor-grid">
+        <article class="competitor-profile">
+          <div class="ph-img competitor-picture" role="img" aria-label="Bildplatzhalter für Produkt A">{placeholder}</div>
+          <h3>Produkttyp A</h3>
+          <p class="competitor-name">Produktname A</p>
+          <dl><dt>Stärken</dt><dd>Platzhalter für einen Vorteil bei der verglichenen Aufgabe.</dd>
+            <dt>Schwächen</dt><dd>Platzhalter für eine Einschränkung bei derselben Aufgabe.</dd></dl>
+        </article>
+        <article class="competitor-profile">
+          <div class="ph-img competitor-picture" role="img" aria-label="Bildplatzhalter für Produkt B">{placeholder}</div>
+          <h3>Produkttyp B</h3>
+          <p class="competitor-name">Produktname B</p>
+          <dl><dt>Stärken</dt><dd>Platzhalter für einen Vorteil bei der verglichenen Aufgabe.</dd>
+            <dt>Schwächen</dt><dd>Platzhalter für eine Einschränkung bei derselben Aufgabe.</dd></dl>
+        </article>
+        <article class="competitor-profile">
+          <div class="ph-img competitor-picture" role="img" aria-label="Bildplatzhalter für Produkt C">{placeholder}</div>
+          <h3>Produkttyp C</h3>
+          <p class="competitor-name">Produktname C</p>
+          <dl><dt>Stärken</dt><dd>Platzhalter für einen Vorteil bei der verglichenen Aufgabe.</dd>
+            <dt>Schwächen</dt><dd>Platzhalter für eine Einschränkung bei derselben Aufgabe.</dd></dl>
+        </article>
+      </div>
+    </section>
+
     <section class="chapter" id="empathy" aria-labelledby="h-empathy">
       <div class="chapter-heading"><h2 id="h-empathy">Empathy Map</h2></div>
       <div class="empathy" role="group" aria-label="Leere Empathy Map mit vier Feldern: Sagt, Denkt, Tut, Fühlt">
@@ -396,6 +518,27 @@ main>.chapter:first-child{border-top:0}
       </div>
     </section>
 
+    <section class="chapter" id="erkenntnisse" aria-labelledby="h-erkenntnisse">
+      <div class="chapter-heading"><h2 id="h-erkenntnisse">Zentrale Erkenntnisse</h2></div>
+      <div class="insights-panel" role="group" aria-label="Beispielpanel mit Platzhaltertexten">
+        <div class="insights-positive">
+          <h3>Was gut ankommt</h3>
+          <ul role="list">
+            <li><span class="insights-mark" aria-hidden="true">+</span><span>Ein <strong>klarer Einstieg</strong> erleichtert die Orientierung.</span></li>
+            <li><span class="insights-mark" aria-hidden="true">+</span><span>Ein <strong>sichtbarer Fortschritt</strong> zeigt, was noch fehlt.</span></li>
+            <li><span class="insights-mark" aria-hidden="true">+</span><span><strong>Kurze Schritte</strong> lassen sich leichter wiederholen.</span></li>
+          </ul>
+        </div>
+        <div class="insights-concerns">
+          <h3>Wo Bedenken bleiben</h3>
+          <ul role="list">
+            <li><span class="insights-mark" aria-hidden="true">−</span><span>Ohne Vorschau bleibt unklar, <strong>was gespeichert wird</strong>.</span></li>
+            <li><span class="insights-mark" aria-hidden="true">−</span><span><strong>Ähnliche Optionen</strong> sind schwer zu unterscheiden.</span></li>
+            <li><span class="insights-mark" aria-hidden="true">−</span><span>Nach einem Fehler fehlt ein <strong>klarer Weg zurück</strong>.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
     <section class="chapter" id="profil" aria-labelledby="h-profil">
       <div class="chapter-heading"><h2 id="h-profil">Nutzerprofil</h2></div>
       <div class="profile">
@@ -444,13 +587,6 @@ main>.chapter:first-child{border-top:0}
       <div class="chapter-heading"><h2 id="h-vorher">Vorher / Nachher</h2></div>
       <div class="before-after" id="compare" role="img" aria-label="Platzhalter: links früher Entwurf, rechts aktueller Screen"><div class="scene before"><div class="sketch" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div><div class="scene after"><div class="phone" aria-hidden="true"><div class="ph-top">Titel</div><div class="ph-list"><span class="current">Tab A</span><span>Tab B</span><span>Tab C</span></div><div class="task"><span class="circle"></span><b>Eintrag 1</b></div><div class="task highlight"><span class="circle"></span><b>Eintrag 2</b></div></div></div><div class="divider"></div></div><div class="range-row"><span class="mini-label">Vorher</span><input type="range" min="5" max="95" value="50" id="split" aria-label="Vorher-Nachher-Vergleich verschieben"><span class="mini-label">Nachher</span></div>
     </section>
-
-    <section class="chapter" id="flow" aria-labelledby="h-flow">
-      <div class="chapter-heading"><h2 id="h-flow">Wireflow</h2></div>
-      <!--@src:tomorrow:wireflow:reschedule-->
-    </section>
-
-
 
     <section class="chapter" id="screen" aria-labelledby="h-screen">
       <div class="chapter-heading"><h2 id="h-screen">Screen &amp; Callouts</h2></div>
@@ -545,6 +681,94 @@ main>.chapter:first-child{border-top:0}
       </div>
     </section>
 
+    <section class="chapter" id="flow" aria-labelledby="h-flow" tabindex="-1">
+      <div class="chapter-heading"><h2 id="h-flow">Wireflow · Erster Entwurf</h2></div>
+      <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=37-15" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
+      <div class="figma-flow-scroll" role="region" aria-label="Erster Entwurf – Wireflow, horizontal scrollbar" tabindex="0">
+        <!--@src:tomorrow:wireflow:draft-->
+      </div>
+    </section>
+    <section class="chapter" id="flow-reschedule" aria-labelledby="h-flow-reschedule" tabindex="-1">
+      <div class="chapter-heading"><h2 id="h-flow-reschedule">Wireflow · Von Heute nach Morgen</h2></div>
+      <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=37-26" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
+      <div class="figma-flow-scroll" role="region" aria-label="Von Heute nach Morgen – Wireflow, horizontal scrollbar" tabindex="0">
+        <!--@src:tomorrow:wireflow:reschedule-->
+      </div>
+    </section>
+    <section class="chapter" id="flow-live" aria-labelledby="h-flow-live" tabindex="-1">
+      <div class="chapter-heading"><h2 id="h-flow-live">Wireflow · Von der Eingabe bis zum Abhaken</h2></div>
+      <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=37-40" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
+      <div class="figma-flow-scroll" role="region" aria-label="Von der Eingabe bis zum Abhaken – Wireflow, horizontal scrollbar" tabindex="0">
+        <!--@src:tomorrow:wireflow:live-->
+      </div>
+    </section>
+
+    <section class="chapter" id="flow-spotify" aria-labelledby="h-flow-spotify" tabindex="-1">
+      <div class="chapter-heading"><h2 id="h-flow-spotify">Wireflow · Spotify Search &amp; Play</h2></div>
+      <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=12-2" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
+      <div class="figma-flow-scroll" role="region" aria-label="Spotify-Wireflow, horizontal scrollbar" tabindex="0">
+        <!--@src:spotify:wireflow:svg-->
+      </div>
+    </section>
+
+    <section class="chapter" id="flow-findmy" aria-labelledby="h-flow-findmy" tabindex="-1">
+      <div class="chapter-heading"><h2 id="h-flow-findmy">Wireflow · Find My · Find Nearby</h2></div>
+      <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=15-2" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
+      <div class="figma-flow-scroll" role="region" aria-label="Find-My-Wireflow, horizontal scrollbar" tabindex="0">
+        <!--@src:findmy:wireflow:svg-->
+      </div>
+    </section>
+
+    <section class="chapter" id="flow-passwords" aria-labelledby="h-flow-passwords" tabindex="-1">
+      <div class="chapter-heading"><h2 id="h-flow-passwords">Wireflow · Passwords · Share with a Group</h2></div>
+      <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=18-2" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
+      <div class="figma-flow-scroll" role="region" aria-label="Passwords-Wireflow, horizontal scrollbar" tabindex="0">
+        <!--@src:passwords:wireflow:svg-->
+      </div>
+    </section>
+
+    <section class="chapter" id="agent-images" aria-labelledby="h-agent-images" tabindex="-1">
+      <div class="chapter-heading"><h2 id="h-agent-images">Bildgenerierungsagent</h2></div>
+      <p class="agent-example-source">Zwei eigens gezeichnete Strichzeichnungen, inspiriert von Siqi Zhangs Gaze UI.</p>
+      <div class="agent-drawings">
+        <figure>
+          <svg viewBox="0 0 430 280" role="img" aria-label="Draufsicht eines Cockpits mit Fahrer, Lenkrad und Head-up-Display">
+            <g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+              <g opacity=".45">
+                <path d="M36 219Q40 133 75 64Q98 34 215 33Q332 34 355 64Q390 133 394 219M48 207Q54 118 83 72Q111 46 215 46Q319 46 347 72Q376 118 382 207"/>
+                <path d="M65 103Q134 78 215 81Q296 78 365 103M80 115Q154 96 215 99Q276 96 350 115M216 123v103m23-103v103M257 204v-25q0-23 24-24h30q24 1 24 24v25q0 22-23 22h-32q-23 0-23-22ZM96 183v27q0 20 20 20h56q20 0 20-20v-27"/>
+                <rect x="222" y="156" width="11" height="28" rx="4"/>
+              </g>
+              <path d="M113 82Q144 74 176 77l5 8q-38-2-71 6z"/>
+              <ellipse cx="146" cy="131" rx="27" ry="11"/><path d="M124 132q22-12 44 0m-9 7-7 12h-12l-7-12"/>
+              <path d="M102 191q-7-13-3-26l11-24q3-6 8-7 8 0 5 9l-10 26 4 12m65 10q7-13 3-26l-11-24q-3-6-8-7-8 0-5 9l10 26-4 12M134 178q-18 0-27 12-8 12 0 20t23 7m29-39q17 0 26 12 8 12 0 20t-23 7"/>
+              <ellipse cx="146" cy="199" rx="18" ry="21"/>
+              <path d="M123 76 98 52H39m125 141 31 49h85" stroke-dasharray="2 4" opacity=".85"/>
+              <circle cx="123" cy="76" r="2" fill="currentColor"/><circle cx="164" cy="193" r="2" fill="currentColor"/>
+            </g>
+            <g fill="currentColor" font-family="monospace" font-size="12"><text x="39" y="44">HUD</text><text x="287" y="246">Fahrer</text></g>
+          </svg>
+          <figcaption>Draufsicht · Mensch und Cockpit</figcaption>
+        </figure>
+        <figure>
+          <svg viewBox="0 0 430 280" role="img" aria-label="Seitenansicht mit sitzendem Fahrer und gestrichelter Blicklinie zum Head-up-Display">
+            <g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+              <g opacity=".45">
+                <path d="M32 217h366M48 140l25-52q11-28 44-28h114q23 0 42 19l62 53 53 13m-149-75 72 66m10-9 31 23M306 141h59q17 0 20 17m-65-9-27 39h63v25M60 171l23 34h117m-97-25-12-60q-3-11-12-9l-6 4 14 66q5 16 22 17h54"/>
+                <path d="M57 222h335"/>
+              </g>
+              <path d="M114 120q-13 1-18 14-4 10 1 25l10 25q3 8 12 8h51l35 19h24q8-1 4-7l-20-10-31-26q-5-4-12-4h-30l-13-29m6-20 11-1q6 0 6-5l-1-5 5-2-7-9q-4-17-18-17-17 0-22 16-4 15 7 23l1 5m21 17 24 15 42-14q8-2 10 2 2 5-4 8l-45 22q-5 2-10 0l-22-12"/>
+              <ellipse cx="218" cy="147" rx="5" ry="21" transform="rotate(-30 218 147)"/><path d="M227 150l35 13" opacity=".55"/>
+              <path d="m264 110 28 17m-22-19 27 17M144 96l134 21m4-7 22-23h83" stroke-dasharray="2 4"/>
+              <circle cx="144" cy="96" r="2" fill="currentColor"/><circle cx="278" cy="117" r="2" fill="currentColor"/>
+            </g>
+            <g fill="currentColor" font-family="monospace" font-size="12"><text x="314" y="79">Blickziel</text></g>
+          </svg>
+          <figcaption>Seitenansicht · Blicklinie zum Head-up-Display</figcaption>
+        </figure>
+      </div>
+    </section>
+
   </main>
 
 </div>
@@ -573,6 +797,8 @@ main>.chapter:first-child{border-top:0}
   const set = () => { box.style.setProperty('--split', range.value + '%'); range.setAttribute('aria-valuetext', range.value + ' Prozent'); };
   range.addEventListener('input', set); set();
 })();
+</script>
+<script>
 // Agent map: every connector is measured from the real boxes, so lines meet edges at any width.
 // Roles are buttons that open one info panel. Optional live status: when the page is served over
 // http and a case-studyer-status.json sits next to it, active agents pulse. No file, no pulse.
@@ -612,7 +838,7 @@ main>.chapter:first-child{border-top:0}
     const G = {};
     G.in = bus(ins.map(i => i.cx), yi, Math.max(...ins.map(i => i.b)), false, false).join('') + arrow(x, yi, x, core.t);
     const keys = [...map.querySelectorAll('.roles .role')].map(r => r.dataset.agent);
-    GEO.in = { x, y1: yi, y2: core.t };
+    GEO.in = { y: yi, right: Math.max(core.r, ...ins.map(i => i.r)) };
     if (oneRow) {
       const top = (core.b + box.t) / 2, bot = (box.b + out.t) / 2;
       G.trunk = `<path d="M${x} ${core.b} V${top}"/>`;
@@ -626,29 +852,31 @@ main>.chapter:first-child{border-top:0}
     G.rev = arrow(x, out.b, x, rev.t); GEO.rev = { x, y1: out.b, y2: rev.t };
     const d = Object.values(G).join('');
     const cls = k => [seen.has(k) && 'on', now.has(k) && 'now', doneSet.has(k) && 'done'].filter(Boolean).join(' ');
-    const ov = k => `<g data-step="${k}" class="${cls(k)}">${(k === 'loop' ? `<path d="${loop}"/>` : G[k]).replaceAll('<path ', '<path pathLength="1" ')}</g>`;
+    const ov = k => `<g data-step="${k}" class="${cls(k)}">${k === 'loop' ? `<path d="${loop}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#loop-reveal)"/>` : G[k].replaceAll('<path ', '<path pathLength="1" ')}</g>`;
     const lab = map.querySelector('.map-loop--in .label'), cell = lab.parentElement.getBoundingClientRect();
     lab.style.top = ((core.cy + out.cy) / 2 + m.top - cell.top) + 'px';
     const xi = R(lab).r + 10;
     const loop = `M${out.l - 4} ${out.cy} H${xi + k} Q${xi} ${out.cy} ${xi} ${out.cy - k} V${core.cy + k} Q${xi} ${core.cy} ${xi + k} ${core.cy} H${core.l - 6}`;
-    GEO.loop = { x: xi, y1: core.cy, y2: out.cy };
+    GEO.loop = { x: xi, y1: core.cy, y2: out.cy, left: xi + k, right: core.l - 6 };
     svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
     svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--flow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--blue-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
+      `<defs><mask id="loop-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${loop}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask></defs>` +
       `<g class="base" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
       `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>` +
       `<g class="flow" fill="none" stroke-linecap="butt" stroke-linejoin="round">${['in', 'trunk', ...keys.map(k => 'fan-' + k), 'join', 'rev', 'loop'].map(ov).join('')}</g>`;
   };
-  new ResizeObserver(() => { draw(); placeCap(); }).observe(map); document.fonts?.ready.then(draw); draw();
+  const redraw = () => { draw(); if (activeStep) { lineStages = stage(); drawProgress(lineElapsed); } placeCap(); };
+  new ResizeObserver(redraw).observe(map); document.fonts?.ready.then(redraw); draw();
 
   // Facts per role from Design-Tool/Plan.md (22.11.2026); persona = how each agent introduces itself.
   // "Status" says what really exists today.
   const A = {
-    orchestrator: { t: 'Portfolio Agent', i: '#i-core',
+    orchestrator: { t: 'Portfolio Orchestrator', i: '#i-core',
       d: 'Leitet das System. Er liest die gemeinsamen Regeln und den case-study-Skill, fragt Lucas offene Entscheidungen einzeln ab und gibt nur freigegebene Schritte an die Sub-Agenten weiter. Jedes Ergebnis gleicht er mit den Vorgaben ab und schickt Abweichungen zurück. Als Hermes-Bot eingerichtet.',
       in: 'Project Files, Projektlog, Lucas’ Freigaben', out: 'Aufträge an die Sub-Agenten, Status je Projekt', tool: 'Hermes-Profil „portfolio“' },
     files: { t: 'Project Files', i: '#i-folder',
       d: 'Die Quellen eines Projekts: Repo, Screens, Notizen und Rohtext. Gelesen wird nur, was Lucas zu Projektstart freigibt; die Originale bleiben unverändert.',
-      in: 'Lucas’ freigegebene Ordner', out: 'Lesezugriff für Portfolio und Projektlog Agent', tool: 'Lokale Dateien' },
+      in: 'Lucas’ freigegebene Ordner', out: 'Lesezugriff für den Portfolio Orchestrator und den Projektlog Agent', tool: 'Lokale Dateien' },
     projektlog: { t: 'Projektlog Agent', i: '#i-log',
       d: 'Führt das Gedächtnis eines Projekts. Er prüft täglich das freigegebene Repo auf Änderungen und schreibt nur belegte, datierte Einträge, getrennt nach echter Datierung und späterer Erfassung. Läuft für ApartScan täglich um 20:00.',
       in: 'Projektstart, Arbeitssitzungen, Quelländerungen', out: 'Ein log.md pro Projekt', tool: 'Git-Metadaten-Skript, Cron' },
@@ -659,7 +887,7 @@ main>.chapter:first-child{border-top:0}
       d: 'Setzt freigegebenen Text in die UI-Bausteine der Case Study um, etwa Empathy Map, User-Flow und Nutzerprofil, mit to.morrow und Unify als Codevorbild. Jede Vorschau rendert und prüft er auf Desktop und Handy; live geht nichts. Diese Seite ist sein Baustein-Katalog.',
       in: 'Freigegebener Text, reale Medien', out: 'Lokale HTML-Vorschau', tool: 'HTML, CSS, JS' },
     wireframes: { t: 'Wireframe Agent', i: '#i-wire',
-      d: 'Übersetzt echte Screens und Abläufe in Wireframes und Wireflows, eine Aussage pro Bild, im Stil des wireframes-Skills. Er erfindet keine Screens oder Schritte und liefert an den Portfolio Agent. Als eigener Hermes-Bot eingerichtet; Figma ist noch nicht verbunden.',
+      d: 'Übersetzt echte Screens und Abläufe in Wireframes und Wireflows, eine Aussage pro Bild, im Stil des wireframes-Skills. Er erfindet keine Screens oder Schritte und liefert an den Portfolio Orchestrator. Als eigener Hermes-Bot eingerichtet; Figma ist noch nicht verbunden.',
       in: 'Echte Screens und Flows', out: 'SVG/PNG, später mit Figma-Link', tool: 'Hermes-Profil „wireframes“, wireframes-Skill; Figma folgt' },
     '3d': { t: '3D Agent', i: '#i-cube',
       d: 'Optional. Baut räumlich präzise Posen und Blickwinkel, wenn eine Skizze nicht reicht, und prüft die Mechanik gegen das Ausgangsmaterial. Noch nicht eingerichtet.',
@@ -668,13 +896,14 @@ main>.chapter:first-child{border-top:0}
       d: 'Optional. Zeigt Nutzungsszenen und Bildstil, ohne das Original zu verändern; Look und Einsatz gibt Lucas frei. Noch nicht verbunden.',
       in: 'Vorhandene Bilder, definierter Zweck', out: 'Bildstil oder Nutzungsszenen', tool: 'ComfyUI-Workflow' },
     output: { t: 'Case Study Output', i: '#i-check',
-      d: 'Der Portfolio Agent setzt die Ergebnisse der Sub-Agenten zur Case Study zusammen und prüft sie gegen Skill, Portfolio-Regeln und Quellen. Bei Abweichung gehen sie zurück an den zuständigen Agenten; erst danach prüft Lucas. Noch ist keine Case Study fertig.',
+      d: 'Der Portfolio Orchestrator setzt die Ergebnisse der Sub-Agenten zur Case Study zusammen und prüft sie gegen Skill, Portfolio-Regeln und Quellen. Bei Abweichung gehen sie zurück an den zuständigen Agenten; erst danach prüft Lucas. Noch ist keine Case Study fertig.',
       in: 'Ergebnisse aller Sub-Agenten', out: 'Lokale HTML-Vorschau für Lucas', tool: 'case-study-Skill, Portfolio-Regeln' },
   };
 
   // Bot Chat ids are read from each Hermes profile at build time (build.py, botchat marker).
-  const CHAT = { portfolio: 'hermes://open/c/{{botchat:portfolio}}', wireframes: 'hermes://open/c/{{botchat:wireframes}}' };
-  const BOT = { orchestrator: 'portfolio', wireframes: 'wireframes' };
+  const CHAT = { portfolio: 'hermes://open/c/{{botchat:portfolio}}' };
+  // Cross-profile Bot Chats need a profile-aware open; generic deep links only navigate.
+  const BOT = { orchestrator: 'portfolio' };
   const panel = $('agent-panel'); let opener = null;
   const close = () => { if (panel.hidden) return; panel.hidden = true; map.classList.remove('has-panel'); opener?.setAttribute('aria-expanded', 'false'); opener?.focus(); opener = null; };
   const place = () => {
@@ -704,8 +933,9 @@ main>.chapter:first-child{border-top:0}
     $('ap-in').textContent = a.in; $('ap-out').textContent = a.out; $('ap-tool').textContent = a.tool;
     const key = btn.dataset.agent, own = BOT[key], link = $('ap-chat');
     link.hidden = key === 'files';
-    link.href = CHAT[own || 'portfolio'];
-    $('ap-chat-txt').textContent = own ? 'Chat in Hermes öffnen' : 'Chat im Portfolio Agent öffnen';
+    const wireframes = key === 'wireframes';
+    link.href = wireframes ? 'hermes://launch' : CHAT[own || 'portfolio'];
+    $('ap-chat-txt').textContent = wireframes ? 'Hermes öffnen · Bots → Wireframe Agent' : own ? 'Chat in Hermes öffnen' : 'Chat im Portfolio Orchestrator öffnen';
     panel.hidden = false; map.classList.add('has-panel'); place(); panel.focus({ preventScroll: true });
   };
   map.querySelectorAll('.agent').forEach(b => b.addEventListener('click', () => open(b)));
@@ -719,15 +949,15 @@ main>.chapter:first-child{border-top:0}
   // Every box and every line is explained once; then the result is checked and three deviations
   // are fixed, each by the agent responsible. cap.box = caption beside a box, cap.line = beside a line.
   const fix = (agent, t) => [
-    { lines: ['trunk', 'fan-' + agent], cur: ['orchestrator'], to: [agent], cap: { box: agent, t } },
+    { lines: ['fan-' + agent], keep: ['trunk'], cur: ['orchestrator'], to: [agent], cap: { box: agent, side: 'right', t } },
     { lines: ['join'], cur: [agent], to: ['output'], cap: { box: 'output', t: 'Der korrigierte Teil wird wieder in die HTML-Seite eingebaut.' } },
-    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Der Portfolio Agent prüft die Seite erneut.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', line: 'loop', t: 'Der Portfolio Orchestrator prüft die Seite erneut.' } },
   ];
   const STEPS = [
     { cur: ['files'], lit: ['files'], cap: { box: 'files', t: 'Project Files: Repo, Screens, Notizen und Rohtext des Projekts, so weit Lucas sie freigibt.' } },
     { cur: ['projektlog'], lit: ['projektlog'], cap: { box: 'projektlog', t: 'Projektlog: Der Projektlog Agent prüft täglich, was sich geändert hat, und hält jede Entscheidung belegt und datiert fest.' } },
-    { lines: ['in'], cur: ['files', 'projektlog'], to: ['orchestrator'], cap: { box: 'projektlog', t: 'Beide sind die Quelle und der Input. Sie gehen an den Portfolio Agent.' } },
-    { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Der Portfolio Agent erstellt einen Plan und das Gerüst der Seite und zerlegt die Arbeit in Aufgaben.' } },
+    { lines: ['in'], cur: ['files', 'projektlog'], to: ['orchestrator'], cap: { box: 'projektlog', line: 'in', t: 'Beide sind die Quelle und der Input. Sie gehen an den Portfolio Orchestrator.' } },
+    { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Der Portfolio Orchestrator erstellt einen Plan und das Gerüst der Seite und zerlegt die Arbeit in Aufgaben.' } },
     { lines: ['trunk'], cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Er verteilt die Aufgaben an die Sub-Agenten.' } },
     { lines: ['fan-struktur'], to: ['struktur'], cap: { box: 'struktur', t: 'Struktur & Text Agent: gliedert die Case Study und schreibt den Text, jede Aussage mit Quelle.' } },
     { lines: ['fan-ui'], to: ['ui'], cap: { box: 'ui', t: 'UI-Elemente Agent: baut die Bausteine der Seite, etwa Empathy Map, User-Flow und Nutzerprofil.' } },
@@ -736,51 +966,93 @@ main>.chapter:first-child{border-top:0}
     { lines: ['fan-bilder'], to: ['bilder'], cap: { box: 'bilder', t: 'Bild Agent (optional): erzeugt Nutzungsszenen mit ComfyUI, ohne das Original zu verändern.' } },
     { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], cap: { box: 'output', t: 'Alle Teile werden zu einer HTML-Seite zusammengesetzt.' } },
     { cur: ['output'], cap: { box: 'output', t: 'Case Study Output: die lokale HTML-Seite der Case Study.' } },
-    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Das Ergebnis geht zurück an den Portfolio Agent. Er prüft es gegen Skill, Portfolio-Regeln und Quellen.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Das Ergebnis geht zurück an den Portfolio Orchestrator. Er prüft es gegen Skill, Portfolio-Regeln und Quellen.' } },
     ...fix('struktur', 'Abweichung 1: Eine Aussage im Text ist nicht belegt. Der Struktur & Text Agent korrigiert sie.'),
     ...fix('wireframes', 'Abweichung 2: Ein Wireframe zeigt einen Screen, den es so nicht gibt. Der Wireframe Agent zeichnet ihn neu.'),
     ...fix('ui', 'Abweichung 3: Ein Baustein bricht am Handy um. Der UI-Elemente Agent passt ihn an.'),
     { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Keine Abweichung mehr: Die Seite passt zu den Vorgaben.' } },
     { lines: ['rev'], cur: ['output'], to: ['#map-review'], cap: { box: '#map-review', t: 'Erst jetzt geht die Seite an Lucas. Er prüft die lokale Vorschau und gibt frei.' }, read: 1500 },
   ];
-  let timers = [], liveOn = false, capAt = null;
-  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+  let liveOn = false, capAt = null, frame = 0, activeStep = null, lineStages = [], lineElapsed = 0;
+  const seek = $('map-seek'), end = $('map-close');
+  let stepIndex = -1, position = 0, lastFrame, timeline = [], total = 0, paused = false, scrubbing = false, arrived, rate = 1;
   const paint = () => svg.querySelectorAll('g[data-step]').forEach(g => { const k = g.dataset.step; g.setAttribute('class', [seen.has(k) && 'on', now.has(k) && 'now', doneSet.has(k) && 'done'].filter(Boolean).join(' ')); });
-  const drawLines = (keys, ms) => {
-    now.clear(); keys.forEach(k => { seen.add(k); now.add(k); doneSet.delete(k); });
-    svg.querySelectorAll('g.now').forEach(g => g.setAttribute('class', 'on')); svg.getBoundingClientRect();   // restart a redrawn line
-    paint(); stage(ms); later(() => { keys.forEach(k => doneSet.add(k)); paint(); }, ms);
-  };
-  // Inside a step, branches run in parallel, then the arrow into the next box; durations follow length,
-  // so the pen moves at one steady speed instead of every piece starting and stopping together.
-  const stage = ms => {
-    const paths = [...svg.querySelectorAll('g.now path')]; if (!paths.length || !ms) return;
-    const len = p => { try { return p.getTotalLength(); } catch { return 1; } };
+  // Inside a step, branches run in parallel, then the arrow into the next box.
+  const stage = () => {
+    const paths = [...svg.querySelectorAll('g.now:not(.done)>path')], drawMs = activeStep.lineMs;
+    if (!paths.length || !drawMs) return [];
     const last = paths.filter(p => p.hasAttribute('marker-end')), first = paths.filter(p => !last.includes(p));
     const stages = first.length && last.length ? [first, last] : [paths];
-    const L = stages.map(st => Math.max(...st.map(len))), total = L.reduce((a, b) => a + b, 0) || 1;
-    let t0 = 0;
-    stages.forEach((st, i) => {
-      const d = ms * L[i] / total, ease = stages.length === 1 ? 'cubic-bezier(.4,0,.2,1)' : i === 0 ? 'cubic-bezier(.4,0,1,1)' : 'cubic-bezier(0,0,.2,1)';
-      st.forEach(p => { p.style.animationDuration = d * len(p) / L[i] + 'ms'; p.style.animationDelay = t0 + 'ms'; p.style.animationTimingFunction = ease; });
-      t0 += d;
+    const lengths = new Map(paths.map(p => [p, p.getTotalLength()]));
+    const longest = stages.map(st => Math.max(...st.map(p => lengths.get(p))));
+    const speed = (longest.reduce((a, b) => a + b, 0) || 1) / drawMs;
+    let delay = 0;
+    return stages.flatMap((group, i) => {
+      const strokes = group.map(p => ({ p: p.hasAttribute('mask') ? svg.querySelector('#loop-reveal path') : p, delay, duration: lengths.get(p) / speed }));
+      delay += longest[i] / speed; return strokes;
     });
   };
-  const setCurrent = els => map.querySelectorAll('.agent, .node').forEach(e => e.classList.toggle('is-current', els.includes(e)));
+  const drawProgress = elapsed => lineStages.forEach(({p, delay, duration}) => {
+    const t = Math.min(1, elapsed / activeStep.lineMs), eased = t * t * (3 - 2 * t) * activeStep.lineMs;
+    const progress = Math.max(0, Math.min(1, (eased - delay) / (duration || 1)));
+    p.style.strokeDasharray = progress < 1 ? '1 1' : '';
+    p.style.strokeDashoffset = progress < 1 ? String(1 - progress) : '';
+  });
+  const setCurrent = key => {
+    const current = key ? node(key) : null;
+    map.querySelectorAll('.agent, .node').forEach(e => e.classList.toggle('is-current', e === current));
+  };
   // Captions never leave the frame (the page clips overflow). Plain text sits in the free space beside
-  // its anchor box; a sub-agent's caption is a grey card under its box, overlapping the lines there.
+  // its anchor box; role captions use the space beside output, clear of other boxes and connectors.
   const placeCap = () => {
     if (!capAt || cap.hidden) return;
-    cap.classList.remove('cap-dock', 'is-card', 'to-left'); cap.style.width = '';
+    map.querySelectorAll('.cap-covered').forEach(e => e.classList.remove('cap-covered'));
+    cap.classList.remove('cap-dock', 'cap-role', 'cap-loop-narrow', 'to-left'); cap.style.width = '';
     const m = map.getBoundingClientRect(), pad = 14, g = 18, inner = { l: pad, r: m.width - pad };
     const el = node(capAt.box), b = el.getBoundingClientRect(), bx = { l: b.left - m.left, r: b.right - m.left, t: b.top - m.top, b: b.bottom - m.top };
     const dock = () => { cap.classList.add('cap-dock'); };
+    if (capAt.line === 'in') {
+      const x = GEO.in.right + 14, room = inner.r - x;
+      if (room < 130) return dock();
+      cap.style.width = Math.min(260, room) + 'px';
+      cap.style.left = x + 'px';
+      cap.style.top = (GEO.in.y - cap.offsetHeight / 2) + 'px';
+      return;
+    }
+    if (capAt.line === 'loop') {
+      const line = GEO.loop, left = Math.max(inner.l, line.left - 4);
+      const narrow = line.right - left < 110;
+      cap.classList.toggle('cap-loop-narrow', narrow);
+      cap.style.width = Math.min(260, narrow ? inner.r - left : line.right - left + 4) + 'px';
+      cap.style.left = left + 'px';
+      cap.style.top = ((narrow ? bx.t : line.y1) - cap.offsetHeight - 6) + 'px';
+      return;
+    }
     if (el.closest('.roles')) {
-      cap.classList.add('is-card');
-      const w = Math.min(250, inner.r - inner.l); cap.style.width = w + 'px';
-      if (m.width < 520) return dock();
-      cap.style.left = Math.max(inner.l, Math.min(bx.l + (bx.r - bx.l) / 2 - w / 2, inner.r - w)) + 'px';
-      cap.style.top = (bx.b + 12) + 'px';
+      cap.classList.add('cap-role');
+      if (capAt.side === 'right') {
+        const x = bx.r + 10, room = inner.r - x;
+        if (room >= 130) {
+          cap.style.width = Math.min(230, room) + 'px'; cap.style.left = x + 'px';
+          cap.style.top = (bx.t + (bx.b - bx.t - cap.offsetHeight) / 2) + 'px';
+          const c = cap.getBoundingClientRect();
+          map.querySelectorAll('.roles .role').forEach(e => {
+            const r = e.getBoundingClientRect();
+            if (e !== el && r.left < c.right && r.right > c.left && r.top < c.bottom && r.bottom > c.top) e.classList.add('cap-covered');
+          });
+          return;
+        }
+      }
+      const review = $('map-review').getBoundingClientRect(), output = $('map-check').getBoundingClientRect();
+      const left = capAt.side !== 'right' && (bx.l + bx.r) / 2 < m.width / 2 - 1;
+      const lo = left ? Math.max(inner.l, GEO.loop.x + 8) : Math.max(review.right, output.right) - m.left + 14;
+      const hi = left ? Math.min(review.left, output.left) - m.left - 14 : inner.r;
+      if (hi - lo < 160) return dock();
+      const w = Math.min(250, hi - lo);
+      cap.style.width = w + 'px';
+      cap.style.left = Math.max(lo, Math.min(bx.l, hi - w)) + 'px';
+      cap.style.top = (left ? GEO.loop.y2 + 9 : output.top - m.top) + 'px';
+      if (parseFloat(cap.style.top) + cap.offsetHeight > m.height - pad) dock();
       return;
     }
     // free space left and right of everything in this box's band (boxes, loop line and its label)
@@ -796,45 +1068,116 @@ main>.chapter:first-child{border-top:0}
     cap.style.top = (bx.t + (bx.b - bx.t) / 2 - cap.offsetHeight / 2) + 'px';
   };
   const showCap = c => {
-    cap.classList.remove('show');
-    if (!c) { capAt = null; later(() => { cap.hidden = true; }, 450); return; }
-    later(() => { capAt = c; cap.textContent = c.t; cap.hidden = false; placeCap(); requestAnimationFrame(() => cap.classList.add('show')); }, cap.hidden ? 0 : 300);
+    capAt = c; cap.hidden = !c;
+    if (c) { cap.textContent = c.t; placeCap(); }
+    else map.querySelectorAll('.cap-covered').forEach(e => e.classList.remove('cap-covered'));
   };
+  const speed = document.createElement('span'); speed.className = 'map-speed'; speed.textContent = '2×'; speed.setAttribute('aria-hidden', 'true'); map.append(speed);
+  let hold = null, skipClick = false;
+  const release = () => {
+    if (hold) clearTimeout(hold.timer);
+    hold = null; rate = 1; map.classList.remove('is-fast');
+  };
+  map.addEventListener('pointerdown', e => {
+    if (!e.isPrimary || e.button !== 0 || activeStep === null || paused || (e.target.closest('button, input, a, [role="dialog"]') && !play.contains(e.target))) return;
+    skipClick = false;
+    hold = { id: e.pointerId, x: e.clientX, y: e.clientY, timer: setTimeout(() => {
+      rate = 2; skipClick = true; map.classList.add('is-fast');
+    }, 240) };
+  });
+  window.addEventListener('pointermove', e => { if (hold?.id === e.pointerId && rate === 1 && Math.hypot(e.clientX - hold.x, e.clientY - hold.y) > 10) release(); });
+  ['pointerup', 'pointercancel'].forEach(type => window.addEventListener(type, e => { if (hold?.id === e.pointerId) release(); }));
+  window.addEventListener('blur', release);
+  map.addEventListener('contextmenu', e => { if (hold || rate === 2) e.preventDefault(); });
+  play.addEventListener('pointerdown', () => { skipClick = false; });
   const stop = () => {
-    timers.forEach(clearTimeout); timers = []; seen.clear(); now.clear(); doneSet.clear(); paint();
+    cancelAnimationFrame(frame); activeStep = null; release(); seen.clear(); now.clear(); doneSet.clear(); paint();
     map.querySelectorAll('.is-lit, .is-current').forEach(e => e.classList.remove('is-lit', 'is-current'));
-    capAt = null; cap.classList.remove('show'); cap.hidden = true;
+    showCap(null);
+    seek.hidden = end.hidden = true; scrubbing = false;
     map.classList.remove('is-playing'); play.setAttribute('aria-pressed', 'false'); play.setAttribute('aria-label', 'Workflow abspielen'); play.querySelector('.map-play-txt').textContent = 'Workflow abspielen';
+  };
+  const mark = keys => keys.forEach(k => node(k)?.classList.add('is-lit'));
+  const prepare = () => {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    total = 0;
+    timeline = STEPS.map(st => {
+      const lines = st.lines || [], to = st.to?.[0];
+      const fan = lines.some(k => k.startsWith('fan-'));
+      const keep = st.keep || (fan ? ['trunk'] : []);
+      const lineMs = reduce || !lines.length ? 0
+        : (fan || lines.includes('trunk') ? 360 : 500);
+      const start = total;
+      total += lineMs + Math.max(1800, 700 + (st.cap?.t.length || 0) * 19) + (st.read || 0);
+      return { st, lines, keep, to, lineMs, start };
+    });
+    seek.max = total;
+  };
+  const renderAt = (ms, rebuild = false) => {
+    position = Math.min(total, Math.max(0, ms)); seek.value = Math.round(position);
+    const valueText = `${Math.floor(position / 1000)} von ${Math.ceil(total / 1000)} Sekunden`;
+    if (seek.getAttribute('aria-valuetext') !== valueText) seek.setAttribute('aria-valuetext', valueText);
+    const i = Math.max(0, timeline.findLastIndex(s => s.start <= position));
+    if (rebuild || i !== stepIndex) {
+      stepIndex = i; activeStep = timeline[i]; arrived = false;
+      seen.clear(); now.clear(); doneSet.clear();
+      svg.querySelectorAll('g[data-step]>path, #loop-reveal path').forEach(p => { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; });
+      map.querySelectorAll('.is-lit').forEach(e => e.classList.remove('is-lit'));
+      const complete = k => { seen.add(k); doneSet.add(k); };
+      timeline.slice(0, i).forEach(({st, lines, keep}) => { lines.forEach(complete); keep.forEach(complete); mark([...(st.lit || []), ...(st.to || [])]); });
+      const {st, lines, keep, lineMs} = activeStep;
+      mark(st.lit || []);
+      keep.forEach(k => { complete(k); now.add(k); });
+      lines.forEach(k => { seen.add(k); now.add(k); doneSet.delete(k); });
+      paint(); lineStages = stage();
+      if (lineMs) setCurrent(st.cur?.[0] ?? 'orchestrator');
+      showCap(st.cap);
+    }
+    const {st, to, lines, lineMs, start} = activeStep;
+    drawProgress(lineElapsed = Math.min(lineMs, position - start));
+    if (!arrived && lineElapsed >= lineMs) {
+      arrived = true; lines.forEach(k => doneSet.add(k)); paint();
+      mark(st.to || []); setCurrent(to ?? st.cur?.[0]);
+      if (capAt !== st.cap) showCap(st.cap);
+    }
+  };
+  const updateTransport = () => {
+    play.setAttribute('aria-pressed', String(!paused));
+    play.setAttribute('aria-label', paused ? (position >= total ? 'Animation erneut abspielen' : 'Animation fortsetzen') : 'Animation pausieren');
+  };
+  const pause = () => { paused = true; cancelAnimationFrame(frame); release(); updateTransport(); };
+  const tick = time => {
+    if (lastFrame !== null && !scrubbing) renderAt(position + Math.min(80, time - lastFrame) * rate);
+    lastFrame = time;
+    if (position >= total && !scrubbing) return pause();
+    frame = requestAnimationFrame(tick);
+  };
+  const resume = () => {
+    if (position >= total) renderAt(0, true);
+    paused = false; lastFrame = null; updateTransport(); frame = requestAnimationFrame(tick);
   };
   const start = () => {
     if (liveOn) return; close(); stop();
-    map.classList.add('is-playing'); play.setAttribute('aria-pressed', 'true'); play.setAttribute('aria-label', 'Animation stoppen'); play.querySelector('.map-play-txt').textContent = 'Stopp';
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, drawMs = reduce ? 0 : 2800, readMs = 2200;
-    map.style.setProperty('--draw', drawMs / 1000 + 's');
-    let t = 0;
-    STEPS.forEach(st => {
-      const lineMs = st.lines && st.lines.some(k => svg.querySelector(`g[data-step="${k}"] path`)) ? drawMs : 0;
-      later(() => {
-        const cur = (st.cur || st.to || []).map(node).filter(Boolean);
-        (st.lit || []).map(node).forEach(e => e && e.classList.add('is-lit'));
-        setCurrent(cur); showCap(st.cap);
-        if (st.lines) drawLines(st.lines, lineMs);
-        later(() => {
-          const to = (st.to || []).map(node).filter(Boolean);
-          to.forEach(e => e.classList.add('is-lit'));
-          if (to.length) setCurrent(to);
-        }, lineMs);
-      }, t);
-      t += lineMs + (st.cap ? Math.round(0.7 * Math.max(readMs, 900 + st.cap.t.length * 30)) : readMs) + (st.read || 0);
-    });
-    later(() => { showCap(null); setCurrent([]); }, t);
-    later(stop, t + 900);
+    map.classList.add('is-playing'); seek.hidden = end.hidden = false;
+    prepare(); renderAt(0, true); resume();
   };
-  play.addEventListener('click', () => play.getAttribute('aria-pressed') === 'true' ? stop() : start());
+  play.addEventListener('click', e => {
+    if (skipClick && e.detail !== 0) { skipClick = false; return; }
+    if (!activeStep) start(); else if (paused) resume(); else pause();
+  });
+  end.addEventListener('click', () => { stop(); play.focus({preventScroll:true}); });
+  seek.addEventListener('pointerdown', () => { scrubbing = true; release(); });
+  ['pointerup', 'pointercancel'].forEach(type => window.addEventListener(type, () => { scrubbing = false; }));
+  seek.addEventListener('input', () => { renderAt(seek.valueAsNumber, true); if (paused) updateTransport(); });
+  seek.addEventListener('keydown', e => {
+    const jump = {ArrowLeft: -5000, ArrowDown: -5000, ArrowRight: 5000, ArrowUp: 5000}[e.key];
+    if (!jump) return;
+    e.preventDefault(); renderAt(position + jump, true); if (paused) updateTransport();
+  });
   const setLive = on => {
     liveOn = on; if (on) stop();
-    play.disabled = on; play.querySelector('.map-play-txt').textContent = on ? 'Live' : (play.getAttribute('aria-pressed') === 'true' ? 'Stopp' : 'Workflow abspielen');
-    play.setAttribute('aria-label', on ? 'Live-Ansicht aktiv, Animation pausiert' : 'Workflow abspielen');
+    play.disabled = on; play.querySelector('.map-play-txt').textContent = on ? 'Live' : 'Workflow abspielen';
+    if (!activeStep) play.setAttribute('aria-label', on ? 'Live-Ansicht aktiv, Animation pausiert' : 'Workflow abspielen');
   };
 
   // Live status (optional): {"updated": ISO, "active": {"projektlog": "what it does now", ...}}
@@ -846,8 +1189,8 @@ main>.chapter:first-child{border-top:0}
       if (!r.ok) throw 0;
       const j = await r.json(), act = j.active || {};
       map.querySelectorAll('.agent').forEach(b => { const on = b.dataset.agent in act; b.classList.toggle('is-active', on); b.title = on ? act[b.dataset.agent] : ''; });
-      setLive(Object.keys(act).length > 0);
       const names = Object.keys(act).map(k => A[k]?.t).filter(Boolean);
+      setLive(names.length > 0);
       live.textContent = (names.length ? 'Gerade aktiv: ' + names.join(', ') : 'Kein Agent aktiv') + (j.updated ? ' · Stand ' + new Date(j.updated).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '');
       live.hidden = false;
     } catch { map.querySelectorAll('.agent.is-active').forEach(b => b.classList.remove('is-active')); live.hidden = true; setLive(false); }
@@ -855,8 +1198,67 @@ main>.chapter:first-child{border-top:0}
   poll(); setInterval(poll, 4000);
 })();
 </script>
-<script>/*@src:tomorrow:js:wireflow-connectors*/</script>
+<script>
+// The portfolio's down/up thresholds, measured only once the island is docked.
+(() => {
+  const nav = document.querySelector('.agent-nav');
+  const previous = nav.previousElementSibling;
+  let anchor = Math.max(0, scrollY);
+  let docked = false;
+  function setHidden(hidden) {
+    nav.classList.toggle('is-hidden', hidden);
+    anchor = Math.max(0, scrollY);
+  }
+  function update() {
+    const y = Math.max(0, scrollY);
+    const inset = parseFloat(getComputedStyle(nav).top);
+    const hasDocked = previous ? previous.getBoundingClientRect().bottom <= inset : y > 0;
+    if (!hasDocked || y === 0 || nav.matches(':focus-within')) {
+      docked = hasDocked;
+      setHidden(false);
+      return;
+    }
+    if (!docked) {
+      docked = true;
+      anchor = previous ? y + previous.getBoundingClientRect().bottom - inset : 0;
+    }
+    if (nav.classList.contains('is-hidden')) {
+      anchor = Math.max(y, anchor);
+      if (anchor - y >= 126) setHidden(false);
+    } else {
+      anchor = Math.min(y, anchor);
+      if (y - anchor >= 250) setHidden(true);
+    }
+  }
+  addEventListener('scroll', update, {passive:true});
+  addEventListener('resize', update);
+  nav.addEventListener('focusin', () => setHidden(false));
+})();
+</script>
+<script>
+// The 2D portfolio drops the outer shading over the full-bleed hero and
+// restores it past its bottom (with the original 60px offset).
+(() => {
+  const nav = document.querySelector('.agent-nav');
+  // The catalogue specimen is not a full-bleed page hero.
+  const hero = document.querySelector('main > .hero');
+  const update = () => {
+    if (!hero) nav.classList.add('is-2d-mode');
+    else if (hero.offsetHeight > 0) nav.classList.toggle('is-2d-mode', hero.getBoundingClientRect().bottom < 60);
+  };
+  let frame;
+  const request = () => { if (!frame) frame = requestAnimationFrame(() => { frame = null; update(); }); };
+  addEventListener('scroll', request, {passive:true});
+  addEventListener('resize', request);
+  addEventListener('load', update);
+  addEventListener('pageshow', update);
+  if (hero) new ResizeObserver(request).observe(hero);
+  update();
+})();
+/*@src:portfolio:js:nav-light*/
+</script>
 <!--@src:tomorrow:scroll-track-->
 <script>/*@src:tomorrow:js:scroll-dots*/</script>
+<script>/*@src:lab:js:section-copy*/</script>
 </body>
 </html>
