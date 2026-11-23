@@ -54,7 +54,7 @@ main>.chapter:first-child{border-top:0}
 
 /* ── 00 Agent map: one orchestrator; the role boxes are a target picture, not running agents ── */
 .map-intro{margin:0 0 clamp(20px,2.4vw,28px);font-size:16px;line-height:1.6;color:var(--text-secondary)}
-.map{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;gap:0 14px;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px);position:relative}
+.map{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;gap:0 14px;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px) clamp(60px,6vw,68px);position:relative}
 .map-main{display:flex;flex-direction:column;align-items:center;min-width:0;position:relative;z-index:1}
 .node{display:flex;align-items:center;gap:12px;border:1px solid var(--border-color);border-radius:16px;padding:10px 18px;max-width:100%;background:#fff;font:inherit;color:inherit;text-align:left;line-height:1.3}
 .node svg{width:22px;height:22px;flex:none;color:var(--blue-deep)}
@@ -78,6 +78,20 @@ main>.chapter:first-child{border-top:0}
 @media(prefers-reduced-motion:reduce){.agent.is-active{animation:none;box-shadow:0 0 0 3px rgba(71,95,126,.35)}}
 .map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--border-color)}
 .map-svg .loop{color:var(--blue-deep)}
+.map-svg g[data-step]{transition:color .25s ease,stroke-width .25s ease}
+.map-svg g[data-step].on{color:var(--blue-deep);stroke-width:2.2}
+.map-svg g[data-step].on path{stroke-dasharray:7 5;animation:flow-dash .7s linear infinite}
+.map-svg g[data-step="loop"].on path{stroke-width:2.2}
+@keyframes flow-dash{to{stroke-dashoffset:-12}}
+.map .is-lit{border-color:var(--blue-deep)!important;background:#EEF2F7!important;box-shadow:0 0 0 4px rgba(71,95,126,.16);transition:background-color .25s ease,border-color .25s ease,box-shadow .25s ease}
+.map.is-playing .agent,.map.is-playing .node{transition:background-color .25s ease,border-color .25s ease,box-shadow .25s ease,opacity .25s ease}
+.map.is-playing .map-main .agent:not(.is-lit),.map.is-playing .map-main .node:not(.is-lit){opacity:.7}
+.map-play{position:absolute;right:14px;bottom:14px;z-index:4;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 11px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font:600 12.5px/1 inherit;cursor:pointer;transition:background-color .15s ease}
+.map-play:hover{background:#34475F}.map-play:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
+.map-play svg{width:14px;height:14px}.map-play .i-stop,.map-play[aria-pressed="true"] .i-play{display:none}.map-play[aria-pressed="true"] .i-stop{display:block}
+.map-play:disabled{background:#8A97A8;cursor:default}
+@media(max-width:560px){.map-play{right:10px;bottom:10px;height:32px;padding:0 10px}.map-play-txt{display:none}}
+@media(prefers-reduced-motion:reduce){.map-svg g[data-step].on path{animation:none;stroke-dasharray:none}}
 .map-loop{position:relative;z-index:1}
 .map-loop .label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(180deg);line-height:1.2;writing-mode:vertical-rl;font-size:11.5px;font-weight:600;color:var(--blue-deep);white-space:nowrap;background:var(--bg-surface);padding:8px 0}
 .map-live{grid-column:1/-1;margin:20px 0 0;text-align:center;font-size:12px;color:#575B65}
@@ -280,6 +294,7 @@ main>.chapter:first-child{border-top:0}
         </div>
         <div class="map-loop" aria-hidden="true"></div>
         <svg class="map-svg" aria-hidden="true"></svg>
+        <button type="button" class="map-play" id="map-play" aria-label="Workflow abspielen" aria-pressed="false"><svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg><svg class="i-stop" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1.5" fill="currentColor"/></svg><span class="map-play-txt">Workflow abspielen</span></button>
         <p class="map-live" id="map-live" aria-live="polite" hidden></p>
         <div class="agent-panel" id="agent-panel" role="dialog" aria-modal="false" aria-labelledby="ap-title" hidden>
           <div class="ap-head"><svg class="ap-icon" aria-hidden="true"><use href="#i-log"/></svg><div><p class="ap-kicker" id="ap-kicker"></p><h3 id="ap-title"></h3></div><button type="button" class="ap-close" aria-label="Schließen">×</button></div>
@@ -564,6 +579,7 @@ main>.chapter:first-child{border-top:0}
     map.style.removeProperty('--role-h');
     map.style.setProperty('--role-h', Math.ceil(Math.max(...boxes.map(b => b.offsetHeight))) + 'px');
   };
+  const lit = new Set();   // connector groups currently lit (survive redraws)
   const draw = () => {
     equalise();
     const m = map.getBoundingClientRect(), R = el => { const b = el.getBoundingClientRect(); return { l: b.left - m.left, r: b.right - m.left, t: b.top - m.top, b: b.bottom - m.top, cx: b.left - m.left + b.width / 2, cy: b.top - m.top + b.height / 2 }; };
@@ -587,21 +603,24 @@ main>.chapter:first-child{border-top:0}
       }).join('');
     };
     const yi = (Math.max(...ins.map(i => i.b)) + core.t) / 2;
-    let d = bus(ins.map(i => i.cx), yi, Math.max(...ins.map(i => i.b)), false, false) + arrow(x, yi, x, core.t);
+    // Each workflow step is its own <g data-step>, so the demo and live view can light one at a time.
+    const G = {};
+    G.in = bus(ins.map(i => i.cx), yi, Math.max(...ins.map(i => i.b)), false, false) + arrow(x, yi, x, core.t);
     if (oneRow) {
       const top = (core.b + box.t) / 2, bot = (box.b + out.t) / 2;
-      d += `<path d="M${x} ${core.b} V${top}"/>` + bus(roles.map(r => r.cx), top, box.t, true, true);
-      d += bus(roles.map(r => r.cx), bot, box.b, false, false) + arrow(x, bot, x, out.t);
+      G.fan = `<path d="M${x} ${core.b} V${top}"/>` + bus(roles.map(r => r.cx), top, box.t, true, true);
+      G.join = bus(roles.map(r => r.cx), bot, box.b, false, false) + arrow(x, bot, x, out.t);
     } else {
-      d += arrow(x, core.b, x, box.t) + arrow(x, box.b, x, out.t);
+      G.fan = arrow(x, core.b, x, box.t); G.join = arrow(x, box.b, x, out.t);
     }
-    d += arrow(x, out.b, x, rev.t);
+    G.rev = arrow(x, out.b, x, rev.t);
+    const d = Object.entries(G).map(([k, v]) => `<g data-step="${k}"${lit.has(k) ? ' class="on"' : ''}>${v}</g>`).join('');
     const xi = R(map.querySelector('.map-loop--in .label')).cx;
     const loop = `M${out.l - 4} ${out.cy} H${xi + k} Q${xi} ${out.cy} ${xi} ${out.cy - k} V${core.cy + k} Q${xi} ${core.cy} ${xi + k} ${core.cy} H${core.l - 6}`;
     svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
     svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--blue-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
       `<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
-      `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>`;
+      `<g data-step="loop"${lit.has('loop') ? ' class="on"' : ''}><path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/></g>`;
   };
   new ResizeObserver(draw).observe(map); document.fonts?.ready.then(draw); draw();
 
@@ -696,6 +715,44 @@ main>.chapter:first-child{border-top:0}
   document.addEventListener('pointerdown', e => { if (!panel.hidden && !panel.contains(e.target) && !e.target.closest('.agent')) close(); });
   new ResizeObserver(place).observe(map);
 
+  // Demo: one pass through the workflow, incl. one correction loop. Live status always wins.
+  const play = $('map-play'), node = k => map.querySelector(`[data-agent="${k}"]`);
+  const ROLES = ['struktur', 'ui', 'wireframes', '3d', 'bilder'];
+  const STEPS = [
+    { on: ['files', 'projektlog'] }, { lines: ['in'] }, { on: ['orchestrator'] }, { lines: ['fan'] },
+    { on: ROLES, stagger: 140 }, { lines: ['join'] }, { on: ['output'] },
+    { lines: ['loop'], label: 'Abweichung · nachbessern' }, { on: ['orchestrator'] }, { lines: ['fan'] }, { on: ['wireframes'] },
+    { lines: ['join'] }, { on: ['output'] }, { lines: ['rev'] }, { on: ['#map-review'], hold: 1600 },
+  ];
+  let timers = [], liveOn = false;
+  const setLines = keys => { lit.clear(); keys.forEach(k => lit.add(k)); svg.querySelectorAll('g[data-step]').forEach(g => g.classList.toggle('on', lit.has(g.dataset.step))); };
+  const setLit = els => map.querySelectorAll('.is-lit').forEach(e => els.includes(e) || e.classList.remove('is-lit'));
+  const stop = () => { timers.forEach(clearTimeout); timers = []; setLines([]); setLit([]); map.classList.remove('is-playing'); play.setAttribute('aria-pressed', 'false'); play.setAttribute('aria-label', 'Workflow abspielen'); play.querySelector('.map-play-txt').textContent = 'Workflow abspielen'; };
+  const start = () => {
+    if (liveOn) return; close(); stop();
+    map.classList.add('is-playing'); play.setAttribute('aria-pressed', 'true'); play.setAttribute('aria-label', 'Animation stoppen'); play.querySelector('.map-play-txt').textContent = 'Stopp';
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, beat = reduce ? 1100 : 750;
+    let t = 0;
+    STEPS.forEach(st => {
+      timers.push(setTimeout(() => {
+        if (st.lines) { setLines(st.lines); }
+        if (st.on) {
+          const els = st.on.map(k => k.startsWith('#') ? map.querySelector(k) : node(k)).filter(Boolean);
+          setLit(els);
+          els.forEach((e, i) => timers.push(setTimeout(() => e.classList.add('is-lit'), reduce ? 0 : i * (st.stagger || 0))));
+        }
+      }, t));
+      t += beat + (st.on && st.stagger && !reduce ? st.on.length * st.stagger : 0) + (st.hold || 0);
+    });
+    timers.push(setTimeout(stop, t));
+  };
+  play.addEventListener('click', () => play.getAttribute('aria-pressed') === 'true' ? stop() : start());
+  const setLive = on => {
+    liveOn = on; if (on) stop();
+    play.disabled = on; play.querySelector('.map-play-txt').textContent = on ? 'Live' : (play.getAttribute('aria-pressed') === 'true' ? 'Stopp' : 'Workflow abspielen');
+    play.setAttribute('aria-label', on ? 'Live-Ansicht aktiv, Animation pausiert' : 'Workflow abspielen');
+  };
+
   // Live status (optional): {"updated": ISO, "active": {"projektlog": "what it does now", ...}}
   if (!location.protocol.startsWith('http')) return;
   const live = $('map-live');
@@ -705,10 +762,11 @@ main>.chapter:first-child{border-top:0}
       if (!r.ok) throw 0;
       const j = await r.json(), act = j.active || {};
       map.querySelectorAll('.agent').forEach(b => { const on = b.dataset.agent in act; b.classList.toggle('is-active', on); b.title = on ? act[b.dataset.agent] : ''; });
+      setLive(Object.keys(act).length > 0);
       const names = Object.keys(act).map(k => A[k]?.t).filter(Boolean);
       live.textContent = (names.length ? 'Gerade aktiv: ' + names.join(', ') : 'Kein Agent aktiv') + (j.updated ? ' · Stand ' + new Date(j.updated).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '');
       live.hidden = false;
-    } catch { map.querySelectorAll('.agent.is-active').forEach(b => b.classList.remove('is-active')); live.hidden = true; }
+    } catch { map.querySelectorAll('.agent.is-active').forEach(b => b.classList.remove('is-active')); live.hidden = true; setLive(false); }
   };
   poll(); setInterval(poll, 4000);
 })();
