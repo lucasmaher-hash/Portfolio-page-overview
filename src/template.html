@@ -50,16 +50,16 @@ main>.chapter:first-child{border-top:0}
 .chapter-heading h2{font:clamp(24px,3vw,38px)/1.08 'OCR-A-BT',monospace;letter-spacing:-.045em}
 .chapter-heading .no{font:14px/1 'OCR-A-BT',monospace;color:var(--blue-deep);flex:none}
 /* Lab chrome only: identify the specimen, not a heading inside it. */
-main>.chapter:not(#system){padding-block-start:0}
+main>.chapter:not(#system):not(#struktur){padding-block-start:0}
 /* Give the transition from the agent diagram to the UI catalog its own break. */
-main>#system{padding-block-end:clamp(28px,5vw,64px)}
+main>#system,main>#struktur{padding-block-end:clamp(28px,5vw,64px)}
 main>#auftakt>.chapter-heading{margin-block-end:0}
-main>.chapter:not(#system)>.chapter-heading{margin-inline:calc(-1 * var(--chapter-inset));padding:11px clamp(20px,2.5vw,32px);background:var(--blue-deep);color:#fff}
-main>.chapter:not(#system)>.chapter-heading h2{min-width:0;font:600 clamp(14px,1.2vw,16px)/1.35 'Roboto Flex',sans-serif;letter-spacing:.015em;overflow-wrap:anywhere}
+main>.chapter:not(#system):not(#struktur)>.chapter-heading{margin-inline:calc(-1 * var(--chapter-inset));padding:11px clamp(20px,2.5vw,32px);background:var(--blue-deep);color:#fff}
+main>.chapter:not(#system):not(#struktur)>.chapter-heading h2{min-width:0;font:600 clamp(14px,1.2vw,16px)/1.35 'Roboto Flex',sans-serif;letter-spacing:.015em;overflow-wrap:anywhere}
 
 /*@src:portfolio:css:nav*/
 /* Keep the island in flow and slide it above the viewport only after docking. */
-.agent-nav{position:sticky;top:var(--island-edge-top);z-index:7;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;width:min(calc(100% - 24px),calc(100vw - 2 * (var(--island-edge-x) + 10px)));margin-block-end:12px;transition:transform 300ms ease,box-shadow 260ms var(--ease)}
+.agent-nav{position:sticky;top:var(--island-edge-top);z-index:7;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;width:min(calc(100% - 24px),calc(100vw - 2 * (var(--island-edge-x) + 10px)));margin-block-end:12px;transition:transform 300ms ease,box-shadow 260ms var(--ease)}
 .agent-nav.is-hidden:not(:focus-within){transform:translateY(calc(-100% - var(--island-edge-top) - 24px));pointer-events:none}
 
 .agent-nav:focus-within{transition:none}
@@ -67,12 +67,12 @@ main>.agent-nav:first-child{margin-block-start:var(--island-edge-top)}
 .agent-nav-light{z-index:6}
 .agent-nav .pill__seg{min-width:0;align-self:stretch;text-align:center;line-height:1.15;font-weight:500}
 @media(min-aspect-ratio:17/10){.agent-nav{max-width:1330px}}
-@media(max-width:640px){.agent-nav{--island-edge-x:19px;padding:8px}.agent-nav .pill__seg{padding:7.4px 2px;font-size:clamp(11px,3.1vw,15px)}}
+@media(max-width:640px){.agent-nav{--island-edge-x:19px;padding:8px}.agent-nav .pill__seg{padding:7.4px 0;font-size:clamp(9px,2.4vw,15px)}}
 @media(prefers-reduced-motion:reduce){.agent-nav,.agent-nav-light,.agent-nav .pill__seg{transition:none}}
 .agent-nav+.chapter{border-top:0}
 /* Give the raised island enough plain surface before a contrasting title band. */
-.agent-nav:has(+.chapter:not(#system)){margin-block-end:36px}
-main>.chapter:not(#system){scroll-margin-top:92px}
+.agent-nav:has(+.chapter:not(#system):not(#struktur)){margin-block-end:36px}
+main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 #agent-images{min-height:calc(100svh - 92px)}
 .agent-example-source{margin-block:-6px 20px;color:#555760;font-size:14px}
 /* Keep Figma annotations readable rather than shrinking the whole flow on phones. */
@@ -93,6 +93,25 @@ main>.chapter:not(#system){scroll-margin-top:92px}
 
 .stack{display:flex;flex-direction:column;gap:clamp(20px,3vw,28px)}
 
+
+/* ── Struktur & Text: abstract page-structure map. Boxes are the overview's .role.agent buttons and open the same .agent-panel card ── */
+.smap{position:relative;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px)}
+.smap-main{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0}
+.smap-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--border-color)}
+.srow{position:relative;z-index:1;display:flex;justify-content:center;align-items:flex-start;gap:10px;width:100%}
+.srow>.sb{flex:0 0 calc((100% - 20px) / 3);min-width:0;position:relative}
+.srow--one>.sb{flex:0 1 440px}
+.sgap{height:44px;width:100%;position:relative}.sgap--fan{height:64px}
+.sgap .v-label{top:24%}
+.smap-main>*,.smap-svg{transition:opacity .18s ease}
+.smap .sb{transition:transform .18s cubic-bezier(.2,.7,.2,1),border-color .18s ease,background-color .18s ease,opacity .18s ease}
+.smap.has-panel .sb[aria-expanded="false"],.smap.has-panel .smap-svg,.smap.has-panel .v-label{opacity:.35}
+@media(max-width:720px){
+  .srow{flex-direction:column;align-items:center}
+  .srow>.sb,.srow--one>.sb{flex:0 0 auto;width:100%;max-width:440px}
+  .srow--or{gap:26px}
+  .srow--or>.sb+.sb::before{content:'oder';position:absolute;left:50%;top:-20px;transform:translateX(-50%);font-size:11px;color:#575B65}
+}
 
 /* ── 00 Agent map: one orchestrator; the role boxes are a target picture, not running agents ── */
 .map-intro{margin:0 0 clamp(20px,2.4vw,28px);font-size:16px;line-height:1.6;color:var(--text-secondary)}
@@ -354,6 +373,20 @@ main>.chapter:not(#system){scroll-margin-top:92px}
     <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7zm0 10 9-5m-9 5L3 7m9 5v10" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m15 15 6 6" stroke="currentColor" stroke-width="1.5"/></symbol>
     <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-hero" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 13h18M7 17h6"/></symbol>
+    <symbol id="i-facts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M9 5v14M15 5v14M3 12h18"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.4v.4"/></symbol>
+    <symbol id="i-matrix" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9.3h18M3 14.7h18M9 4v16"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></symbol>
+    <symbol id="i-split" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="7" height="14" rx="1"/><rect x="14" y="5" width="7" height="14" rx="1"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5"/></symbol>
+    <symbol id="i-pivot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></symbol>
+    <symbol id="i-flow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="6" height="5" rx="1"/><rect x="15" y="15" width="6" height="5" rx="1"/><path d="M9 6.5h3a3 3 0 0 1 3 3V15"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a1.5 1.5 0 0 0 1.3 2.2h11.4A1.5 1.5 0 0 0 19 18l-5-9V3"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M6 20h12M5 8h14M5 8l-2.5 6a3 3 0 0 0 5 0zM19 8l-2.5 6a3 3 0 0 0 5 0z"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8 4 4-4 4"/></symbol>
+    <symbol id="i-question" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1.1.9-1.1 1.7M12 16.8v.4"/></symbol>
   </defs>
 </svg>
 
@@ -401,6 +434,67 @@ main>.chapter:not(#system){scroll-margin-top:92px}
           <ol class="ap-io"><li><span class="ap-lab">Input</span><span id="ap-in"></span></li><li><span class="ap-lab">Output</span><span id="ap-out"></span></li></ol>
           <dl class="ap-meta"><div><dt>Werkzeuge</dt><dd id="ap-tool"></dd></div></dl>
           <a class="ap-chat" id="ap-chat" href="#"><span id="ap-chat-txt"></span><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M5 3h8v8M13 3 4 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="struktur" aria-labelledby="h-struktur">
+      <div class="chapter-heading"><h2 id="h-struktur">Struktur &amp; Text</h2></div>
+      <p class="map-intro">Eine Case-Study-Seite besteht aus wenigen Bausteinen in fester Reihenfolge, und jeder Baustein hat genau eine Aufgabe. Kästen nebeneinander sind Varianten: Welche gilt, entscheidet das echte Projekt mit seinem Belegmaterial. Optionale Bausteine stehen in Klammern. Das ist das Zielbild für den Struktur-&amp;-Text-Agenten, die Gliederung geht vor Text und Layout an Lucas zur Freigabe. Jeder Kasten öffnet eine Karte mit Details.</p>
+      <div class="smap" aria-describedby="smap-desc">
+        <p id="smap-desc" class="sr-only">Struktur einer Case-Study-Seite von oben nach unten. Hero mit Überblick führt zum Faktenblock, dieser zum Problem. Danach folgt optional ein Rechercheblock als Desk Research, Wettbewerbsvergleich oder Beobachtung, dann Erkenntnis und Idee. Die zentrale Entscheidung erscheint als Alternativen, Iterationen oder Pivot. Danach steht immer der Prototyp. Darauf aufbauend zeigt die Seite je nach Nachweis Feedback, Testergebnisse oder Kennzahlen. Es folgen immer die Evaluierung und zuletzt das Gelernte mit den nächsten Schritten. Jeder Kasten öffnet eine Karte mit Details.</p>
+        <div class="smap-main">
+        <div class="srow srow--one" data-row="0">
+          <button type="button" class="role agent sb" data-key="hero" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-hero"/></svg><span>Hero &amp; Überblick</span><small>Produkt, Problem, Status</small></button>
+        </div>
+        <div class="sgap"></div>
+        <div class="srow srow--one" data-row="1">
+          <button type="button" class="role agent sb" data-key="fakten" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-facts"/></svg><span>Faktenblock</span><small>Zeit, Rolle, Team, Tools</small></button>
+        </div>
+        <div class="sgap"></div>
+        <div class="srow srow--one" data-row="2">
+          <button type="button" class="role agent sb" data-key="problem" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-alert"/></svg><span>Problem</span><small>Wessen Aufgabe scheitert?</small></button>
+        </div>
+        <div class="sgap sgap--fan"><span class="v-label">je nach Beleglage</span></div>
+        <div class="srow srow--or" data-row="3">
+          <button type="button" class="role agent sb is-optional" data-key="desk" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-search"/></svg><span>(Desk Research)</span><small>(Zitierte Karten)</small></button>
+          <button type="button" class="role agent sb is-optional" data-key="wettbewerb" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-matrix"/></svg><span>(Wettbewerb)</span><small>(Gleiche Kriterien)</small></button>
+          <button type="button" class="role agent sb is-optional" data-key="beobachtung" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-eye"/></svg><span>(Beobachtung)</span><small>(Interviews, Feldnotizen)</small></button>
+        </div>
+        <div class="sgap"></div>
+        <div class="srow srow--one" data-row="4">
+          <button type="button" class="role agent sb" data-key="idee" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span>Erkenntnis → Idee</span><small>Aus dem Befund folgt der Entwurf</small></button>
+        </div>
+        <div class="sgap sgap--fan"><span class="v-label">je nach Verlauf</span></div>
+        <div class="srow srow--or" data-row="5">
+          <button type="button" class="role agent sb" data-key="alternativen" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-split"/></svg><span>Alternativen</span><small>Optionen nebeneinander</small></button>
+          <button type="button" class="role agent sb" data-key="iterationen" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-layers"/></svg><span>Iterationen</span><small>Stand 1, 2, 3</small></button>
+          <button type="button" class="role agent sb" data-key="pivot" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-pivot"/></svg><span>Pivot</span><small>Vorher, nachher</small></button>
+        </div>
+        <div class="sgap"></div>
+        <div class="srow srow--one" data-row="6">
+          <button type="button" class="role agent sb" data-key="prototyp" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-flow"/></svg><span>Prototyp</span><small>Stand, User Flow, Screens</small></button>
+        </div>
+        <div class="sgap sgap--fan"><span class="v-label">je nach Nachweis</span></div>
+        <div class="srow srow--or" data-row="7">
+          <button type="button" class="role agent sb" data-key="feedback" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-chat"/></svg><span>Feedback</span><small>Echte Rückmeldungen</small></button>
+          <button type="button" class="role agent sb" data-key="test" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-flask"/></svg><span>Testergebnisse</span><small>Durchgeführter Test</small></button>
+          <button type="button" class="role agent sb" data-key="kennzahl" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-check"/></svg><span>Kennzahlen</span><small>Zahl mit Grenze</small></button>
+        </div>
+        <div class="sgap"></div>
+        <div class="srow srow--one" data-row="8">
+          <button type="button" class="role agent sb" data-key="evaluierung" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-scale"/></svg><span>Evaluierung</span><small>Was trägt, was nicht</small></button>
+        </div>
+        <div class="sgap"></div>
+        <div class="srow srow--one" data-row="9">
+          <button type="button" class="role agent sb" data-key="lernen" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-next"/></svg><span>Gelerntes &amp; nächste Schritte</span><small>Was offen bleibt, nächster Test</small></button>
+        </div>
+          <svg class="smap-svg" aria-hidden="true"></svg>
+        </div>
+        <div class="agent-panel" id="sp-panel" tabindex="-1" role="dialog" aria-modal="false" aria-labelledby="sp-title" hidden>
+          <div class="ap-head"><svg class="ap-icon" aria-hidden="true"><use href="#i-hero"/></svg><h3 id="sp-title"></h3></div>
+          <p class="ap-desc" id="sp-desc"></p>
+          <ol class="ap-io"><li><span class="ap-lab">Inhalt</span><span id="sp-in"></span></li><li><span class="ap-lab">Beleg</span><span id="sp-out"></span></li></ol>
         </div>
       </div>
     </section>
@@ -796,6 +890,192 @@ main>.chapter:not(#system){scroll-margin-top:92px}
   const range = document.getElementById('split'), box = document.getElementById('compare');
   const set = () => { box.style.setProperty('--split', range.value + '%'); range.setAttribute('aria-valuetext', range.value + ' Prozent'); };
   range.addEventListener('input', set); set();
+})();
+</script>
+<script>
+// Struktur map: connectors are measured from the real boxes (layout offsets, so hover scale never skews
+// them). Boxes open the same info card as the Agentic Workflow Overview: beside the box, fully visible,
+// page never scrolls, closes on Esc or an outside press, no close button.
+(() => {
+  const map = document.querySelector('.smap');
+  if (!map) return;
+  const main = map.querySelector('.smap-main'), svg = map.querySelector('.smap-svg'), $ = id => document.getElementById(id);
+  const rows = [...map.querySelectorAll('.srow')], boxes = [...map.querySelectorAll('.sb')], K = 12;
+  const S = {
+ "hero": {
+  "t": "Hero & Überblick",
+  "i": "#i-hero",
+  "d": "Der Leser erkennt in wenigen Sekunden, was das Produkt macht, für wen es ist und in welchem Stand es sich befindet.",
+  "in": "Titel, ein bis zwei Sätze Überblick und der Status: ausgeliefert, Prototyp oder Konzept.",
+  "out": "Das echte Produkt in Benutzung oder ein aussagekräftiges Standbild."
+ },
+ "fakten": {
+  "t": "Faktenblock",
+  "i": "#i-facts",
+  "d": "Klärt den Rahmen, bevor der Text beginnt, und macht Lucas’ genauen Anteil von Anfang an sichtbar. Er ist als eingekerbter Block gesetzt, der Rest der Seite bleibt flach.",
+  "in": "Zeitraum, Rolle, Team und Aufgabenteilung, Werkzeuge, Status.",
+  "out": "Nur Angaben aus den Projektdateien oder von Lucas bestätigt."
+ },
+ "problem": {
+  "t": "Problem",
+  "i": "#i-alert",
+  "d": "Zeigt, wessen Aufgabe scheitert und was Lucas selbst beobachtet hat, ohne schon die Lösung vorwegzunehmen.",
+  "in": "Nutzer, Situation und die Stelle, an der es hakt.",
+  "out": "Eine echte Aufgabe, ein belegter Screenshot oder ein gemessenes Problem."
+ },
+ "desk": {
+  "t": "Desk Research",
+  "i": "#i-search",
+  "d": "Optional. Überführt einen Befund aus Quellen in den Entwurf. Jede Karte trägt genau eine Aussage.",
+  "in": "Wenige Karten mit Zahl, Quelle und Jahr.",
+  "out": "Zitierte Studie. Der Zusammenhang der Zahl bleibt erhalten."
+ },
+ "wettbewerb": {
+  "t": "Wettbewerb",
+  "i": "#i-matrix",
+  "d": "Optional. Zeigt, was bestehende Lösungen offenlassen. Ausgewählte Pfade sind dabei kein breiter Benchmark.",
+  "in": "Eine Matrix mit denselben Kriterien je Produkt und ein Befund darunter.",
+  "out": "Eigene Prüfung der Produkte, mit Datum."
+ },
+ "beobachtung": {
+  "t": "Beobachtung",
+  "i": "#i-eye",
+  "d": "Optional. Zeigt, was Menschen tatsächlich tun, statt was sie sagen, und leitet daraus Einschränkungen ab.",
+  "in": "Fotos und Notizen aus der Beobachtung, abgeleitete Einschränkungen.",
+  "out": "Echte Notizen oder Fotos und die Zahl der Beteiligten. Meinungen sind kein beobachtetes Verhalten."
+ },
+ "idee": {
+  "t": "Erkenntnis → Idee",
+  "i": "#i-bulb",
+  "d": "Zeigt, dass die Idee aus dem Problem folgt und nicht umgekehrt.",
+  "in": "Ein Satz Erkenntnis und der Mechanismus, der darauf antwortet.",
+  "out": "Ein Diagramm des Mechanismus oder echte frühe Skizzen."
+ },
+ "alternativen": {
+  "t": "Alternativen",
+  "i": "#i-split",
+  "d": "Macht die zentrale Entscheidung nachvollziehbar.",
+  "in": "Zwei bis drei echte Optionen, die gewählte markiert, mit Grund und Gegenposition.",
+  "out": "Dokumentierte Optionen. Nichts nachträglich gezeichnet."
+ },
+ "iterationen": {
+  "t": "Iterationen",
+  "i": "#i-layers",
+  "d": "Zeigt, wie sich der Entwurf durch Rückmeldung verändert hat.",
+  "in": "Dieselbe Ansicht in mehreren Ständen, je mit der Änderung und ihrem Grund.",
+  "out": "Echte Stände im gleichen Ausschnitt."
+ },
+ "pivot": {
+  "t": "Pivot",
+  "i": "#i-pivot",
+  "d": "Erzählt den Richtungswechsel, der das Projekt geprägt hat. Nur, wenn es wirklich einen Wechsel gab.",
+  "in": "Was vorher galt, was sich änderte und warum.",
+  "out": "Quelle für den Wechsel, zum Beispiel Beobachtung, Test oder Rückmeldung."
+ },
+ "prototyp": {
+  "t": "Prototyp",
+  "i": "#i-flow",
+  "d": "Zeigt den gebauten Stand und wie er funktioniert. Einen Prototyp gibt es in jedem Projekt, sein Status wird ehrlich benannt.",
+  "in": "Der Hauptweg als Flow oder als annotierte Screens, dazu der Status: ausgeliefert, Prototyp oder Simulation. Bewegung nur, wenn die Interaktion sie braucht. Kostet ein Diagramm mehr Erklärung, als es spart, wird es vereinfacht.",
+  "out": "Echte Screens oder ein echter Ablauf."
+ },
+ "feedback": {
+  "t": "Feedback",
+  "i": "#i-chat",
+  "d": "Zeigt, was Menschen zum Prototyp gesagt haben.",
+  "in": "Rückmeldungen von echten Beteiligten, mit Zahl und Rahmen.",
+  "out": "Echte Quellen. Selbstauskünfte bleiben von Beobachtung getrennt."
+ },
+ "test": {
+  "t": "Testergebnisse",
+  "i": "#i-flask",
+  "d": "Zeigt, was ein Test mit dem Prototyp ergeben hat und wie belastbar das ist.",
+  "in": "Testaufbau, Befund und Grenzen.",
+  "out": "Tatsächlich durchgeführter Test. Pilotdaten bleiben als solche gekennzeichnet."
+ },
+ "kennzahl": {
+  "t": "Kennzahlen",
+  "i": "#i-check",
+  "d": "Belegt ein Ergebnis mit einer Zahl und nennt ihre Grenze.",
+  "in": "Eine Kennzahl mit Quelle, Datum und Stichprobe und was sie nicht aussagt.",
+  "out": "Quellengeprüfter Wert. Downloads sind keine aktiven Nutzer."
+ },
+ "evaluierung": {
+  "t": "Evaluierung",
+  "i": "#i-scale",
+  "d": "Ordnet die Ergebnisse ein: was funktioniert hat, was nicht und wie belastbar das ist.",
+  "in": "Abgleich mit der anfänglichen Annahme, Grenzen des Ergebnisses und die stärkste Gegenposition.",
+  "out": "Nur, was die vorigen Belege tragen. Kein Ergebnis, das es nicht gibt."
+ },
+ "lernen": {
+  "t": "Gelerntes & nächste Schritte",
+  "i": "#i-next",
+  "d": "Schließt die Seite mit dem, was wir gelernt haben, und dem nächsten Schritt.",
+  "in": "Zwei bis drei Erkenntnisse, offene Fragen und der Test, der sie klärt.",
+  "out": "Aus der Evaluierung abgeleitet, nicht neu behauptet."
+ }
+};
+  const pos = el => { let l = 0, t = 0, n = el; while (n && n !== main) { l += n.offsetLeft; t += n.offsetTop; n = n.offsetParent; } return { t, b: t + el.offsetHeight, cx: l + el.offsetWidth / 2 }; };
+  const draw = () => {
+    map.style.removeProperty('--role-h');
+    map.style.setProperty('--role-h', Math.ceil(Math.max(...boxes.map(b => b.offsetHeight))) + 'px');
+    const w = main.offsetWidth, h = main.offsetHeight, x = w / 2;
+    const R = rows.map(r => [...r.children].map(pos));
+    const stacked = g => g.length > 1 && !g.every(i => Math.abs(i.t - g[0].t) < 2);
+    const arrow = (y1, y2) => `<path d="M${x} ${y1} L${x} ${y2 - 1}" marker-end="url(#stip)"/>`;
+    let d = '';
+    for (let i = 0; i < R.length - 1; i++) {
+      let A = R[i], B = R[i + 1];
+      if (stacked(A)) A = [A[A.length - 1]];
+      if (stacked(B)) B = [B[0]];
+      const yA = Math.max(...A.map(a => a.b)), yB = Math.min(...B.map(b => b.t)), yM = (yA + yB) / 2;
+      if (A.length === 1 && B.length === 1) { d += arrow(yA, yB); continue; }
+      // Straight trunk meets straight bar in a clean T; only the two outer bar ends take a radius.
+      const lo = Math.min(...A.map(a => a.cx)), hi = Math.max(...A.map(a => a.cx));
+      if (A.length > 1) A.forEach(a => {
+        const outer = Math.abs(a.cx - x) > 1 && (a.cx === lo || a.cx === hi), dir = a.cx < x ? 1 : -1, r = Math.min(K, yM - a.b, Math.abs(a.cx - x) / 2);
+        d += outer ? `<path d="M${a.cx} ${a.b} V${yM - r} Q${a.cx} ${yM} ${a.cx + dir * r} ${yM} H${x}"/>` : `<path d="M${a.cx} ${a.b} V${yM}"/>`;
+      }); else d += `<path d="M${x} ${yA} V${yM}"/>`;
+      if (B.length === 1) { d += arrow(yM, yB); continue; }
+      const blo = Math.min(...B.map(b => b.cx)), bhi = Math.max(...B.map(b => b.cx));
+      B.forEach(b => {
+        const outer = Math.abs(b.cx - x) > 1 && (b.cx === blo || b.cx === bhi), dir = b.cx < x ? 1 : -1, r = Math.min(K, b.t - yM, Math.abs(b.cx - x) / 2), end = b.t - 1;
+        d += outer ? `<path d="M${x} ${yM} H${b.cx + dir * r} Q${b.cx} ${yM} ${b.cx} ${yM + r} V${end}" marker-end="url(#stip)"/>` : `<path d="M${x} ${yM} H${b.cx} V${end}" marker-end="url(#stip)"/>`;
+      });
+    }
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.innerHTML = '<defs><marker id="stip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
+      `<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>`;
+  };
+  const panel = $('sp-panel'); let opener = null;
+  const close = () => { if (panel.hidden) return; panel.hidden = true; map.classList.remove('has-panel'); opener?.setAttribute('aria-expanded', 'false'); opener?.focus(); opener = null; };
+  const place = () => {
+    if (!opener) return;
+    // Same rule as the overview: beside the box on its outer side, else the other side, on a phone below;
+    // clamped into the viewport so it opens fully visible; fitting is checked against the window.
+    const m = map.getBoundingClientRect(), b = opener.getBoundingClientRect(), w = panel.offsetWidth, h = panel.offsetHeight, g = 8, edge = 12;
+    const vw = document.documentElement.clientWidth, fitsR = b.right + g + w <= vw - edge, fitsL = b.left - g - w >= edge;
+    const outerRight = b.left + b.width / 2 >= m.left + m.width / 2 + 1;
+    let lv, vt = b.top - 8, side;
+    if (fitsR && (outerRight || !fitsL)) { lv = b.right + g; side = 'right'; }
+    else if (fitsL) { lv = b.left - g - w; side = 'left'; }
+    else { lv = Math.max(edge, Math.min(b.left + b.width / 2 - w / 2, vw - w - edge)); vt = b.bottom + 10; side = 'below'; }
+    vt = Math.max(edge, Math.min(vt, innerHeight - h - edge));
+    panel.dataset.side = side;
+    panel.style.left = (lv - m.left) + 'px'; panel.style.top = (vt - m.top) + 'px';
+  };
+  const open = btn => {
+    const a = S[btn.dataset.key]; if (!a) return;
+    if (opener === btn) return close();
+    opener?.setAttribute('aria-expanded', 'false'); opener = btn; btn.setAttribute('aria-expanded', 'true');
+    panel.querySelector('.ap-icon use').setAttribute('href', a.i);
+    $('sp-title').textContent = a.t; $('sp-desc').textContent = a.d; $('sp-in').textContent = a.in; $('sp-out').textContent = a.out;
+    panel.hidden = false; map.classList.add('has-panel'); place(); panel.focus({ preventScroll: true });
+  };
+  boxes.forEach(b => b.addEventListener('click', () => open(b)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  document.addEventListener('pointerdown', e => { if (!panel.hidden && !panel.contains(e.target) && !e.target.closest('.sb')) close(); });
+  new ResizeObserver(() => { draw(); place(); }).observe(main); document.fonts?.ready.then(draw); draw();
 })();
 </script>
 <script>

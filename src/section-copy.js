@@ -25,7 +25,7 @@
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   };
-  for (const section of document.querySelectorAll('main > section.chapter[id]:not(#system)')) {
+  for (const section of document.querySelectorAll('main > section.chapter[id]:not(#system):not(#struktur)')) {
     const heading = section.querySelector(':scope > .chapter-heading');
     const title = heading?.querySelector('h2')?.textContent.trim();
     if (!title) continue;

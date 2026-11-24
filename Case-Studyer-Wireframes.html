@@ -134,7 +134,7 @@ main>.chapter:not(#system)>.chapter-heading h2{min-width:0;font:600 clamp(14px,1
     }
 @media(max-width:640px){.agent-nav,.agent-nav-light{--shadow-island:3.25px 3.25px 7.8px rgba(40, 40, 90, 0.166);--island-light:-3.25px -3.25px 7.8px rgba(255,255,255,0.7);}}
 /* Keep the island in flow and slide it above the viewport only after docking. */
-.agent-nav{position:sticky;top:var(--island-edge-top);z-index:7;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;width:min(calc(100% - 24px),calc(100vw - 2 * (var(--island-edge-x) + 10px)));margin-block-end:12px;transition:transform 300ms ease,box-shadow 260ms var(--ease)}
+.agent-nav{position:sticky;top:var(--island-edge-top);z-index:7;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;width:min(calc(100% - 24px),calc(100vw - 2 * (var(--island-edge-x) + 10px)));margin-block-end:12px;transition:transform 300ms ease,box-shadow 260ms var(--ease)}
 .agent-nav.is-hidden:not(:focus-within){transform:translateY(calc(-100% - var(--island-edge-top) - 24px));pointer-events:none}
 
 .agent-nav:focus-within{transition:none}
@@ -142,7 +142,7 @@ main>.agent-nav:first-child{margin-block-start:var(--island-edge-top)}
 .agent-nav-light{z-index:6}
 .agent-nav .pill__seg{min-width:0;align-self:stretch;text-align:center;line-height:1.15;font-weight:500}
 @media(min-aspect-ratio:17/10){.agent-nav{max-width:1330px}}
-@media(max-width:640px){.agent-nav{--island-edge-x:19px;padding:8px}.agent-nav .pill__seg{padding:7.4px 2px;font-size:clamp(11px,3.1vw,15px)}}
+@media(max-width:640px){.agent-nav{--island-edge-x:19px;padding:8px}.agent-nav .pill__seg{padding:7.4px 0;font-size:clamp(9px,2.4vw,15px)}}
 @media(prefers-reduced-motion:reduce){.agent-nav,.agent-nav-light,.agent-nav .pill__seg{transition:none}}
 .agent-nav+.chapter{border-top:0}
 /* Give the raised island enough plain surface before a contrasting title band. */
@@ -809,6 +809,7 @@ b.kw{font-weight: inherit; color: inherit;}
   <main>
     <nav class="agent-nav" aria-label="Beispiele der Subagenten">
       <a class="pill__seg" href="Case-Studyer-Agentic-Workflow.html">Agentic Workflow Overview</a>
+      <a class="pill__seg" href="Case-Studyer-Struktur.html">Struktur &amp; Text</a>
       <a class="pill__seg" href="Case-Studyer-UI-Elemente.html">UI-Elemente</a>
       <a class="pill__seg" href="Case-Studyer-Wireframes.html" aria-current="page">Wireframes</a>
       <a class="pill__seg" href="Case-Studyer-Bildgenerierung.html">Bild­generierung</a>

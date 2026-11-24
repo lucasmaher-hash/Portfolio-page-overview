@@ -263,7 +263,7 @@ external = re.search(r"""(?:src|href|url\()\s*=?\s*["']?(?:https?:)?//""", asset
 if external:
     fail("external reference: " + asset_check[external.start():external.start() + 80])
 sections = {}
-for id_ in ('system', 'flow', 'flow-reschedule', 'flow-live', 'flow-spotify', 'flow-findmy', 'flow-passwords', 'agent-images'):
+for id_ in ('system', 'struktur', 'flow', 'flow-reschedule', 'flow-live', 'flow-spotify', 'flow-findmy', 'flow-passwords', 'agent-images'):
     pattern = rf'^    <section class="chapter" id="{id_}".*?^    </section>\n'
     match = re.search(pattern, page, re.M | re.S)
     if not match:
@@ -292,6 +292,7 @@ sections['flow'] += sections.pop('flow-reschedule') + sections.pop('flow-live') 
 
 pages = {
     'system': ('Case-Studyer-Agentic-Workflow.html', 'Agentic Workflow Overview'),
+    'struktur': ('Case-Studyer-Struktur.html', 'Struktur &amp; Text'),
     'ui': (OUT.name, 'UI-Elemente'),
     'flow': ('Case-Studyer-Wireframes.html', 'Wireframes'),
     'agent-images': ('Case-Studyer-Bildgenerierung.html', 'Bildgenerierung'),
@@ -306,6 +307,8 @@ for key, (filename, label) in pages.items():
         result = re.sub(r'(?s)<script>\n// Iteration tabs:.*?</script>\n', '', result, count=1)
     if key != 'system':
         result = re.sub(r'(?s)<script>\n// Agent map:.*?</script>\n', '', result, count=1)
+    if key != 'struktur':
+        result = re.sub(r'(?s)<script>\n// Struktur map:.*?</script>\n', '', result, count=1)
     nav = '\n'.join(f'      <a class="pill__seg" href="{name}"' + (' aria-current="page"' if target == key else '')
                     + '>' + text.replace('Bildgenerierung', 'Bild\u00adgenerierung') + '</a>'
                     for target, (name, text) in pages.items())

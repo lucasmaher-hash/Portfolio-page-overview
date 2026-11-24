@@ -50,28 +50,28 @@ main>.chapter:first-child{border-top:0}
 .chapter-heading h2{font:clamp(24px,3vw,38px)/1.08 'OCR-A-BT',monospace;letter-spacing:-.045em}
 .chapter-heading .no{font:14px/1 'OCR-A-BT',monospace;color:var(--blue-deep);flex:none}
 /* Lab chrome only: identify the specimen, not a heading inside it. */
-main>.chapter:not(#system){padding-block-start:0}
+main>.chapter:not(#system):not(#struktur){padding-block-start:0}
 /* Give the transition from the agent diagram to the UI catalog its own break. */
-main>#system{padding-block-end:clamp(28px,5vw,64px)}
+main>#system,main>#struktur{padding-block-end:clamp(28px,5vw,64px)}
 main>#auftakt>.chapter-heading{margin-block-end:0}
-main>.chapter:not(#system)>.chapter-heading{margin-inline:calc(-1 * var(--chapter-inset));padding:11px clamp(20px,2.5vw,32px);background:var(--blue-deep);color:#fff}
-main>.chapter:not(#system)>.chapter-heading h2{min-width:0;font:600 clamp(14px,1.2vw,16px)/1.35 'Roboto Flex',sans-serif;letter-spacing:.015em;overflow-wrap:anywhere}
+main>.chapter:not(#system):not(#struktur)>.chapter-heading{margin-inline:calc(-1 * var(--chapter-inset));padding:11px clamp(20px,2.5vw,32px);background:var(--blue-deep);color:#fff}
+main>.chapter:not(#system):not(#struktur)>.chapter-heading h2{min-width:0;font:600 clamp(14px,1.2vw,16px)/1.35 'Roboto Flex',sans-serif;letter-spacing:.015em;overflow-wrap:anywhere}
 
 .agent-nav,.agent-nav-light{--bg-surface:#DCDCE3;--text-primary:#1A1A1A;--text-secondary:#8E8E93;--accent-orange:#809BBC;--shadow-island:5px 5px 12px rgba(40, 40, 90, 0.166);--island-light:-5px -5px 12px rgba(255, 255, 255, 0.7);--ease:cubic-bezier(.2, .7, .2, 1);--island-edge-x:clamp(44px, 8.6vw, 122px);--island-edge-top:clamp(20px, 2.5vw, 24px);}
 .agent-nav{
       pointer-events: auto;
       background: var(--bg-surface);
       border-radius: 9999px;
-
+      
       padding: 10px clamp(14px, 2vw, 24px);
       box-shadow: none;
-
+      
       width: 100%;
-
-      max-width: 1286px;
+      
+      max-width: 1286px;   
       margin: 0 auto;
-
-
+      
+      
       overflow: hidden;
 
       display: grid;
@@ -128,13 +128,13 @@ main>.chapter:not(#system)>.chapter-heading h2{min-width:0;font:600 clamp(14px,1
 .agent-nav .pill__seg[aria-current="page"]{
       background: var(--bg-surface);
       color: var(--text-primary);
-
+      
       box-shadow: inset 3.25px 3.25px 6.5px rgba(40, 40, 90, 0.153), inset -3.25px -3.25px 6.5px rgba(255, 255, 255, 1);
       cursor: default;
     }
 @media(max-width:640px){.agent-nav,.agent-nav-light{--shadow-island:3.25px 3.25px 7.8px rgba(40, 40, 90, 0.166);--island-light:-3.25px -3.25px 7.8px rgba(255,255,255,0.7);}}
 /* Keep the island in flow and slide it above the viewport only after docking. */
-.agent-nav{position:sticky;top:var(--island-edge-top);z-index:7;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;width:min(calc(100% - 24px),calc(100vw - 2 * (var(--island-edge-x) + 10px)));margin-block-end:12px;transition:transform 300ms ease,box-shadow 260ms var(--ease)}
+.agent-nav{position:sticky;top:var(--island-edge-top);z-index:7;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;width:min(calc(100% - 24px),calc(100vw - 2 * (var(--island-edge-x) + 10px)));margin-block-end:12px;transition:transform 300ms ease,box-shadow 260ms var(--ease)}
 .agent-nav.is-hidden:not(:focus-within){transform:translateY(calc(-100% - var(--island-edge-top) - 24px));pointer-events:none}
 
 .agent-nav:focus-within{transition:none}
@@ -142,12 +142,12 @@ main>.agent-nav:first-child{margin-block-start:var(--island-edge-top)}
 .agent-nav-light{z-index:6}
 .agent-nav .pill__seg{min-width:0;align-self:stretch;text-align:center;line-height:1.15;font-weight:500}
 @media(min-aspect-ratio:17/10){.agent-nav{max-width:1330px}}
-@media(max-width:640px){.agent-nav{--island-edge-x:19px;padding:8px}.agent-nav .pill__seg{padding:7.4px 2px;font-size:clamp(11px,3.1vw,15px)}}
+@media(max-width:640px){.agent-nav{--island-edge-x:19px;padding:8px}.agent-nav .pill__seg{padding:7.4px 0;font-size:clamp(9px,2.4vw,15px)}}
 @media(prefers-reduced-motion:reduce){.agent-nav,.agent-nav-light,.agent-nav .pill__seg{transition:none}}
 .agent-nav+.chapter{border-top:0}
 /* Give the raised island enough plain surface before a contrasting title band. */
-.agent-nav:has(+.chapter:not(#system)){margin-block-end:36px}
-main>.chapter:not(#system){scroll-margin-top:92px}
+.agent-nav:has(+.chapter:not(#system):not(#struktur)){margin-block-end:36px}
+main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 #agent-images{min-height:calc(100svh - 92px)}
 .agent-example-source{margin-block:-6px 20px;color:#555760;font-size:14px}
 /* Keep Figma annotations readable rather than shrinking the whole flow on phones. */
@@ -168,6 +168,25 @@ main>.chapter:not(#system){scroll-margin-top:92px}
 
 .stack{display:flex;flex-direction:column;gap:clamp(20px,3vw,28px)}
 
+
+/* ── Struktur & Text: abstract page-structure map. Boxes are the overview's .role.agent buttons and open the same .agent-panel card ── */
+.smap{position:relative;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px)}
+.smap-main{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0}
+.smap-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--border-color)}
+.srow{position:relative;z-index:1;display:flex;justify-content:center;align-items:flex-start;gap:10px;width:100%}
+.srow>.sb{flex:0 0 calc((100% - 20px) / 3);min-width:0;position:relative}
+.srow--one>.sb{flex:0 1 440px}
+.sgap{height:44px;width:100%;position:relative}.sgap--fan{height:64px}
+.sgap .v-label{top:24%}
+.smap-main>*,.smap-svg{transition:opacity .18s ease}
+.smap .sb{transition:transform .18s cubic-bezier(.2,.7,.2,1),border-color .18s ease,background-color .18s ease,opacity .18s ease}
+.smap.has-panel .sb[aria-expanded="false"],.smap.has-panel .smap-svg,.smap.has-panel .v-label{opacity:.35}
+@media(max-width:720px){
+  .srow{flex-direction:column;align-items:center}
+  .srow>.sb,.srow--one>.sb{flex:0 0 auto;width:100%;max-width:440px}
+  .srow--or{gap:26px}
+  .srow--or>.sb+.sb::before{content:'oder';position:absolute;left:50%;top:-20px;transform:translateX(-50%);font-size:11px;color:#575B65}
+}
 
 /* ── 00 Agent map: one orchestrator; the role boxes are a target picture, not running agents ── */
 .map-intro{margin:0 0 clamp(20px,2.4vw,28px);font-size:16px;line-height:1.6;color:var(--text-secondary)}
@@ -355,7 +374,7 @@ Only mobile receives a minimum track width and horizontal scrolling. */
 .wireflow.flow-band { --wire-phone-min: 176px; --wireflow-pad: 18px; }
 }
 .project-title{font-family: 'OCR-A-BT', monospace; font-size-adjust: none;
-
+      
       font-size: clamp(37.8px, 6.57vw, 90px);
       line-height: 1.05;
       color: var(--text-primary);
@@ -455,10 +474,10 @@ Only mobile receives a minimum track width and horizontal scrolling. */
         gap: 0;
         background: var(--bg-surface);
         border-radius: 24px;
-
+        
         box-shadow: var(--shadow-pressed);
         padding: 6px 18px;}.meta-tile{display: grid;
-
+        
         grid-template-columns: 88px 1fr;
         align-items: start;
         gap: 14px;
@@ -551,11 +570,11 @@ b.kw{font-weight: inherit; color: inherit;}
 .stat-head.is-section{margin-top: clamp(16px, 2.4vw, 28px);}
 .statbar{width: 100%;}
 .statbar-track{display: flex; height: clamp(64px, 7vw, 96px); border-radius: 16px; overflow: hidden;
-
+      
       background: #292925;}
 .statbar-seg{width: calc(var(--w) * 1%);
       display: flex; align-items: center; gap: 10px; padding: 0 20px;
-
+      
       font-size: clamp(22px, 2.5vw, 32px); color: var(--text-secondary);
       white-space: nowrap; overflow: hidden;}
 .statbar-seg b{font-family: 'Roboto Flex', sans-serif; font-size-adjust: none; font-size: clamp(22px, 2.5vw, 32px); font-weight: 400; color: var(--text-primary);}
@@ -801,6 +820,20 @@ b.kw{font-weight: inherit; color: inherit;}
     <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7zm0 10 9-5m-9 5L3 7m9 5v10" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m15 15 6 6" stroke="currentColor" stroke-width="1.5"/></symbol>
     <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-hero" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 13h18M7 17h6"/></symbol>
+    <symbol id="i-facts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M9 5v14M15 5v14M3 12h18"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.4v.4"/></symbol>
+    <symbol id="i-matrix" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9.3h18M3 14.7h18M9 4v16"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></symbol>
+    <symbol id="i-split" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="7" height="14" rx="1"/><rect x="14" y="5" width="7" height="14" rx="1"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5"/></symbol>
+    <symbol id="i-pivot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></symbol>
+    <symbol id="i-flow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="6" height="5" rx="1"/><rect x="15" y="15" width="6" height="5" rx="1"/><path d="M9 6.5h3a3 3 0 0 1 3 3V15"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a1.5 1.5 0 0 0 1.3 2.2h11.4A1.5 1.5 0 0 0 19 18l-5-9V3"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M6 20h12M5 8h14M5 8l-2.5 6a3 3 0 0 0 5 0zM19 8l-2.5 6a3 3 0 0 0 5 0z"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8 4 4-4 4"/></symbol>
+    <symbol id="i-question" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1.1.9-1.1 1.7M12 16.8v.4"/></symbol>
   </defs>
 </svg>
 
@@ -809,6 +842,7 @@ b.kw{font-weight: inherit; color: inherit;}
   <main>
     <nav class="agent-nav" aria-label="Beispiele der Subagenten">
       <a class="pill__seg" href="Case-Studyer-Agentic-Workflow.html" aria-current="page">Agentic Workflow Overview</a>
+      <a class="pill__seg" href="Case-Studyer-Struktur.html">Struktur &amp; Text</a>
       <a class="pill__seg" href="Case-Studyer-UI-Elemente.html">UI-Elemente</a>
       <a class="pill__seg" href="Case-Studyer-Wireframes.html">Wireframes</a>
       <a class="pill__seg" href="Case-Studyer-Bildgenerierung.html">Bild­generierung</a>
@@ -854,7 +888,6 @@ b.kw{font-weight: inherit; color: inherit;}
           <p class="ap-desc" id="ap-desc"></p>
           <ol class="ap-io"><li><span class="ap-lab">Input</span><span id="ap-in"></span></li><li><span class="ap-lab">Output</span><span id="ap-out"></span></li></ol>
           <dl class="ap-meta"><div><dt>Werkzeuge</dt><dd id="ap-tool"></dd></div></dl>
-
         </div>
       </div>
     </section>
@@ -864,7 +897,7 @@ b.kw{font-weight: inherit; color: inherit;}
 
 <script>
 // Agent map: every connector is measured from the real boxes, so lines meet edges at any width.
-// Roles are buttons that open one info panel. Optional live status: when the page is served over
+// Roles are buttons that open one info panel.
 (() => {
   const map = document.querySelector('.map'), svg = map.querySelector('.map-svg'), main = map.querySelector('.map-main');
   const $ = id => document.getElementById(id);
@@ -963,9 +996,6 @@ b.kw{font-weight: inherit; color: inherit;}
       in: 'Ergebnisse aller Sub-Agenten', out: 'Lokale HTML-Vorschau für Lucas', tool: 'case-study-Skill, Portfolio-Regeln' },
   };
 
-  // Bot Chat ids are read from each Hermes profile at build time (build.py, botchat marker).
-  // Cross-profile Bot Chats need a profile-aware open; generic deep links only navigate.
-  const BOT = { orchestrator: 'portfolio' };
   const panel = $('agent-panel'); let opener = null;
   const close = () => { if (panel.hidden) return; panel.hidden = true; map.classList.remove('has-panel'); opener?.setAttribute('aria-expanded', 'false'); opener?.focus(); opener = null; };
   const place = () => {
@@ -1236,7 +1266,6 @@ b.kw{font-weight: inherit; color: inherit;}
     if (!activeStep) play.setAttribute('aria-label', on ? 'Live-Ansicht aktiv, Animation pausiert' : 'Workflow abspielen');
   };
 
-
 })();
 </script>
 <script>
@@ -1456,7 +1485,7 @@ b.kw{font-weight: inherit; color: inherit;}
       setTimeout(recollect, 500);
       setTimeout(recollect, 2000);   // late content (lazy media, scripted sections)
     })();
-
+  
 </script>
 <div id="scroll-track">
     <div id="scroll-thumb">
@@ -1572,7 +1601,5 @@ b.kw{font-weight: inherit; color: inherit;}
   track.addEventListener('pointerup', endDrag);
   track.addEventListener('pointercancel', endDrag);
 })();</script>
-<script>
-</script>
 </body>
 </html>
