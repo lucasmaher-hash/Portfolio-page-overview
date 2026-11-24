@@ -1253,7 +1253,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
   // Demo: the workflow step by step, with a short caption beside each line or box.
   // Explained boxes and lines stay pink; the current step is full strength, the rest dims.
   const play = $('map-play'), cap = $('flow-cap'), cap2 = $('flow-cap-2'), node = k => k.startsWith('#') ? map.querySelector(k) : map.querySelector(`[data-agent="${k}"]`);
-  // Every box and every line is explained once; then the result is checked and three deviations
+  // Every box and every line is explained once; then the result is checked and two deviations
   // are fixed, each by the agent responsible. cap.box = caption beside a box, cap.line = beside a line.
   const fix = (agent, dwellMs, revealMs, t) => [
     { lines: ['fan-' + agent], keep: ['trunk'], cur: ['orchestrator'], to: [agent], dwellMs, revealMs, cap: { box: agent, side: 'right', t } },
@@ -1272,7 +1272,6 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     { lines: ['loop'], cur: ['output'], to: ['orchestrator'], dwellMs: 2790, revealMs: 1958.242, cap: { box: 'orchestrator', t: 'Seite mit Vorgaben und Quellen abgleichen.' } },
     ...fix('struktur', 2486, 1673.407, 'Unbelegte Aussage korrigieren.'),
     ...fix('wireframes', 2733, 1904.835, 'Falschen Screen neu zeichnen.'),
-    ...fix('ui', 2258, 1459.78, 'Layoutfehler auf dem Handy beheben.'),
     { lines: ['approval', 'rev'], cur: ['orchestrator'], to: ['#map-review'], approved: true, dwellMs: 1916, revealMs: 1139.341, cap: { box: '#map-review', place: 'right', t: 'Alles passt. Seite an Lucas übergeben.' }, read: 1500 },
   ];
   // Reveal time is stored per step (135% of the old caption’s typing time), separate from frame dwell.
