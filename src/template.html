@@ -1265,7 +1265,8 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     { lines: ['rev'], cur: ['output'], to: ['#map-review'], cap: { box: '#map-review', t: 'Erst jetzt geht die Seite an Lucas. Er prüft die lokale Vorschau und gibt frei.' }, read: 1500 },
   ];
   // Typewriter: captions are typed at one fixed speed, the same for every caption from the timeline position, so seeking and 2x stay in sync. No cursor.
-  const CAP_MS = 1000 / 91;   // 91 characters per second: the speed Lucas approved (a 91-character caption takes 1 s)
+  const CAPTION_TIME = 1.2;
+  const CAP_MS = (1000 / 91) * CAPTION_TIME;
   let typing = true, capT0 = 0, capN = -1, capTyped = null, capRest = null;
   let liveOn = false, capAt = null, frame = 0, activeStep = null, lineStages = [], lineElapsed = 0;
   const seek = $('map-seek'), end = $('map-close');
@@ -1287,7 +1288,9 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     });
   };
   const drawProgress = elapsed => lineStages.forEach(({p, delay, duration}) => {
-    const t = Math.min(1, elapsed / activeStep.lineMs), eased = t * t * (3 - 2 * t) * activeStep.lineMs;
+    const t = Math.min(1, elapsed / activeStep.lineMs);
+    // Quintic ease-in-out: slow at both ends, fastest at the midpoint.
+    const eased = t * t * t * (t * (6 * t - 15) + 10) * activeStep.lineMs;
     const progress = Math.max(0, Math.min(1, (eased - delay) / (duration || 1)));
     p.style.strokeDasharray = progress < 1 ? '1 1' : '';
     p.style.strokeDashoffset = progress < 1 ? String(1 - progress) : '';
@@ -1427,7 +1430,9 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       const keep = st.keep || (fan ? ['trunk'] : []);
       const lineMs = reduce || !lines.length ? 0 : (fan ? 1440 : 2400);
       const start = total;
-      total += lineMs + (st.dwellMs ?? Math.max(1800, 700 + (st.cap?.t.length || 0) * 19)) + (st.read || 0);
+      const baseDuration = lineMs + (st.dwellMs ?? Math.max(1800, 700 + (st.cap?.t.length || 0) * 19)) + (st.read || 0);
+      // Captions start with the stroke. Extend their full window without changing connector durations.
+      total += Math.round(baseDuration * (st.cap ? CAPTION_TIME : 1));
       return { st, lines, keep, to, lineMs, start };
     });
     seek.max = total;
@@ -1483,6 +1488,16 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
   };
   play.addEventListener('click', e => {
     if (skipClick && e.detail !== 0) { skipClick = false; return; }
+    if (!activeStep) start(); else if (paused) resume(); else pause();
+  });
+  document.addEventListener('keydown', e => {
+    if ((e.code !== 'Space' && e.key !== ' ') || e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || liveOn || !panel.hidden) return;
+    // Keep native Space on focused controls (including Play itself); the timeline is the exception.
+    if (e.target !== seek && e.target.closest?.('button, a, input, textarea, select, [contenteditable], [role="button"]')) return;
+    const r = map.getBoundingClientRect();
+    if (!activeStep && (r.bottom <= 0 || r.top >= innerHeight)) return;
+    e.preventDefault();
+    if (e.repeat) return;
     if (!activeStep) start(); else if (paused) resume(); else pause();
   });
   end.addEventListener('click', () => { stop(); play.focus({preventScroll:true}); });
