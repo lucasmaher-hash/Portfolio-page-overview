@@ -198,7 +198,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .node.core{border-color:var(--blue-deep);border-width:1.5px;padding:14px 22px}.core-txt strong{display:block;font:22px/1.1 'OCR-A-BT',monospace}.core-txt span{font-size:12px;color:#575B65}
 .node.check{border:1.5px solid var(--blue-deep);font-size:14px}.node.check strong{font-weight:600}
 .node.review{border-radius:100px;border:1.5px solid var(--blue-deep);font-size:13px;position:relative}
-.map-approved{position:absolute;right:calc(100% + 9px);top:50%;transform:translateY(-50%);color:#39714d;font-size:22px;font-weight:700;line-height:1}
+.map-approved{position:absolute;right:calc(100% + 17px);top:50%;transform:translateY(-50%);color:var(--flow);font-size:22px;font-weight:700;line-height:1}
 .map-approved[hidden]{display:none}
 .gap{height:32px;width:100%;position:relative}.gap--bus{height:40px}
 .v-label{position:absolute;left:calc(50% + 10px);top:50%;transform:translateY(-50%);font-size:11px;color:#575B65}
@@ -946,7 +946,11 @@ b.kw{font-weight: inherit; color: inherit;}
       bus(roles.map(r => r.cx), top, box.t, true, true).forEach((p, i) => { G['fan-' + keys[i]] = p; });
       const incoming = bus(roles.map(r => r.cx), bot, box.b, false, false), outputArrow = arrow(x, bot, x, out.t);
       G.join = incoming.join('') + outputArrow;
-      keys.forEach((key, i) => { G['join-' + key] = incoming[i] + outputArrow; });
+      keys.forEach((key, i) => {
+        // The static bus already covers inner branches; the standalone reveal must draw its own horizontal run.
+        const branch = Math.abs(roles[i].cx - x) > 1 ? incoming[i].replace(`V${bot}"`, `V${bot} H${x}"`) : incoming[i];
+        G['join-' + key] = branch + outputArrow;
+      });
       GEO.trunk = { x, y1: core.b, y2: top }; GEO.join = { x, y1: bot, y2: out.t };
     } else {
       G.trunk = arrow(x, core.b, x, box.t); keys.forEach(k => { G['fan-' + k] = ''; }); G.join = arrow(x, box.b, x, out.t);
@@ -970,7 +974,7 @@ b.kw{font-weight: inherit; color: inherit;}
       G['fan-ui'] = `<path d="M${x} ${y} ${uiRoute} V${ui.t - 1}" marker-end="url(#tip)"/>`;
     }
     const cls = k => [seen.has(k) && 'on', now.has(k) && 'now', doneSet.has(k) && 'done'].filter(Boolean).join(' ');
-    const ov = k => `<g data-step="${k}" class="${cls(k)}">${k === 'loop' ? `<path d="${loop}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#loop-reveal)"/>` : k === 'approval' ? `<path d="${approval}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#approval-reveal)"/>` : G[k].replaceAll('<path ', '<path pathLength="1" ')}</g>`;
+    const ov = k => `<g data-step="${k}" class="${cls(k)}">${k === 'loop' ? `<path d="${loop}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#loop-reveal)"/>` : k === 'approval' ? `<path d="${approval}" pathLength="1" marker-end="url(#tip-on)"/>` : G[k].replaceAll('<path ', '<path pathLength="1" ')}</g>`;
     const lab = map.querySelector('.map-loop--in .label'), cell = lab.parentElement.getBoundingClientRect();
     lab.style.top = ((core.cy + out.cy) / 2 + m.top - cell.top) + 'px';
     const xi = R(lab).r + 10;
@@ -981,7 +985,7 @@ b.kw{font-weight: inherit; color: inherit;}
     GEO.loop = { x: xi, y1: core.cy, y2: out.cy, left: xi + k, right: core.l - 6 };
     svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
     svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--flow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--blue-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
-      `<defs>${[['loop', loop], ['approval', approval]].map(([key, d]) => `<mask id="${key}-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${d}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask>`).join('')}</defs>` +
+      `<defs><mask id="loop-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${loop}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask></defs>` +
       `<g class="base" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
       `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>` +
       `<g class="flow" fill="none" stroke-linecap="butt" stroke-linejoin="round">${['in', 'trunk', ...keys.map(k => 'fan-' + k), 'join', ...keys.map(k => 'join-' + k), 'approval', 'rev', 'loop'].map(ov).join('')}</g>`;
@@ -1265,7 +1269,7 @@ b.kw{font-weight: inherit; color: inherit;}
     if (rebuild || i !== stepIndex) {
       stepIndex = i; activeStep = timeline[i]; arrived = false; $('map-approved').hidden = true;
       seen.clear(); now.clear(); doneSet.clear();
-      svg.querySelectorAll('g[data-step]>path, #loop-reveal path, #approval-reveal path').forEach(p => { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; p.style.markerEnd = ''; });
+      svg.querySelectorAll('g[data-step]>path, #loop-reveal path').forEach(p => { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; p.style.markerEnd = ''; });
       map.querySelectorAll('.is-lit').forEach(e => e.classList.remove('is-lit'));
       const complete = k => { seen.add(k); doneSet.add(k); };
       timeline.slice(0, i).forEach(({st, lines, keep}) => { lines.forEach(complete); keep.forEach(complete); mark([...(st.lit || []), ...(st.to || [])]); });
