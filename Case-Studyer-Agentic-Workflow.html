@@ -948,11 +948,22 @@ b.kw{font-weight: inherit; color: inherit;}
       GEO.trunk = { x, y1: core.b, y2: top }; GEO.join = { x, y1: bot, y2: out.t };
     } else {
       G.trunk = arrow(x, core.b, x, box.t); keys.forEach(k => { G['fan-' + k] = ''; }); G.join = arrow(x, box.b, x, out.t);
-      keys.forEach(key => { G['join-' + key] = G.join; });
+      const yJoin = (box.b + out.t) / 2;
+      keys.forEach((key, i) => {
+        const role = roles[i], rail = role.cx > x ? box.r + 7 : box.l - 7;
+        const yExit = role.b + Math.min(5, (yJoin - role.b) / 2);
+        G['join-' + key] = `<path d="M${role.cx} ${role.b} V${yExit} H${rail} V${yJoin} H${x}"/>` + arrow(x, yJoin, x, out.t);
+      });
       GEO.trunk = { x, y1: core.b, y2: box.t }; GEO.join = { x, y1: box.b, y2: out.t };
     }
     G.rev = arrow(x, out.b, x, rev.t); GEO.rev = { x, y1: out.b, y2: rev.t };
     const d = Object.entries(G).filter(([key]) => !key.startsWith('join-')).map(([, paths]) => paths).join('');
+    // On wrapping layouts keep the simple base diagram, but draw the first handoff to the actual card.
+    if (!oneRow) {
+      const first = roles[keys.indexOf('struktur')], y = (core.b + first.t) / 2;
+      G.trunk = `<path d="M${x} ${core.b} V${y}"/>`;
+      G['fan-struktur'] = `<path d="M${x} ${y} H${first.cx} V${first.t - 1}" marker-end="url(#tip)"/>`;
+    }
     const cls = k => [seen.has(k) && 'on', now.has(k) && 'now', doneSet.has(k) && 'done'].filter(Boolean).join(' ');
     const ov = k => `<g data-step="${k}" class="${cls(k)}">${k === 'loop' ? `<path d="${loop}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#loop-reveal)"/>` : G[k].replaceAll('<path ', '<path pathLength="1" ')}</g>`;
     const lab = map.querySelector('.map-loop--in .label'), cell = lab.parentElement.getBoundingClientRect();
@@ -1047,7 +1058,7 @@ b.kw{font-weight: inherit; color: inherit;}
     { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', line: 'loop', under: true, t: 'Der Portfolio Orchestrator prüft die Seite erneut.' } },
   ];
   const STEPS = [
-    { lines: ['in'], cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], to: ['orchestrator'], lineOnly: true, drawMs: 3600, cap: { box: 'projektlog', place: 'right', t: 'Project Files und Projektlog: Quellen des Projekts, täglich geprüft. Beides geht an den Portfolio Orchestrator.' } },
+    { lines: ['in'], cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], to: ['orchestrator'], lineOnly: true, immediate: true, drawMs: 3600, cap: { box: 'projektlog', place: 'right', t: 'Project Files und Projektlog: Quellen des Projekts, täglich geprüft. Beides geht an den Portfolio Orchestrator.' } },
     { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Portfolio Orchestrator: erstellt den Plan und verteilt die Aufgaben.' } },
     { lines: ['trunk', 'fan-struktur'], keep: [], cur: ['orchestrator'], to: ['struktur'], cap: { box: 'struktur', t: 'Struktur & Text Agent: gliedert die Case Study und schreibt den Text, jede Aussage mit Quelle.' } },
     { lines: ['fan-ui'], to: ['ui'], cap: { box: 'ui', t: 'UI-Elemente Agent: baut die Bausteine der Seite, etwa Empathy Map, User-Flow und Nutzerprofil.' } },
@@ -1085,7 +1096,9 @@ b.kw{font-weight: inherit; color: inherit;}
     });
   };
   const drawProgress = elapsed => lineStages.forEach(({p, delay, duration}) => {
-    const t = Math.min(1, elapsed / activeStep.lineMs), eased = t * t * (3 - 2 * t) * activeStep.lineMs;
+    const t = Math.min(1, elapsed / activeStep.lineMs), smooth = t * t * (3 - 2 * t);
+    // Start the very first stroke at visible speed, without a slow ease-in that reads as a wait.
+    const eased = (activeStep.st.immediate ? .6 * t + .4 * smooth : smooth) * activeStep.lineMs;
     const progress = Math.max(0, Math.min(1, (eased - delay) / (duration || 1)));
     p.style.strokeDasharray = progress < 1 ? '1 1' : '';
     p.style.strokeDashoffset = progress < 1 ? String(1 - progress) : '';
@@ -1159,7 +1172,7 @@ b.kw{font-weight: inherit; color: inherit;}
     if (GEO.loop && bx.b > GEO.loop.y1 - 24 && bx.t < GEO.loop.y2 + 24) band.push({ l: GEO.loop.x - 4, r: GEO.loop.x + 4 });
     const rEdge = Math.max(bx.r, ...band.map(r => r.r)), lEdge = Math.min(bx.l, ...band.map(r => r.l));
     const roomR = inner.r - rEdge - g, roomL = lEdge - g - inner.l, need = 150;
-    if (Math.max(roomR, roomL) < need) return dock();
+    if (capAt.place === 'right' ? roomR < need : Math.max(roomR, roomL) < need) return dock();
     const right = capAt.place === 'left' && roomL >= need ? false : capAt.place === 'right' && roomR >= need ? true : roomR >= Math.min(roomL, 240) || roomR >= 240, w = Math.min(260, right ? roomR : roomL);
     cap.style.width = w + 'px'; if (!right) cap.classList.add('to-left');
     cap.style.left = (right ? rEdge + g : lEdge - g - w) + 'px';
