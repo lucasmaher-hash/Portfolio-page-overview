@@ -249,7 +249,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .paper img{width:100%;height:auto;filter:url(#sketch-ink)}
 .paper{background:#F3F2EE;padding:clamp(14px,3vw,36px);border-radius:0;box-shadow:none}
 /* UI Components: one secondary ink, independent of headings, accents and embedded app samples. */
-html[data-catalogue="ui"]{--catalogue-secondary:#555760}
+html[data-catalogue="ui"]{--catalogue-secondary:#37383e}
 html[data-catalogue="ui"] main>.chapter{--text-secondary:var(--catalogue-secondary)}
 html[data-catalogue="ui"] main>.chapter :is(.caption,.journey p,.version-stage p,.closing p,.research-card p,.competitor-name,.competitor-profile dd,.slot,.insights-panel li,.callout-list p,.tag:not(.blue),.states .cap,.swatch code,.type-samples p,.derive-row p,.profile .need,.traits li,.quotes p){color:var(--text-secondary)}
 html[data-catalogue="ui"] .fact-src{opacity:1}
@@ -273,6 +273,10 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
 @media(max-width:640px){.competitor-grid{grid-template-columns:1fr;gap:32px}.competitor-profile{width:min(100%,340px);margin-inline:auto}}
 
 .stat-block{padding-inline:0;padding-bottom:0}.stat-kicker{margin-top:0}
+/* The right leg reaches the vertical edge of the rounded Survey track. */
+#kennzahl .statbar{--survey-track-radius:16px}
+#kennzahl .statbar-track{border-radius:var(--survey-track-radius)}
+#kennzahl .statbar-brace-line::before{content:"";position:absolute;left:100%;top:calc(-1 * var(--survey-track-radius));height:calc(var(--survey-track-radius) + 1px);border-right:inherit;pointer-events:none}
 .statbar-seg.is-main,.statbar-seg.is-main b{color:#16202d}
 .res-block{margin:0;max-width:none;align-items:flex-start;text-align:left}
 .ba-chart{max-width:620px}
@@ -787,7 +791,7 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
         <div class="swatches">
           <div class="swatch"><i style="background:#DCDCE3"></i><small>Surface<br><code>#DCDCE3</code></small></div>
           <div class="swatch"><i style="background:#1A1A1A"></i><small>Text<br><code>#1A1A1A</code></small></div>
-          <div class="swatch"><i style="background:var(--catalogue-secondary)"></i><small>Secondary text<br><code data-ink-value>#555760</code></small></div>
+          <div class="swatch"><i style="background:var(--catalogue-secondary)"></i><small>Secondary text<br><code>#37383E</code></small></div>
           <div class="swatch"><i style="background:#809BBC"></i><small>Accent<br><code>#809BBC</code></small></div>
           <div class="swatch"><i style="background:#6F6F6F"></i><small>Border<br><code>#6F6F6F</code></small></div>
         </div>
