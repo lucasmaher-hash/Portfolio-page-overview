@@ -143,7 +143,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .agent.is-active{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(71,95,126,.35)}
 .map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--map-line)}
 .map-svg g[data-step]:not(.on){display:none}
-.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.30);--map-line:#d5dfea;--map-line-active:#f4f6f9;--map-line-flow:#ff8eb8;--map-caption:#fff0f6;--focus-fade:160ms}
+.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.30);--map-line:#d5dfea;--map-line-active:#f4f6f9;--map-line-flow:#ff8eb8;--map-playback-bg:#293c58;--map-card-idle:#8494a9;--map-caption:#fff0f6;--focus-fade:160ms}
 .map.is-fast{--focus-fade:80ms}
 .map-svg g[data-step].on{color:var(--map-line-flow);stroke-width:2.4;opacity:.33}
 .map-svg g[data-step].on.now{opacity:1}
@@ -154,19 +154,22 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.52}
 .map .is-lit{border-color:var(--flow)!important;background:#fff!important}
 .map .is-lit svg{color:var(--flow)}
-.map.is-playing .is-current{border-color:var(--flow)!important;background:var(--flow-soft)!important;box-shadow:0 0 0 5px var(--flow-ring)}.map.is-playing .is-current svg{color:var(--flow)}
+.map.is-playing .is-current{border-color:var(--flow)!important;background:var(--flow-soft)!important;box-shadow:0 0 0 5px var(--flow-ring)}.map.is-playing .is-current{color:var(--map-ink-active,#172432)}.map.is-playing .is-current svg{color:var(--flow)}
+.map.is-playing .role:not(.is-current) small,.map.is-playing .core:not(.is-current) .core-txt span{color:var(--map-ink-idle,#172432)}
+.map.is-playing .is-current small,.map.is-playing .is-current .core-txt span{color:var(--map-ink-active,#172432)}
 .map.is-playing .agent,.map.is-playing .node{transition:opacity var(--focus-fade)}
 .map.is-playing .is-current{opacity:1;transition:none}
-.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){background:color-mix(in srgb,#fff 33%,var(--blue-deep));border-color:color-mix(in srgb,#fff 35%,var(--blue-deep))}
-.map.is-playing .map-main .is-lit:not(.is-current){background:color-mix(in srgb,#fff 49%,var(--blue-deep))!important}
+.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){background:var(--map-card-idle);border-color:color-mix(in srgb,var(--map-card-idle) 85%,white);color:var(--map-ink-idle,#172432)}
+.map.is-playing .map-main .is-lit:not(.is-current){background:color-mix(in srgb,var(--map-card-idle) 76%,white)!important}
 .map.is-playing .map-main .role.cap-covered:not(.is-current),.map.is-playing .map-main .node.cap-covered:not(.is-current){opacity:.09}
 .map.is-playing .role.cap-covered:not(.is-current)>*,.map.is-playing .node.cap-covered:not(.is-current)>*{opacity:0}
 .map .v-label,.map-live{color:var(--map-line)}
 .map .agent:focus-visible{outline-color:var(--map-line-active)}
 .map .agent.is-active{box-shadow:0 0 0 3px var(--map-line)}
 .flow-cap{position:absolute;z-index:4;margin:0;box-sizing:border-box;padding:2px 4px;color:var(--map-caption);font-size:14px;font-weight:650;line-height:1.4;pointer-events:none}
-.flow-cap.cap-role{background:color-mix(in srgb,var(--blue-deep) 46%,transparent)}
-.flow-cap.cap-dock,.flow-cap.cap-loop-narrow{background:var(--blue-deep)}
+.flow-cap.cap-dock,.flow-cap.cap-loop-narrow{background:var(--map-playback-bg)}
+.flow-cap.cap-role.cap-dock{position:absolute;bottom:58px;background:transparent;text-align:center}
+@media(max-width:1000px){.map.is-playing{padding-bottom:112px}}
 .flow-cap.cap-loop-narrow{font-size:13px;line-height:1.25}
 .flow-cap.cap-under{text-align:center}
 .flow-cap.to-left{text-align:right}
@@ -175,7 +178,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .flow-cap.cap-dock{position:fixed;left:12px!important;right:12px;top:auto!important;bottom:64px;width:auto!important;max-width:none;text-align:left}
 .map-speed{position:absolute;z-index:4;top:9px;right:14px;color:var(--map-caption);font-size:13px;font-weight:650;pointer-events:none}
 .map:not(.is-fast) .map-speed{display:none}
-.map.is-playing{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.map.is-playing{background:var(--map-playback-bg);user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .map-play{position:absolute;right:14px;bottom:14px;z-index:4;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 11px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font:600 12.5px/1 inherit;cursor:pointer;transition:background-color .15s ease}
 .map-play:hover{background:#34475F}.map-play:focus-visible{outline:2px solid var(--map-line-active);outline-offset:3px}
 .map:not(.is-playing) .map-play{box-shadow:inset 0 0 0 1px var(--map-line)}
@@ -1368,8 +1371,8 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       // Sub-agent captions sit directly under their own box (also the middle one), centred on it. They do not
       // make room for connectors; whatever they cover is dimmed. Wrapped or narrow layouts use the docked caption.
       const rb = [...map.querySelectorAll('.roles .role')].map(r => r.getBoundingClientRect());
-      if (!rb.every(r => Math.abs(r.top - rb[0].top) < 2) || inner.r - inner.l < 560) return dock();
       cap.classList.add('cap-role', 'cap-under');
+      if (!rb.every(r => Math.abs(r.top - rb[0].top) < 2) || inner.r - inner.l < 560) return dock();
       const w = Math.min(214, inner.r - inner.l);
       cap.style.width = w + 'px';
       cap.style.left = Math.max(inner.l, Math.min((bx.l + bx.r) / 2 - w / 2, inner.r - w)) + 'px';
@@ -1518,7 +1521,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
   });
   // The demo is a playback surface until it is explicitly closed. Keep the transport controls native.
   document.addEventListener('click', e => {
-    if (!activeStep || liveOn || e.target.closest?.('#map-play, #map-seek, #map-close')) return;
+    if (!activeStep || liveOn || e.target.closest?.('#map-play, #map-seek, #map-close, [data-workflow-tuner]')) return;
     e.preventDefault(); e.stopImmediatePropagation();
     if (skipClick && e.detail !== 0 && map.contains(e.target)) { skipClick = false; return; }
     skipClick = false;
