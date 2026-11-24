@@ -134,6 +134,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .inputs{display:flex;gap:10px;justify-content:center;width:100%}.inputs .role{flex:0 0 calc((100% - 40px) / 5)}
 .role{border:1px solid var(--border-color);border-radius:16px;padding:14px 6px;height:var(--role-h,auto);box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-height:112px;justify-content:center;background:#fff;font:inherit;color:inherit}
 .role svg{width:22px;height:22px;color:var(--blue-deep);margin-bottom:2px}.role span{font-size:11.5px;font-weight:600;line-height:1.25}.role small{font-size:10.5px;line-height:1.3;color:var(--text-secondary)}
+.map .role small{color:#394653}
 .agent{cursor:pointer;transition:transform .18s cubic-bezier(.2,.7,.2,1),border-color .18s ease,background-color .18s ease}
 .agent:hover{transform:scale(1.04)}
 .agent[aria-expanded="true"]{border-color:var(--blue-deep)}
@@ -142,29 +143,30 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .agent.is-active{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(71,95,126,.35)}
 .map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--map-line)}
 .map-svg g[data-step]:not(.on){display:none}
-.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.30);--map-line:#d5dfea;--map-line-active:#f4f6f9;--map-caption:#fff0f6;--focus-fade:160ms}
+.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.30);--map-line:#d5dfea;--map-line-active:#f4f6f9;--map-line-flow:#ffc8da;--map-caption:#fff0f6;--focus-fade:160ms}
 .map.is-fast{--focus-fade:80ms}
-.map-svg g[data-step].on{color:var(--map-line-active);stroke-width:2.4;opacity:.48}
+.map-svg g[data-step].on{color:var(--map-line-flow);stroke-width:2.4;opacity:.16}
 .map-svg g[data-step].on.now{opacity:1}
 .map-svg g[data-step].on>path{stroke:currentColor}
 .map-svg g[data-step] path[marker-end]{marker-end:none}.map-svg g[data-step].done path[marker-end]{marker-end:url(#tip-on)}
 .map-svg g[data-step].done>path{mask:none}
 .map-svg:has([data-step="loop"].on)>.loop{marker-end:none}
-.map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.68}
+.map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.52}
 .map .is-lit{border-color:var(--flow)!important;background:#fff!important}
 .map .is-lit svg{color:var(--flow)}
 .map.is-playing .is-current{border-color:var(--flow)!important;background:var(--flow-soft)!important;box-shadow:0 0 0 5px var(--flow-ring)}.map.is-playing .is-current svg{color:var(--flow)}
 .map.is-playing .agent,.map.is-playing .node{transition:opacity var(--focus-fade)}
 .map.is-playing .is-current{opacity:1;transition:none}
-.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){opacity:.75}
-.map.is-playing .map-main .is-lit:not(.is-current){opacity:.85}
+.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){background:color-mix(in srgb,#fff 58%,var(--blue-deep));border-color:color-mix(in srgb,#fff 52%,var(--blue-deep))}
+.map.is-playing .map-main .is-lit:not(.is-current){background:color-mix(in srgb,#fff 80%,var(--blue-deep))!important}
 .map.is-playing .map-main .role.cap-covered:not(.is-current),.map.is-playing .map-main .node.cap-covered:not(.is-current){opacity:.09}
 .map.is-playing .role.cap-covered:not(.is-current)>*,.map.is-playing .node.cap-covered:not(.is-current)>*{opacity:0}
 .map .v-label,.map-live{color:var(--map-line)}
 .map .agent:focus-visible{outline-color:var(--map-line-active)}
 .map .agent.is-active{box-shadow:0 0 0 3px var(--map-line)}
 .flow-cap{position:absolute;z-index:4;margin:0;box-sizing:border-box;padding:2px 4px;color:var(--map-caption);font-size:14px;font-weight:650;line-height:1.4;pointer-events:none}
-.flow-cap.cap-role,.flow-cap.cap-dock,.flow-cap.cap-loop-narrow{background:var(--blue-deep)}
+.flow-cap.cap-role{background:color-mix(in srgb,var(--blue-deep) 46%,transparent)}
+.flow-cap.cap-dock,.flow-cap.cap-loop-narrow{background:var(--blue-deep)}
 .flow-cap.cap-loop-narrow{font-size:13px;line-height:1.25}
 .flow-cap.cap-under{text-align:center}
 .flow-cap.to-left{text-align:right}
@@ -1171,7 +1173,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     GEO.loop = { x: xi, y1: core.cy, y2: out.cy, left: xi + k, right: core.l - 6 };
     GEO.approval = { left: 2 * x - GEO.loop.right, right: 2 * x - GEO.loop.left, y1: core.cy };
     svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
-    svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--map-line-active)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--map-line)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
+    svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--map-line-flow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--map-line)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
       `<defs><mask id="loop-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${loop}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask></defs>` +
       `<g class="base" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
       `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>` +
@@ -1274,7 +1276,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     { lines: ['fan-bilder'], to: ['bilder'], dwellMs: 2410, revealMs: 1602.198, cap: { box: 'bilder', t: 'Nutzungsszenen erstellen. Originale erhalten.' } },
     { lines: ['fan-3d'], to: ['3d'], dwellMs: 2372, revealMs: 1566.593, cap: { box: '3d', t: 'Räumliche Ansichten erstellen.' } },
     { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], dwellMs: 1800, revealMs: 961.319, cap: { box: 'output', t: 'Bausteine zur HTML-Seite verbinden.' } },
-    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], dwellMs: 2790, revealMs: 1958.242, cap: { box: 'orchestrator', t: 'Seite mit Vorgaben und Quellen abgleichen.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], dwellMs: 2790, revealMs: 1958.242, cap: { box: 'orchestrator', line: 'loop', t: 'Seite mit Vorgaben und Quellen abgleichen.' } },
     ...fix('struktur', 2486, 1673.407, 'Unbelegte Aussage korrigieren.'),
     ...fix('wireframes', 2733, 1904.835, 'Falschen Screen neu zeichnen.'),
     { lines: ['approval', 'rev'], cur: ['orchestrator'], to: ['#map-review'], approved: true, dwellMs: 1916, revealMs: 1139.341, cap: { box: 'orchestrator', line: 'approval', t: 'Alles passt. Seite an Lucas übergeben.' }, read: 1500 },
@@ -1358,7 +1360,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       cap.classList.toggle('to-left', right);
       cap.style.width = w + 'px';
       cap.style.left = (narrow ? (right ? inner.r - w : inner.l) : (l + r - w) / 2) + 'px';
-      cap.style.top = ((narrow ? bx.t : line.y1) - cap.offsetHeight - (narrow ? 2 : 6)) + 'px';
+      cap.style.top = ((narrow ? bx.t : line.y1) - cap.getBoundingClientRect().height - (narrow ? 2 : 6)) + 'px';
       return;
     }
     if (el.closest('.roles')) {
