@@ -123,8 +123,11 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .node.core{border-color:var(--blue-deep);border-width:1.5px;padding:14px 22px}.core-txt strong{display:block;font:22px/1.1 'OCR-A-BT',monospace}.core-txt span{font-size:12px;color:#575B65}
 .node.check{border:1.5px solid var(--blue-deep);font-size:14px}.node.check strong{font-weight:600}
 .node.review{border-radius:100px;border:1.5px solid var(--blue-deep);font-size:13px;position:relative}
-.map-approved{position:absolute;right:calc(100% + 17px);top:50%;transform:translateY(-50%);color:var(--flow);font-size:22px;font-weight:700;line-height:1}
+.map-approved{position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:7px;white-space:nowrap;color:#842448;font-size:13px;font-weight:650;line-height:1.2}
+.map-approved-icon{color:var(--flow);font-size:22px;line-height:1}
 .map-approved[hidden]{display:none}
+@media(max-width:600px){.map{padding-bottom:80px}.map-approved-label{position:absolute;right:0;top:calc(50% + 32px)}}
+@media(max-width:360px){.map-main>.inputs+.gap{height:56px}}
 .gap{height:32px;width:100%;position:relative}.gap--bus{height:40px}
 .v-label{position:absolute;left:calc(50% + 10px);top:50%;transform:translateY(-50%);font-size:11px;color:#575B65}
 .roles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;width:100%}
@@ -421,7 +424,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
           <div class="gap gap--bus"></div>
           <button type="button" class="node check agent" id="map-check" data-agent="output" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-check"/></svg><strong>Case Study Output</strong></button>
           <div class="gap"><span class="v-label">passt</span></div>
-          <div class="node review" id="map-review"><svg aria-hidden="true"><use href="#i-eye"/></svg>Lucas prüft die lokale Vorschau<span class="map-approved" id="map-approved" role="img" aria-label="Freigegeben" hidden>✓</span></div>
+          <div class="node review" id="map-review"><svg aria-hidden="true"><use href="#i-eye"/></svg>Lucas prüft die lokale Vorschau<span class="map-approved" id="map-approved" hidden><span class="map-approved-icon" aria-hidden="true">✓</span><span class="map-approved-label">Lucas prüft die Seite.</span></span></div>
         </div>
         <div class="map-loop" aria-hidden="true"></div>
         <svg class="map-svg" aria-hidden="true"></svg>
@@ -1165,6 +1168,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     const xr = 2 * x - xi;
     const approval = `M${2 * x - (core.l - 6)} ${core.cy} H${xr - k} Q${xr} ${core.cy} ${xr} ${core.cy + k} V${out.cy - k} Q${xr} ${out.cy} ${xr - k} ${out.cy} H${2 * x - (out.l - 4)}`;
     GEO.loop = { x: xi, y1: core.cy, y2: out.cy, left: xi + k, right: core.l - 6 };
+    GEO.approval = { left: 2 * x - GEO.loop.right, right: 2 * x - GEO.loop.left, y1: core.cy };
     svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
     svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--flow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--blue-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
       `<defs><mask id="loop-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${loop}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask></defs>` +
@@ -1258,7 +1262,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
   const fix = (agent, dwellMs, revealMs, t) => [
     { lines: ['fan-' + agent], keep: ['trunk'], cur: ['orchestrator'], to: [agent], dwellMs, revealMs, cap: { box: agent, side: 'right', t } },
     { lines: ['join-' + agent], cur: [agent], to: ['output'], dwellMs: 1859, revealMs: 1085.934, cap: { box: 'output', place: 'right', t: 'Korrektur in die Seite einbauen.' } },
-    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], dwellMs: 1800, revealMs: 890.11, cap: { box: 'orchestrator', place: 'right', t: 'Seite erneut prüfen.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], dwellMs: 1800, revealMs: 890.11, cap: { box: 'orchestrator', line: 'loop', t: 'Seite erneut prüfen.' } },
   ];
   const STEPS = [
     { cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], dwellMs: 3600, revealMs: 1976.044, cap: { box: 'projektlog', place: 'right', t: 'Quellen bereitstellen und täglich prüfen.' } },
@@ -1272,7 +1276,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     { lines: ['loop'], cur: ['output'], to: ['orchestrator'], dwellMs: 2790, revealMs: 1958.242, cap: { box: 'orchestrator', t: 'Seite mit Vorgaben und Quellen abgleichen.' } },
     ...fix('struktur', 2486, 1673.407, 'Unbelegte Aussage korrigieren.'),
     ...fix('wireframes', 2733, 1904.835, 'Falschen Screen neu zeichnen.'),
-    { lines: ['approval', 'rev'], cur: ['orchestrator'], to: ['#map-review'], approved: true, dwellMs: 1916, revealMs: 1139.341, cap: { box: '#map-review', place: 'right', t: 'Alles passt. Seite an Lucas übergeben.' }, read: 1500 },
+    { lines: ['approval', 'rev'], cur: ['orchestrator'], to: ['#map-review'], approved: true, dwellMs: 1916, revealMs: 1139.341, cap: { box: 'orchestrator', line: 'approval', t: 'Alles passt. Seite an Lucas übergeben.' }, read: 1500 },
   ];
   // Reveal time is stored per step (135% of the old caption’s typing time), separate from frame dwell.
   // The timeline position drives typing, so seeking and 2× stay in sync.
@@ -1344,13 +1348,16 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       cap.style.top = (GEO.in.y - cap.offsetHeight / 2) + 'px';
       return;
     }
-    if (capAt.line === 'loop') {
-      const line = GEO.loop, left = Math.max(inner.l, line.left - 4);
-      const narrow = line.right - left < 110;
+    if (capAt.line === 'loop' || capAt.line === 'approval') {
+      const line = GEO[capAt.line], right = capAt.line === 'approval';
+      const l = Math.max(inner.l, line.left - 4), r = Math.min(inner.r, line.right + 4);
+      const narrow = r - l < 105;
+      const w = narrow ? Math.min(172, (inner.r - inner.l) / 2 - 2) : Math.min(260, r - l);
       cap.classList.toggle('cap-loop-narrow', narrow);
-      cap.style.width = Math.min(260, narrow ? inner.r - left : line.right - left + 4) + 'px';
-      cap.style.left = left + 'px';
-      cap.style.top = ((narrow ? bx.t : line.y1) - cap.offsetHeight - 6) + 'px';
+      cap.classList.toggle('to-left', right);
+      cap.style.width = w + 'px';
+      cap.style.left = (narrow ? (right ? inner.r - w : inner.l) : (l + r - w) / 2) + 'px';
+      cap.style.top = ((narrow ? bx.t : line.y1) - cap.offsetHeight - (narrow ? 2 : 6)) + 'px';
       return;
     }
     if (el.closest('.roles')) {
