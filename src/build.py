@@ -193,6 +193,8 @@ FRAGMENTS = {
     "findmy:wireflow:svg": lambda: (HERE.parent / 'projekte/findmy/visuals/findmy-find-nearby.svg').read_text().strip(),
     "passwords:wireflow:svg": lambda: (HERE.parent / 'projekte/passwords/visuals/passwords-share-group.svg').read_text().strip(),
 
+    **{f"lab:screen:state-{n}": (lambda n=n: (HERE / f"assets/wireflow-state-{n}.svg").read_text().strip())
+       for n in (1, 2, 3)},
     "lab:js:section-copy": lambda: (HERE / "section-copy.js").read_text(),
     "portfolio:css:nav": portfolio_nav_css,
     "portfolio:js:nav-light": portfolio_nav_lighting,
@@ -299,6 +301,12 @@ pages = {
 }
 for key, (filename, label) in pages.items():
     result = page
+    nav_labels = {}
+    if key == 'ui':
+        result = result.replace('<html lang="de">', '<html lang="en">', 1)
+        result = result.replace('aria-label="Beispiele der Subagenten"', 'aria-label="Agent examples"', 1)
+        nav_labels = {'struktur': 'Structure &amp; Content', 'ui': 'UI Components', 'agent-images': 'Image Generation'}
+        label = nav_labels['ui']
     if key != 'ui':
         result, n = re.subn(r'(?s)(  <main>\n).*?(    <nav class="agent-nav".*?</nav>).*?(  </main>)',
                             lambda m: m[1] + m[2] + '\n\n' + sections[key] + m[3], result)
@@ -310,7 +318,7 @@ for key, (filename, label) in pages.items():
     if key != 'struktur':
         result = re.sub(r'(?s)<script>\n// Struktur map:.*?</script>\n', '', result, count=1)
     nav = '\n'.join(f'      <a class="pill__seg" href="{name}"' + (' aria-current="page"' if target == key else '')
-                    + '>' + text.replace('Bildgenerierung', 'Bild\u00adgenerierung') + '</a>'
+                    + '>' + nav_labels.get(target, text).replace('Bildgenerierung', 'Bild\u00adgenerierung') + '</a>'
                     for target, (name, text) in pages.items())
     result = result.replace('      <!-- Agent page links -->', nav)
     result = result.replace('<title>Portfolio Orchestrator · UI-Elemente</title>', f'<title>Portfolio Orchestrator · {label}</title>')

@@ -8,6 +8,8 @@
   status.setAttribute('role', 'status');
   status.hidden = true;
   document.body.append(status);
+  const english = document.documentElement.lang === 'en';
+  const t = (de, en) => english ? en : de;
   let busy = false, reset;
   const say = message => {
     clearTimeout(reset);
@@ -32,10 +34,10 @@
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'copy-section';
-    button.textContent = 'Kopieren';
-    button.setAttribute('aria-label', `Abschnitt „${title}“ als Bild kopieren`);
+    button.textContent = t('Kopieren', 'Copy');
+    button.setAttribute('aria-label', t(`Abschnitt „${title}“ als Bild kopieren`, `Copy ${title} as an image`));
     if (captureMode) button.style.visibility = 'hidden';
-    if (!local) button.title = 'Öffnet die lokale Vorschau für den Bildexport';
+    if (!local) button.title = t('Öffnet die lokale Vorschau für den Bildexport', 'Open the local preview to export an image');
     heading.append(button);
     button.addEventListener('click', async () => {
       if (busy) return;
@@ -46,7 +48,7 @@
       }
       busy = true;
       button.setAttribute('aria-busy', 'true');
-      button.textContent = 'Kopieren …';
+      button.textContent = t('Kopieren …', 'Copying…');
       const capture = fetch('/__section_png', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: section.id, width: document.documentElement.clientWidth, height: innerHeight,
@@ -54,25 +56,25 @@
           tab: section.querySelector('[role="tab"][aria-selected="true"]')?.id,
           split: section.querySelector('input[type="range"]')?.valueAsNumber })
       }).then(response => {
-        if (!response.ok || response.headers.get('Content-Type') !== 'image/png') throw Error('PNG nicht verfügbar');
+        if (!response.ok || response.headers.get('Content-Type') !== 'image/png') throw Error(t('PNG nicht verfügbar', 'PNG unavailable'));
         return response.blob();
       });
       // Initiate the write in the click event, before awaiting the PNG (Safari user activation).
       try {
-        if (!navigator.clipboard?.write || !window.ClipboardItem) throw Error('Zwischenablage nicht unterstützt');
+        if (!navigator.clipboard?.write || !window.ClipboardItem) throw Error(t('Zwischenablage nicht unterstützt', 'Clipboard unavailable'));
         await navigator.clipboard.write([new ClipboardItem({ 'image/png': capture })]);
-        say('Bild kopiert. Mit ⌘V einfügen.');
+        say(t('Bild kopiert. Mit ⌘V einfügen.', 'Image copied. Paste with ⌘V.'));
       } catch {
         try {
           download(await capture, section.id);
-          say('Zwischenablage nicht verfügbar. PNG heruntergeladen.');
+          say(t('Zwischenablage nicht verfügbar. PNG heruntergeladen.', 'Clipboard unavailable. PNG downloaded.'));
         } catch {
-          say('Bild konnte nicht erstellt werden. Bitte erneut versuchen.');
+          say(t('Bild konnte nicht erstellt werden. Bitte erneut versuchen.', 'Could not create the image. Try again.'));
         }
       } finally {
         busy = false;
         button.removeAttribute('aria-busy');
-        button.textContent = 'Kopieren';
+        button.textContent = t('Kopieren', 'Copy');
       }
     });
   }
