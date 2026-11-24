@@ -1245,8 +1245,8 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
   // are fixed, each by the agent responsible. cap.box = caption beside a box, cap.line = beside a line.
   const fix = (agent, t) => [
     { lines: ['fan-' + agent], keep: ['trunk'], cur: ['orchestrator'], to: [agent], cap: { box: agent, side: 'right', t } },
-    { lines: ['join-' + agent], cur: [agent], to: ['output'], cap: { box: 'output', under: true, t: 'Der korrigierte Teil wird wieder in die HTML-Seite eingebaut.' } },
-    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', line: 'loop', under: true, t: 'Der Portfolio Orchestrator prüft die Seite erneut.' } },
+    { lines: ['join-' + agent], cur: [agent], to: ['output'], cap: { box: 'output', place: 'right', t: 'Der korrigierte Teil wird wieder in die HTML-Seite eingebaut.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', place: 'right', t: 'Der Portfolio Orchestrator prüft die Seite erneut.' } },
   ];
   const STEPS = [
     { lines: ['in'], cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], to: ['orchestrator'], lineOnly: true, immediate: true, drawMs: 3600, cap: { box: 'projektlog', place: 'right', t: 'Project Files und Projektlog: Quellen des Projekts, täglich geprüft. Beides geht an den Portfolio Orchestrator.' } },
