@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-catalogue="ui">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -615,6 +615,13 @@ b.kw{font-weight: inherit; color: inherit;}
 .big-statement{margin:0;-webkit-text-stroke:0}
 .paper img{width:100%;height:auto;filter:url(#sketch-ink)}
 .paper{background:#F3F2EE;padding:clamp(14px,3vw,36px);border-radius:0;box-shadow:none}
+/* UI Components: one secondary ink, independent of headings, accents and embedded app samples. */
+html[data-catalogue="ui"]{--catalogue-secondary:#555760}
+html[data-catalogue="ui"] main>.chapter{--text-secondary:var(--catalogue-secondary)}
+html[data-catalogue="ui"] main>.chapter :is(.caption,.journey p,.version-stage p,.closing p,.research-card p,.competitor-name,.competitor-profile dd,.slot,.insights-panel li,.callout-list p,.tag:not(.blue),.states .cap,.swatch code,.type-samples p,.derive-row p,.profile .need,.traits li,.quotes p){color:var(--text-secondary)}
+html[data-catalogue="ui"] .fact-src{opacity:1}
+html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
+
 .research-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.6vw,20px)}
 .research-grid .research-card{border:1px solid var(--border-color);border-radius:14px;background:transparent;padding:clamp(16px,2vw,24px);min-width:0}
 .research-grid .research-card svg{display:block;width:30px;height:30px;margin-bottom:18px}
@@ -1111,7 +1118,7 @@ b.kw{font-weight: inherit; color: inherit;}
         <div class="swatches">
           <div class="swatch"><i style="background:#DCDCE3"></i><small>Surface<br><code>#DCDCE3</code></small></div>
           <div class="swatch"><i style="background:#1A1A1A"></i><small>Text<br><code>#1A1A1A</code></small></div>
-          <div class="swatch"><i style="background:#8E8E93"></i><small>Secondary text<br><code>#8E8E93</code></small></div>
+          <div class="swatch"><i style="background:var(--catalogue-secondary)"></i><small>Secondary text<br><code data-ink-value>#555760</code></small></div>
           <div class="swatch"><i style="background:#809BBC"></i><small>Accent<br><code>#809BBC</code></small></div>
           <div class="swatch"><i style="background:#6F6F6F"></i><small>Border<br><code>#6F6F6F</code></small></div>
         </div>

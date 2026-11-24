@@ -303,7 +303,7 @@ for key, (filename, label) in pages.items():
     result = page
     nav_labels = {}
     if key == 'ui':
-        result = result.replace('<html lang="de">', '<html lang="en">', 1)
+        result = result.replace('<html lang="de">', '<html lang="en" data-catalogue="ui">', 1)
         result = result.replace('aria-label="Beispiele der Subagenten"', 'aria-label="Agent examples"', 1)
         nav_labels = {'struktur': 'Structure &amp; Content', 'ui': 'UI Components', 'agent-images': 'Image Generation'}
         label = nav_labels['ui']
