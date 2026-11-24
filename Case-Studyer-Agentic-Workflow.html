@@ -1040,19 +1040,17 @@ b.kw{font-weight: inherit; color: inherit;}
   // are fixed, each by the agent responsible. cap.box = caption beside a box, cap.line = beside a line.
   const fix = (agent, t) => [
     { lines: ['fan-' + agent], keep: ['trunk'], cur: ['orchestrator'], to: [agent], cap: { box: agent, side: 'right', t } },
-    { lines: ['join'], cur: [agent], to: ['output'], cap: { box: 'output', t: 'Der korrigierte Teil wird wieder in die HTML-Seite eingebaut.' } },
-    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', line: 'loop', t: 'Der Portfolio Orchestrator prüft die Seite erneut.' } },
+    { lines: ['join'], cur: [agent], to: ['output'], cap: { box: 'output', under: true, t: 'Der korrigierte Teil wird wieder in die HTML-Seite eingebaut.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', line: 'loop', under: true, t: 'Der Portfolio Orchestrator prüft die Seite erneut.' } },
   ];
   const STEPS = [
-    { cur: ['files'], lit: ['files'], cap: { box: 'files', place: 'left', t: 'Project Files: Repo, Screens, Notizen und Rohtext des Projekts, so weit Lucas sie freigibt.' } },
-    { cur: ['projektlog'], lit: ['projektlog'], also: 0, cap: { box: 'projektlog', place: 'right', t: 'Projektlog: Der Projektlog Agent prüft täglich, was sich geändert hat, und hält jede Entscheidung belegt und datiert fest.' } },
-    { lines: ['in'], cur: ['files', 'projektlog'], to: ['orchestrator'], lineCap: true, cap: { box: 'projektlog', line: 'in', t: 'Beide sind die Quelle und der Input. Sie gehen an den Portfolio Orchestrator.' } },
+    { lines: ['in'], cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], to: ['orchestrator'], lineCap: true, cap: { box: 'files', place: 'left', early: true, t: 'Project Files und Projektlog: Quellen des Projekts, täglich geprüft. Beides geht an den Portfolio Orchestrator.' } },
     { lines: ['trunk'], cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Portfolio Orchestrator: erstellt den Plan und verteilt die Aufgaben.' } },
     { lines: ['fan-struktur'], to: ['struktur'], cap: { box: 'struktur', t: 'Struktur & Text Agent: gliedert die Case Study und schreibt den Text, jede Aussage mit Quelle.' } },
     { lines: ['fan-ui'], to: ['ui'], cap: { box: 'ui', t: 'UI-Elemente Agent: baut die Bausteine der Seite, etwa Empathy Map, User-Flow und Nutzerprofil.' } },
     { lines: ['fan-wireframes'], to: ['wireframes'], cap: { box: 'wireframes', t: 'Wireframe Agent: zeichnet Wireframes und Wireflows aus echten Screens.' } },
-    { lines: ['fan-3d'], to: ['3d'], cap: { box: '3d', t: '3D Agent (optional): baut räumliche Ansichten in Blender, wenn eine Skizze nicht reicht.' } },
     { lines: ['fan-bilder'], to: ['bilder'], cap: { box: 'bilder', t: 'Bild Agent (optional): erzeugt Nutzungsszenen mit ComfyUI, ohne das Original zu verändern.' } },
+    { lines: ['fan-3d'], to: ['3d'], cap: { box: '3d', t: '3D Agent (optional): baut räumliche Ansichten in Blender, wenn eine Skizze nicht reicht.' } },
     { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], cap: { box: 'output', t: 'Alle Teile werden zu einer HTML-Seite zusammengesetzt.' } },
     { cur: ['output'], cap: { box: 'output', t: 'Case Study Output: die lokale HTML-Seite der Case Study.' } },
     { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Das Ergebnis geht zurück an den Portfolio Orchestrator. Er prüft es gegen Skill, Portfolio-Regeln und Quellen.' } },
@@ -1062,9 +1060,8 @@ b.kw{font-weight: inherit; color: inherit;}
     { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Keine Abweichung mehr: Die Seite passt zu den Vorgaben.' } },
     { lines: ['rev'], cur: ['output'], to: ['#map-review'], cap: { box: '#map-review', t: 'Erst jetzt geht die Seite an Lucas. Er prüft die lokale Vorschau und gibt frei.' }, read: 1500 },
   ];
-  // Typewriter: captions are typed at one fixed speed (the first caption takes 1 s, every other one the same
-  // characters per second) from the timeline position, so seeking and 2x stay in sync. No cursor.
-  const CAP_MS = 1000 / STEPS[0].cap.t.length;
+  // Typewriter: captions are typed at one fixed speed, the same for every caption from the timeline position, so seeking and 2x stay in sync. No cursor.
+  const CAP_MS = 1000 / 91;   // 91 characters per second: the speed Lucas approved (a 91-character caption takes 1 s)
   let typing = true, capT0 = 0, capN = -1, capTyped = null, capRest = null;
   let liveOn = false, capAt = null, frame = 0, activeStep = null, lineStages = [], lineElapsed = 0;
   const seek = $('map-seek'), end = $('map-close');
@@ -1101,6 +1098,23 @@ b.kw{font-weight: inherit; color: inherit;}
     const m = map.getBoundingClientRect(), pad = 14, g = 18, inner = { l: pad, r: m.width - pad };
     const el = node(capAt.box), b = el.getBoundingClientRect(), bx = { l: b.left - m.left, r: b.right - m.left, t: b.top - m.top, b: b.bottom - m.top };
     const dock = () => { if (main) cap.classList.add('cap-dock'); else cap.hidden = true; };
+    if (capAt.under && !el.closest('.roles')) {
+      // Correction passes: the caption sits directly under its own box, like the sub-agent captions.
+      if (inner.r - inner.l < 560) return dock();
+      cap.classList.add('cap-role', 'cap-under');
+      const w = Math.min(inner.r - inner.l, Math.max(214, Math.min(bx.r - bx.l + 60, 440)));
+      cap.style.width = w + 'px';
+      cap.style.left = Math.max(inner.l, Math.min((bx.l + bx.r) / 2 - w / 2, inner.r - w)) + 'px';
+      cap.style.top = (bx.b + 8) + 'px';
+      if (main) {
+        const c = cap.getBoundingClientRect();
+        map.querySelectorAll('.map-main .role, .map-main .node').forEach(e => {
+          const r = e.getBoundingClientRect();
+          if (e !== el && r.left < c.right && r.right > c.left && r.top < c.bottom && r.bottom > c.top) e.classList.add('cap-covered');
+        });
+      }
+      return;
+    }
     if (capAt.line === 'in') {
       const x = GEO.in.right + 14, room = inner.r - x;
       if (room < 130) return dock();
@@ -1235,7 +1249,7 @@ b.kw{font-weight: inherit; color: inherit;}
       showAlso(typeof st.also === 'number' ? STEPS[st.also].cap : null);
       if (lineMs) {
         setCurrent((st.cur || []).map(node).filter(Boolean));
-        showCap(!to.length || st.cap?.line || st.cap?.side === 'right' ? st.cap : null, activeStep.start);
+        showCap(!to.length || st.cap?.line || st.cap?.early || st.cap?.side === 'right' ? st.cap : null, activeStep.start);
       }
     }
     const {st, to, lines, lineMs, start} = activeStep;
