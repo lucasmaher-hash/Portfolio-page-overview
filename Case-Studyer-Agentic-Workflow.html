@@ -1060,30 +1060,30 @@ b.kw{font-weight: inherit; color: inherit;}
   const play = $('map-play'), cap = $('flow-cap'), cap2 = $('flow-cap-2'), node = k => k.startsWith('#') ? map.querySelector(k) : map.querySelector(`[data-agent="${k}"]`);
   // Every box and every line is explained once; then the result is checked and three deviations
   // are fixed, each by the agent responsible. cap.box = caption beside a box, cap.line = beside a line.
-  const fix = (agent, t) => [
-    { lines: ['fan-' + agent], keep: ['trunk'], cur: ['orchestrator'], to: [agent], cap: { box: agent, side: 'right', t } },
-    { lines: ['join-' + agent], cur: [agent], to: ['output'], cap: { box: 'output', place: 'right', t: 'Der korrigierte Teil wird wieder in die HTML-Seite eingebaut.' } },
-    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', place: 'right', t: 'Der Portfolio Orchestrator prüft die Seite erneut.' } },
+  const fix = (agent, dwellMs, revealMs, t) => [
+    { lines: ['fan-' + agent], keep: ['trunk'], cur: ['orchestrator'], to: [agent], dwellMs, revealMs, cap: { box: agent, side: 'right', t } },
+    { lines: ['join-' + agent], cur: [agent], to: ['output'], dwellMs: 1859, revealMs: 1085.934, cap: { box: 'output', place: 'right', t: 'Korrektur in die Seite einbauen.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], dwellMs: 1800, revealMs: 890.11, cap: { box: 'orchestrator', place: 'right', t: 'Seite erneut prüfen.' } },
   ];
   const STEPS = [
-    { cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], dwellMs: 3600, cap: { box: 'projektlog', place: 'right', t: 'Project Files und Projektlog: Quellen des Projekts, täglich geprüft. Beides geht an den Portfolio Orchestrator.' } },
-    { lines: ['in'], cur: ['orchestrator'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Portfolio Orchestrator: erstellt den Plan und verteilt die Aufgaben.' } },
-    { lines: ['trunk', 'fan-struktur'], keep: [], cur: ['orchestrator'], to: ['struktur'], cap: { box: 'struktur', t: 'Struktur & Text Agent: gliedert die Case Study und schreibt den Text, jede Aussage mit Quelle.' } },
-    { lines: ['fan-ui'], to: ['ui'], cap: { box: 'ui', t: 'UI-Elemente Agent: baut die Bausteine der Seite, etwa Empathy Map, User-Flow und Nutzerprofil.' } },
-    { lines: ['fan-wireframes'], to: ['wireframes'], cap: { box: 'wireframes', t: 'Wireframe Agent: zeichnet Wireframes und Wireflows aus echten Screens.' } },
-    { lines: ['fan-bilder'], to: ['bilder'], cap: { box: 'bilder', t: 'Bild Agent (optional): erzeugt Nutzungsszenen mit ComfyUI, ohne das Original zu verändern.' } },
-    { lines: ['fan-3d'], to: ['3d'], cap: { box: '3d', t: '3D Agent (optional): baut räumliche Ansichten in Blender, wenn eine Skizze nicht reicht.' } },
-    { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], cap: { box: 'output', t: 'Alle Teile werden zu einer HTML-Seite zusammengesetzt.' } },
-    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Das Ergebnis geht zurück an den Portfolio Orchestrator. Er prüft es gegen Skill, Portfolio-Regeln und Quellen.' } },
-    ...fix('struktur', 'Abweichung 1: Eine Aussage im Text ist nicht belegt. Der Struktur & Text Agent korrigiert sie.'),
-    ...fix('wireframes', 'Abweichung 2: Ein Wireframe zeigt einen Screen, den es so nicht gibt. Der Wireframe Agent zeichnet ihn neu.'),
-    ...fix('ui', 'Abweichung 3: Ein Baustein bricht am Handy um. Der UI-Elemente Agent passt ihn an.'),
-    { lines: ['approval', 'rev'], cur: ['orchestrator'], to: ['#map-review'], approved: true, cap: { box: '#map-review', place: 'right', t: 'Keine Abweichungen mehr: Die HTML-Seite wird an Lucas übergeben.' }, read: 1500 },
+    { cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], dwellMs: 3600, revealMs: 1976.044, cap: { box: 'projektlog', place: 'right', t: 'Quellen bereitstellen und täglich prüfen.' } },
+    { lines: ['in'], cur: ['orchestrator'], to: ['orchestrator'], dwellMs: 1992, revealMs: 1210.549, cap: { box: 'orchestrator', t: 'Plan erstellen. Aufgaben verteilen.' } },
+    { lines: ['trunk', 'fan-struktur'], keep: [], cur: ['orchestrator'], to: ['struktur'], dwellMs: 2486, revealMs: 1673.407, cap: { box: 'struktur', t: 'Case Study gliedern. Belegte Texte schreiben.' } },
+    { lines: ['fan-ui'], to: ['ui'], dwellMs: 2486, revealMs: 1673.407, cap: { box: 'ui', t: 'Bausteine für die Seite gestalten.' } },
+    { lines: ['fan-wireframes'], to: ['wireframes'], dwellMs: 2030, revealMs: 1246.154, cap: { box: 'wireframes', t: 'Wireflows aus echten Screens zeichnen.' } },
+    { lines: ['fan-bilder'], to: ['bilder'], dwellMs: 2410, revealMs: 1602.198, cap: { box: 'bilder', t: 'Nutzungsszenen erstellen. Originale erhalten.' } },
+    { lines: ['fan-3d'], to: ['3d'], dwellMs: 2372, revealMs: 1566.593, cap: { box: '3d', t: 'Räumliche Ansichten erstellen.' } },
+    { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], dwellMs: 1800, revealMs: 961.319, cap: { box: 'output', t: 'Bausteine zur HTML-Seite verbinden.' } },
+    { lines: ['loop'], cur: ['output'], to: ['orchestrator'], dwellMs: 2790, revealMs: 1958.242, cap: { box: 'orchestrator', t: 'Seite mit Vorgaben und Quellen abgleichen.' } },
+    ...fix('struktur', 2486, 1673.407, 'Unbelegte Aussage korrigieren.'),
+    ...fix('wireframes', 2733, 1904.835, 'Falschen Screen neu zeichnen.'),
+    ...fix('ui', 2258, 1459.78, 'Layoutfehler auf dem Handy beheben.'),
+    { lines: ['approval', 'rev'], cur: ['orchestrator'], to: ['#map-review'], approved: true, dwellMs: 1916, revealMs: 1139.341, cap: { box: '#map-review', place: 'right', t: 'Alles passt. Seite an Lucas übergeben.' }, read: 1500 },
   ];
-  // Typewriter: captions are typed at one fixed speed, the same for every caption from the timeline position, so seeking and 2x stay in sync. No cursor.
+  // Reveal time is stored per step (135% of the old caption’s typing time), separate from frame dwell.
+  // The timeline position drives typing, so seeking and 2× stay in sync.
   const CAPTION_TIME = 1.2;
-  const CAP_MS = (1000 / 91) * CAPTION_TIME;
-  let typing = true, capT0 = 0, capN = -1, capTyped = null, capRest = null;
+  let typing = true, capT0 = 0, capDuration = 0, capN = -1, capTyped = null, capRest = null;
   let liveOn = false, capAt = null, frame = 0, activeStep = null, lineStages = [], lineElapsed = 0;
   const seek = $('map-seek'), end = $('map-close');
   let stepIndex = -1, position = 0, lastFrame, timeline = [], total = 0, paused = false, scrubbing = false, arrived, rate = 1;
@@ -1199,12 +1199,12 @@ b.kw{font-weight: inherit; color: inherit;}
   };
   const typeCap = () => {
     if (!capAt || !capTyped) return;
-    const n = typing ? Math.min(capAt.t.length, Math.max(0, Math.floor((position - capT0) / CAP_MS))) : capAt.t.length;
+    const n = typing ? Math.min(capAt.t.length, Math.max(0, Math.floor((position - capT0) / capDuration * capAt.t.length))) : capAt.t.length;
     if (n === capN) return;
     capN = n; capTyped.textContent = capAt.t.slice(0, n); capRest.textContent = capAt.t.slice(n);
   };
-  const showCap = (c, at = 0) => {
-    capAt = c; capT0 = at; capN = -1; cap.hidden = !c; capTyped = capRest = null;
+  const showCap = (c, at = 0, duration = 1) => {
+    capAt = c; capT0 = at; capDuration = duration; capN = -1; cap.hidden = !c; capTyped = capRest = null;
     if (!c) showAlso(null);
     if (c) {
       // The full text stays in the layout (hidden) so wrapping and placement never jump while typing;
@@ -1250,8 +1250,8 @@ b.kw{font-weight: inherit; color: inherit;}
       const keep = st.keep || (fan ? ['trunk'] : []);
       const lineMs = reduce || !lines.length ? 0 : (fan ? 1440 : 2400);
       const start = total;
-      const baseDuration = lineMs + (st.dwellMs ?? Math.max(1800, 700 + (st.cap?.t.length || 0) * 19)) + (st.read || 0);
-      // Captions start with the stroke. Extend their full window without changing connector durations.
+      const baseDuration = lineMs + st.dwellMs + (st.read || 0);
+      // Dwell is fixed per step so editing copy or typing speed cannot shift frame or connector timing.
       total += Math.round(baseDuration * (st.cap ? CAPTION_TIME : 1));
       return { st, lines, keep, to, lineMs, start };
     });
@@ -1276,7 +1276,7 @@ b.kw{font-weight: inherit; color: inherit;}
       paint(); lineStages = stage();
       showAlso(typeof st.also === 'number' ? STEPS[st.also].cap : null);
       if (lineMs) setCurrent((st.cur || []).map(node).filter(Boolean));
-      showCap(st.cap, activeStep.start);
+      showCap(st.cap, activeStep.start, st.revealMs);
     }
     const {st, to, lines, lineMs, start} = activeStep;
     drawProgress(lineElapsed = Math.min(lineMs, position - start));
