@@ -197,7 +197,9 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .node.pill{border-radius:100px;font-size:13px}
 .node.core{border-color:var(--blue-deep);border-width:1.5px;padding:14px 22px}.core-txt strong{display:block;font:22px/1.1 'OCR-A-BT',monospace}.core-txt span{font-size:12px;color:#575B65}
 .node.check{border:1.5px solid var(--blue-deep);font-size:14px}.node.check strong{font-weight:600}
-.node.review{border-radius:100px;border:1.5px solid var(--blue-deep);font-size:13px}
+.node.review{border-radius:100px;border:1.5px solid var(--blue-deep);font-size:13px;position:relative}
+.map-approved{position:absolute;right:calc(100% + 9px);top:50%;transform:translateY(-50%);color:#39714d;font-size:22px;font-weight:700;line-height:1}
+.map-approved[hidden]{display:none}
 .gap{height:32px;width:100%;position:relative}.gap--bus{height:40px}
 .v-label{position:absolute;left:calc(50% + 10px);top:50%;transform:translateY(-50%);font-size:11px;color:#575B65}
 .roles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;width:100%}
@@ -874,7 +876,7 @@ b.kw{font-weight: inherit; color: inherit;}
           <div class="gap gap--bus"></div>
           <button type="button" class="node check agent" id="map-check" data-agent="output" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-check"/></svg><strong>Case Study Output</strong></button>
           <div class="gap"><span class="v-label">passt</span></div>
-          <div class="node review" id="map-review"><svg aria-hidden="true"><use href="#i-eye"/></svg>Lucas prüft die lokale Vorschau</div>
+          <div class="node review" id="map-review"><svg aria-hidden="true"><use href="#i-eye"/></svg>Lucas prüft die lokale Vorschau<span class="map-approved" id="map-approved" role="img" aria-label="Freigegeben" hidden>✓</span></div>
         </div>
         <div class="map-loop" aria-hidden="true"></div>
         <svg class="map-svg" aria-hidden="true"></svg>
@@ -963,20 +965,26 @@ b.kw{font-weight: inherit; color: inherit;}
       const first = roles[keys.indexOf('struktur')], y = (core.b + first.t) / 2;
       G.trunk = `<path d="M${x} ${core.b} V${y}"/>`;
       G['fan-struktur'] = `<path d="M${x} ${y} H${first.cx} V${first.t - 1}" marker-end="url(#tip)"/>`;
+      const ui = roles[keys.indexOf('ui')], rail = ui.cx >= x ? box.r + 7 : box.l - 7;
+      const uiRoute = ui.t === first.t ? `H${ui.cx}` : `H${rail} V${ui.t - 5} H${ui.cx}`;
+      G['fan-ui'] = `<path d="M${x} ${y} ${uiRoute} V${ui.t - 1}" marker-end="url(#tip)"/>`;
     }
     const cls = k => [seen.has(k) && 'on', now.has(k) && 'now', doneSet.has(k) && 'done'].filter(Boolean).join(' ');
-    const ov = k => `<g data-step="${k}" class="${cls(k)}">${k === 'loop' ? `<path d="${loop}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#loop-reveal)"/>` : G[k].replaceAll('<path ', '<path pathLength="1" ')}</g>`;
+    const ov = k => `<g data-step="${k}" class="${cls(k)}">${k === 'loop' ? `<path d="${loop}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#loop-reveal)"/>` : k === 'approval' ? `<path d="${approval}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#approval-reveal)"/>` : G[k].replaceAll('<path ', '<path pathLength="1" ')}</g>`;
     const lab = map.querySelector('.map-loop--in .label'), cell = lab.parentElement.getBoundingClientRect();
     lab.style.top = ((core.cy + out.cy) / 2 + m.top - cell.top) + 'px';
     const xi = R(lab).r + 10;
     const loop = `M${out.l - 4} ${out.cy} H${xi + k} Q${xi} ${out.cy} ${xi} ${out.cy - k} V${core.cy + k} Q${xi} ${core.cy} ${xi + k} ${core.cy} H${core.l - 6}`;
+    // Reflect the feedback loop across the map centre and reverse its travel for approval.
+    const xr = 2 * x - xi;
+    const approval = `M${2 * x - (core.l - 6)} ${core.cy} H${xr - k} Q${xr} ${core.cy} ${xr} ${core.cy + k} V${out.cy - k} Q${xr} ${out.cy} ${xr - k} ${out.cy} H${2 * x - (out.l - 4)}`;
     GEO.loop = { x: xi, y1: core.cy, y2: out.cy, left: xi + k, right: core.l - 6 };
     svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
     svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--flow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--blue-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
-      `<defs><mask id="loop-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${loop}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask></defs>` +
+      `<defs>${[['loop', loop], ['approval', approval]].map(([key, d]) => `<mask id="${key}-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${d}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask>`).join('')}</defs>` +
       `<g class="base" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
       `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>` +
-      `<g class="flow" fill="none" stroke-linecap="butt" stroke-linejoin="round">${['in', 'trunk', ...keys.map(k => 'fan-' + k), 'join', ...keys.map(k => 'join-' + k), 'rev', 'loop'].map(ov).join('')}</g>`;
+      `<g class="flow" fill="none" stroke-linecap="butt" stroke-linejoin="round">${['in', 'trunk', ...keys.map(k => 'fan-' + k), 'join', ...keys.map(k => 'join-' + k), 'approval', 'rev', 'loop'].map(ov).join('')}</g>`;
   };
   const redraw = () => { draw(); if (activeStep) { lineStages = stage(); drawProgress(lineElapsed); } placeCap(); };
   new ResizeObserver(redraw).observe(map); document.fonts?.ready.then(redraw); draw();
@@ -1070,8 +1078,7 @@ b.kw{font-weight: inherit; color: inherit;}
     ...fix('struktur', 'Abweichung 1: Eine Aussage im Text ist nicht belegt. Der Struktur & Text Agent korrigiert sie.'),
     ...fix('wireframes', 'Abweichung 2: Ein Wireframe zeigt einen Screen, den es so nicht gibt. Der Wireframe Agent zeichnet ihn neu.'),
     ...fix('ui', 'Abweichung 3: Ein Baustein bricht am Handy um. Der UI-Elemente Agent passt ihn an.'),
-    { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Keine Abweichung mehr: Die Seite passt zu den Vorgaben.' } },
-    { lines: ['rev'], cur: ['output'], to: ['#map-review'], cap: { box: '#map-review', t: 'Erst jetzt geht die Seite an Lucas. Er prüft die lokale Vorschau und gibt frei.' }, read: 1500 },
+    { lines: ['approval', 'rev'], cur: ['orchestrator'], to: ['#map-review'], approved: true, cap: { box: '#map-review', place: 'right', t: 'Keine Abweichungen mehr: Die HTML-Seite wird an Lucas übergeben.' }, read: 1500 },
   ];
   // Typewriter: captions are typed at one fixed speed, the same for every caption from the timeline position, so seeking and 2x stay in sync. No cursor.
   const CAPTION_TIME = 1.2;
@@ -1086,23 +1093,27 @@ b.kw{font-weight: inherit; color: inherit;}
     const paths = [...svg.querySelectorAll('g.now:not(.done)>path')], drawMs = activeStep.lineMs;
     if (!paths.length || !drawMs) return [];
     const last = paths.filter(p => p.hasAttribute('marker-end')), first = paths.filter(p => !last.includes(p));
-    const stages = first.length && last.length ? [first, last] : [paths];
+    const stages = activeStep.st.approved ? paths.map(p => [p]) : first.length && last.length ? [first, last] : [paths];
     const lengths = new Map(paths.map(p => [p, p.getTotalLength()]));
     const longest = stages.map(st => Math.max(...st.map(p => lengths.get(p))));
     const speed = (longest.reduce((a, b) => a + b, 0) || 1) / drawMs;
     let delay = 0;
     return stages.flatMap((group, i) => {
-      const strokes = group.map(p => ({ p: p.hasAttribute('mask') ? svg.querySelector('#loop-reveal path') : p, delay, duration: lengths.get(p) / speed }));
+      const strokes = group.map(p => ({ p: p.hasAttribute('mask') ? svg.querySelector(`${p.getAttribute('mask').slice(4, -1)} path`) : p, marker: p, delay, duration: lengths.get(p) / speed }));
       delay += longest[i] / speed; return strokes;
     });
   };
-  const drawProgress = elapsed => lineStages.forEach(({p, delay, duration}) => {
+  const drawProgress = elapsed => lineStages.forEach(({p, marker, delay, duration}, i) => {
     const t = Math.min(1, elapsed / activeStep.lineMs);
     // Quintic ease-in-out: slow at both ends, fastest at the midpoint.
     const eased = t * t * t * (t * (6 * t - 15) + 10) * activeStep.lineMs;
     const progress = Math.max(0, Math.min(1, (eased - delay) / (duration || 1)));
     p.style.strokeDasharray = progress < 1 ? '1 1' : '';
     p.style.strokeDashoffset = progress < 1 ? String(1 - progress) : '';
+    if (activeStep.st.approved && i === 0) {
+      marker.style.markerEnd = progress === 1 ? 'url(#tip-on)' : '';
+      if (progress === 1 && !arrived) setCurrent([node('output')]);
+    }
   });
   const setCurrent = els => map.querySelectorAll('.agent, .node').forEach(e => e.classList.toggle('is-current', els.includes(e)));
   // Captions never leave the frame (the page clips overflow). Plain text sits in the free space beside
@@ -1225,7 +1236,7 @@ b.kw{font-weight: inherit; color: inherit;}
   const stop = () => {
     cancelAnimationFrame(frame); activeStep = null; release(); seen.clear(); now.clear(); doneSet.clear(); paint();
     map.querySelectorAll('.is-lit, .is-current').forEach(e => e.classList.remove('is-lit', 'is-current'));
-    showCap(null);
+    showCap(null); $('map-approved').hidden = true;
     seek.hidden = end.hidden = true; scrubbing = false;
     map.classList.remove('is-playing'); play.setAttribute('aria-pressed', 'false'); play.setAttribute('aria-label', 'Workflow abspielen'); play.querySelector('.map-play-txt').textContent = 'Workflow abspielen';
   };
@@ -1252,9 +1263,9 @@ b.kw{font-weight: inherit; color: inherit;}
     if (seek.getAttribute('aria-valuetext') !== valueText) seek.setAttribute('aria-valuetext', valueText);
     const i = Math.max(0, timeline.findLastIndex(s => s.start <= position));
     if (rebuild || i !== stepIndex) {
-      stepIndex = i; activeStep = timeline[i]; arrived = false;
+      stepIndex = i; activeStep = timeline[i]; arrived = false; $('map-approved').hidden = true;
       seen.clear(); now.clear(); doneSet.clear();
-      svg.querySelectorAll('g[data-step]>path, #loop-reveal path').forEach(p => { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; });
+      svg.querySelectorAll('g[data-step]>path, #loop-reveal path, #approval-reveal path').forEach(p => { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; p.style.markerEnd = ''; });
       map.querySelectorAll('.is-lit').forEach(e => e.classList.remove('is-lit'));
       const complete = k => { seen.add(k); doneSet.add(k); };
       timeline.slice(0, i).forEach(({st, lines, keep}) => { lines.forEach(complete); keep.forEach(complete); mark([...(st.lit || []), ...(st.to || [])]); });
@@ -1271,6 +1282,7 @@ b.kw{font-weight: inherit; color: inherit;}
     drawProgress(lineElapsed = Math.min(lineMs, position - start));
     if (!arrived && lineElapsed >= lineMs) {
       arrived = true; lines.forEach(k => doneSet.add(k)); paint();
+      if (st.approved) $('map-approved').hidden = false;
       mark(st.to || []); setCurrent(to.length ? to : (st.cur || []).map(node).filter(Boolean));
     }
     typeCap();
