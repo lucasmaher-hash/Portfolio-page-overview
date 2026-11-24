@@ -1124,14 +1124,17 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       const top = (core.b + box.t) / 2, bot = (box.b + out.t) / 2;
       G.trunk = `<path d="M${x} ${core.b} V${top}"/>`;
       bus(roles.map(r => r.cx), top, box.t, true, true).forEach((p, i) => { G['fan-' + keys[i]] = p; });
-      G.join = bus(roles.map(r => r.cx), bot, box.b, false, false).join('') + arrow(x, bot, x, out.t);
+      const incoming = bus(roles.map(r => r.cx), bot, box.b, false, false), outputArrow = arrow(x, bot, x, out.t);
+      G.join = incoming.join('') + outputArrow;
+      keys.forEach((key, i) => { G['join-' + key] = incoming[i] + outputArrow; });
       GEO.trunk = { x, y1: core.b, y2: top }; GEO.join = { x, y1: bot, y2: out.t };
     } else {
       G.trunk = arrow(x, core.b, x, box.t); keys.forEach(k => { G['fan-' + k] = ''; }); G.join = arrow(x, box.b, x, out.t);
+      keys.forEach(key => { G['join-' + key] = G.join; });
       GEO.trunk = { x, y1: core.b, y2: box.t }; GEO.join = { x, y1: box.b, y2: out.t };
     }
     G.rev = arrow(x, out.b, x, rev.t); GEO.rev = { x, y1: out.b, y2: rev.t };
-    const d = Object.values(G).join('');
+    const d = Object.entries(G).filter(([key]) => !key.startsWith('join-')).map(([, paths]) => paths).join('');
     const cls = k => [seen.has(k) && 'on', now.has(k) && 'now', doneSet.has(k) && 'done'].filter(Boolean).join(' ');
     const ov = k => `<g data-step="${k}" class="${cls(k)}">${k === 'loop' ? `<path d="${loop}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#loop-reveal)"/>` : G[k].replaceAll('<path ', '<path pathLength="1" ')}</g>`;
     const lab = map.querySelector('.map-loop--in .label'), cell = lab.parentElement.getBoundingClientRect();
@@ -1144,7 +1147,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       `<defs><mask id="loop-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${loop}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask></defs>` +
       `<g class="base" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
       `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>` +
-      `<g class="flow" fill="none" stroke-linecap="butt" stroke-linejoin="round">${['in', 'trunk', ...keys.map(k => 'fan-' + k), 'join', 'rev', 'loop'].map(ov).join('')}</g>`;
+      `<g class="flow" fill="none" stroke-linecap="butt" stroke-linejoin="round">${['in', 'trunk', ...keys.map(k => 'fan-' + k), 'join', ...keys.map(k => 'join-' + k), 'rev', 'loop'].map(ov).join('')}</g>`;
   };
   const redraw = () => { draw(); if (activeStep) { lineStages = stage(); drawProgress(lineElapsed); } placeCap(); };
   new ResizeObserver(redraw).observe(map); document.fonts?.ready.then(redraw); draw();
@@ -1231,19 +1234,18 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
   // are fixed, each by the agent responsible. cap.box = caption beside a box, cap.line = beside a line.
   const fix = (agent, t) => [
     { lines: ['fan-' + agent], keep: ['trunk'], cur: ['orchestrator'], to: [agent], cap: { box: agent, side: 'right', t } },
-    { lines: ['join'], cur: [agent], to: ['output'], cap: { box: 'output', under: true, t: 'Der korrigierte Teil wird wieder in die HTML-Seite eingebaut.' } },
+    { lines: ['join-' + agent], cur: [agent], to: ['output'], cap: { box: 'output', under: true, t: 'Der korrigierte Teil wird wieder in die HTML-Seite eingebaut.' } },
     { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', line: 'loop', under: true, t: 'Der Portfolio Orchestrator prüft die Seite erneut.' } },
   ];
   const STEPS = [
-    { lines: ['in'], cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], to: ['orchestrator'], lineCap: true, cap: { box: 'files', place: 'left', early: true, t: 'Project Files und Projektlog: Quellen des Projekts, täglich geprüft. Beides geht an den Portfolio Orchestrator.' } },
-    { lines: ['trunk'], cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Portfolio Orchestrator: erstellt den Plan und verteilt die Aufgaben.' } },
-    { lines: ['fan-struktur'], to: ['struktur'], cap: { box: 'struktur', t: 'Struktur & Text Agent: gliedert die Case Study und schreibt den Text, jede Aussage mit Quelle.' } },
+    { lines: ['in'], cur: ['files', 'projektlog'], lit: ['files', 'projektlog'], to: ['orchestrator'], lineOnly: true, drawMs: 3600, cap: { box: 'projektlog', place: 'right', t: 'Project Files und Projektlog: Quellen des Projekts, täglich geprüft. Beides geht an den Portfolio Orchestrator.' } },
+    { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Portfolio Orchestrator: erstellt den Plan und verteilt die Aufgaben.' } },
+    { lines: ['trunk', 'fan-struktur'], keep: [], cur: ['orchestrator'], to: ['struktur'], cap: { box: 'struktur', t: 'Struktur & Text Agent: gliedert die Case Study und schreibt den Text, jede Aussage mit Quelle.' } },
     { lines: ['fan-ui'], to: ['ui'], cap: { box: 'ui', t: 'UI-Elemente Agent: baut die Bausteine der Seite, etwa Empathy Map, User-Flow und Nutzerprofil.' } },
     { lines: ['fan-wireframes'], to: ['wireframes'], cap: { box: 'wireframes', t: 'Wireframe Agent: zeichnet Wireframes und Wireflows aus echten Screens.' } },
     { lines: ['fan-bilder'], to: ['bilder'], cap: { box: 'bilder', t: 'Bild Agent (optional): erzeugt Nutzungsszenen mit ComfyUI, ohne das Original zu verändern.' } },
     { lines: ['fan-3d'], to: ['3d'], cap: { box: '3d', t: '3D Agent (optional): baut räumliche Ansichten in Blender, wenn eine Skizze nicht reicht.' } },
     { lines: ['join'], cur: ['struktur', 'ui', 'wireframes', '3d', 'bilder'], to: ['output'], cap: { box: 'output', t: 'Alle Teile werden zu einer HTML-Seite zusammengesetzt.' } },
-    { cur: ['output'], cap: { box: 'output', t: 'Case Study Output: die lokale HTML-Seite der Case Study.' } },
     { lines: ['loop'], cur: ['output'], to: ['orchestrator'], cap: { box: 'orchestrator', t: 'Das Ergebnis geht zurück an den Portfolio Orchestrator. Er prüft es gegen Skill, Portfolio-Regeln und Quellen.' } },
     ...fix('struktur', 'Abweichung 1: Eine Aussage im Text ist nicht belegt. Der Struktur & Text Agent korrigiert sie.'),
     ...fix('wireframes', 'Abweichung 2: Ein Wireframe zeigt einen Screen, den es so nicht gibt. Der Wireframe Agent zeichnet ihn neu.'),
@@ -1413,9 +1415,9 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       const fan = lines.some(k => k.startsWith('fan-'));
       const keep = st.keep || (fan ? ['trunk'] : []);
       const lineMs = reduce || !lines.length ? 0
-        : (fan || lines.includes('trunk') ? 1440 : 2400);
+        : (st.drawMs ?? (fan ? 1440 : 2400));
       const start = total;
-      total += lineMs + (st.lineCap ? 0 : Math.max(1800, 700 + (st.cap?.t.length || 0) * 19)) + (st.read || 0);
+      total += lineMs + (st.lineOnly && lineMs ? 0 : Math.max(1800, 700 + (st.cap?.t.length || 0) * 19)) + (st.read || 0);
       return { st, lines, keep, to, lineMs, start };
     });
     seek.max = total;
@@ -1438,18 +1440,14 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       lines.forEach(k => { seen.add(k); now.add(k); doneSet.delete(k); });
       paint(); lineStages = stage();
       showAlso(typeof st.also === 'number' ? STEPS[st.also].cap : null);
-      if (lineMs) {
-        setCurrent((st.cur || []).map(node).filter(Boolean));
-        showCap(!to.length || st.cap?.line || st.cap?.early || st.cap?.side === 'right' ? st.cap : null, activeStep.start);
-      }
+      if (lineMs) setCurrent((st.cur || []).map(node).filter(Boolean));
+      showCap(st.cap, activeStep.start);
     }
     const {st, to, lines, lineMs, start} = activeStep;
     drawProgress(lineElapsed = Math.min(lineMs, position - start));
     if (!arrived && lineElapsed >= lineMs) {
       arrived = true; lines.forEach(k => doneSet.add(k)); paint();
-      mark(st.to || []); setCurrent(to.length ? to : (st.cur || []).map(node).filter(Boolean));
-      if (st.lineCap) { if (capAt) showCap(null); }
-      else if (capAt !== st.cap) showCap(st.cap, start + lineMs);
+      mark(st.to || []); setCurrent(to.length && !(st.lineOnly && !lineMs) ? to : (st.cur || []).map(node).filter(Boolean));
     }
     typeCap();
   };
