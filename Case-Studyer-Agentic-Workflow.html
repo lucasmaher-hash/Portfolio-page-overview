@@ -218,7 +218,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .agent.is-active{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(71,95,126,.35)}
 .map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--map-line)}
 .map-svg g[data-step]:not(.on){display:none}
-.map{--flow:#E0457B;--flow-soft:#fff1f9;--flow-ring:rgba(224,69,123,.30);--map-line:#d5dfea;--map-line-active:#f4f6f9;--map-line-flow:#ff8eb8;--map-playback-bg:#273a54;--map-card-idle:#7c8da1;--map-caption:#fff0f6;--focus-fade:160ms}
+.map{--flow:#E0457B;--flow-soft:#fff1f9;--flow-ring:rgba(224,69,123,.30);--map-line:#d5dfea;--map-line-active:#f4f6f9;--map-line-flow:#ff8eb8;--map-playback-bg:#273a54;--map-card-idle:#7c8da1;--lower-idle-opacity:1;--map-caption:#fff0f6;--focus-fade:160ms}
 .map.is-fast{--focus-fade:80ms}
 .map-svg g[data-step].on{color:var(--map-line-flow);stroke-width:2.4;opacity:.33}
 .map-svg g[data-step].on.now{opacity:1}
@@ -237,6 +237,9 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){background:var(--map-card-idle);border-color:color-mix(in srgb,var(--map-card-idle) 85%,white);color:var(--map-ink-idle,#172432)}
 .map.is-playing .map-main .is-lit:not(.is-current){background:color-mix(in srgb,var(--map-card-idle) 76%,white)!important}
 .map.is-playing .map-main .role.cap-covered:not(.is-current),.map.is-playing .map-main .node.cap-covered:not(.is-current){opacity:.09}
+.map.is-playing :is(#map-check,#map-review):not(.is-current),.map.is-playing .map-svg .base-lower{opacity:var(--lower-idle-opacity)}
+.map.is-playing .map-svg g.on:not(.now):is([data-step="join"],[data-step^="join-"],[data-step="rev"]){opacity:calc(.33 * var(--lower-idle-opacity))}
+@media(min-width:1001px){.map.is-playing .roles+.gap--bus{height:62px}}
 .map.is-playing .role.cap-covered:not(.is-current)>*,.map.is-playing .node.cap-covered:not(.is-current)>*{opacity:0}
 .map .v-label,.map-live{color:var(--map-line)}
 .map .agent:focus-visible{outline-color:var(--map-line-active)}
@@ -973,7 +976,8 @@ b.kw{font-weight: inherit; color: inherit;}
       GEO.trunk = { x, y1: core.b, y2: box.t }; GEO.join = { x, y1: box.b, y2: out.t };
     }
     G.rev = arrow(x, out.b, x, rev.t); GEO.rev = { x, y1: out.b, y2: rev.t };
-    const d = Object.entries(G).filter(([key]) => !key.startsWith('join-')).map(([, paths]) => paths).join('');
+    const d = Object.entries(G).filter(([key]) => key !== 'join' && key !== 'rev' && !key.startsWith('join-')).map(([, paths]) => paths).join('');
+    const lower = G.join + G.rev;
     // On wrapping layouts keep the simple base diagram, but draw the first handoff to the actual card.
     if (!oneRow) {
       const first = roles[keys.indexOf('struktur')], y = (core.b + first.t) / 2;
@@ -996,7 +1000,7 @@ b.kw{font-weight: inherit; color: inherit;}
     svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
     svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--map-line-flow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--map-line)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
       `<defs><mask id="loop-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${loop}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask></defs>` +
-      `<g class="base" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
+      `<g class="base" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}<g class="base-lower">${lower}</g></g>` +
       `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>` +
       `<g class="flow" fill="none" stroke-linecap="butt" stroke-linejoin="round">${['in', 'trunk', ...keys.map(k => 'fan-' + k), 'join', ...keys.map(k => 'join-' + k), 'approval', 'rev', 'loop'].map(ov).join('')}</g>`;
   };
@@ -1149,7 +1153,7 @@ b.kw{font-weight: inherit; color: inherit;}
       cap.style.top = (bx.b + 8) + 'px';
       if (main) {
         const c = cap.getBoundingClientRect();
-        map.querySelectorAll('.map-main .role, .map-main .node').forEach(e => {
+        map.querySelectorAll('.map-main .role, .map-main .node:not(#map-check):not(#map-review)').forEach(e => {
           const r = e.getBoundingClientRect();
           if (e !== el && r.left < c.right && r.right > c.left && r.top < c.bottom && r.bottom > c.top) e.classList.add('cap-covered');
         });
@@ -1188,7 +1192,7 @@ b.kw{font-weight: inherit; color: inherit;}
       cap.style.top = (bx.b + 8) + 'px';
       if (main) {
         const c = cap.getBoundingClientRect();
-        map.querySelectorAll('.map-main .role, .map-main .node').forEach(e => {
+        map.querySelectorAll('.map-main .role, .map-main .node:not(#map-check):not(#map-review)').forEach(e => {
           const r = e.getBoundingClientRect();
           if (e !== el && r.left < c.right && r.right > c.left && r.top < c.bottom && r.bottom > c.top) e.classList.add('cap-covered');
         });
