@@ -162,6 +162,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .flow-cap.cap-loop-narrow{font-size:13px;line-height:1.25}
 .flow-cap.to-left{text-align:right}
 .flow-cap[hidden]{display:none}
+.flow-cap .cap-rest{visibility:hidden}
 .flow-cap.cap-dock{position:fixed;left:12px!important;right:12px;top:auto!important;bottom:64px;width:auto!important;max-width:none;text-align:left}
 .map-speed{position:absolute;z-index:4;top:9px;right:14px;color:#842448;font-size:13px;font-weight:650;pointer-events:none}
 .map:not(.is-fast) .map-speed{display:none}
@@ -1251,6 +1252,10 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     { cur: ['orchestrator'], cap: { box: 'orchestrator', t: 'Keine Abweichung mehr: Die Seite passt zu den Vorgaben.' } },
     { lines: ['rev'], cur: ['output'], to: ['#map-review'], cap: { box: '#map-review', t: 'Erst jetzt geht die Seite an Lucas. Er prüft die lokale Vorschau und gibt frei.' }, read: 1500 },
   ];
+  // Typewriter: captions are typed at one fixed speed (the first caption takes 1 s, every other one the same
+  // characters per second) from the timeline position, so seeking and 2x stay in sync. No cursor.
+  const CAP_MS = 1000 / STEPS[0].cap.t.length;
+  let typing = true, capT0 = 0, capN = -1, capTyped = null, capRest = null;
   let liveOn = false, capAt = null, frame = 0, activeStep = null, lineStages = [], lineElapsed = 0;
   const seek = $('map-seek'), end = $('map-close');
   let stepIndex = -1, position = 0, lastFrame, timeline = [], total = 0, paused = false, scrubbing = false, arrived, rate = 1;
@@ -1342,9 +1347,21 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     cap.style.left = (right ? rEdge + g : lEdge - g - w) + 'px';
     cap.style.top = (bx.t + (bx.b - bx.t) / 2 - cap.offsetHeight / 2) + 'px';
   };
-  const showCap = c => {
-    capAt = c; cap.hidden = !c;
-    if (c) { cap.textContent = c.t; placeCap(); }
+  const typeCap = () => {
+    if (!capAt || !capTyped) return;
+    const n = typing ? Math.min(capAt.t.length, Math.max(0, Math.floor((position - capT0) / CAP_MS))) : capAt.t.length;
+    if (n === capN) return;
+    capN = n; capTyped.textContent = capAt.t.slice(0, n); capRest.textContent = capAt.t.slice(n);
+  };
+  const showCap = (c, at = 0) => {
+    capAt = c; capT0 = at; capN = -1; cap.hidden = !c; capTyped = capRest = null;
+    if (c) {
+      // The full text stays in the layout (hidden) so wrapping and placement never jump while typing;
+      // screen readers get the whole sentence once.
+      cap.innerHTML = '<span class="sr-only"></span><span aria-hidden="true"><span class="cap-typed"></span><span class="cap-rest"></span></span>';
+      cap.firstChild.textContent = c.t; capTyped = cap.querySelector('.cap-typed'); capRest = cap.querySelector('.cap-rest');
+      typeCap(); placeCap();
+    }
     else map.querySelectorAll('.cap-covered').forEach(e => e.classList.remove('cap-covered'));
   };
   const speed = document.createElement('span'); speed.className = 'map-speed'; speed.textContent = '2×'; speed.setAttribute('aria-hidden', 'true'); map.append(speed);
@@ -1375,7 +1392,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
   const mark = keys => keys.forEach(k => node(k)?.classList.add('is-lit'));
   const prepare = () => {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    total = 0;
+    typing = !reduce; total = 0;
     timeline = STEPS.map(st => {
       const lines = st.lines || [], to = (st.to || []).map(node).filter(Boolean);
       const fan = lines.some(k => k.startsWith('fan-'));
@@ -1407,7 +1424,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       paint(); lineStages = stage();
       if (lineMs) {
         setCurrent((st.cur || []).map(node).filter(Boolean));
-        showCap(!to.length || st.cap?.line || st.cap?.side === 'right' ? st.cap : null);
+        showCap(!to.length || st.cap?.line || st.cap?.side === 'right' ? st.cap : null, activeStep.start);
       }
     }
     const {st, to, lines, lineMs, start} = activeStep;
@@ -1415,8 +1432,9 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     if (!arrived && lineElapsed >= lineMs) {
       arrived = true; lines.forEach(k => doneSet.add(k)); paint();
       mark(st.to || []); setCurrent(to.length ? to : (st.cur || []).map(node).filter(Boolean));
-      if (capAt !== st.cap) showCap(st.cap);
+      if (capAt !== st.cap) showCap(st.cap, start + lineMs);
     }
+    typeCap();
   };
   const updateTransport = () => {
     play.setAttribute('aria-pressed', String(!paused));
