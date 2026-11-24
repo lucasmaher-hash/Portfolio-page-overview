@@ -115,7 +115,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 
 /* ── 00 Agent map: one orchestrator; the role boxes are a target picture, not running agents ── */
 .map-intro{margin:0 0 clamp(20px,2.4vw,28px);font-size:16px;line-height:1.6;color:var(--text-secondary)}
-.map{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;gap:0 14px;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px) clamp(60px,6vw,68px);position:relative}
+.map{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;gap:0 14px;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px) clamp(60px,6vw,68px);position:relative;background:var(--blue-deep)}
 .map-main{display:flex;flex-direction:column;align-items:center;min-width:0;position:relative;z-index:1}
 .node{display:flex;align-items:center;gap:12px;border:1px solid var(--border-color);border-radius:16px;padding:10px 18px;max-width:100%;background:#fff;font:inherit;color:inherit;text-align:left;line-height:1.3}
 .node svg{width:22px;height:22px;flex:none;color:var(--blue-deep)}
@@ -123,8 +123,8 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 .node.core{border-color:var(--blue-deep);border-width:1.5px;padding:14px 22px}.core-txt strong{display:block;font:22px/1.1 'OCR-A-BT',monospace}.core-txt span{font-size:12px;color:#575B65}
 .node.check{border:1.5px solid var(--blue-deep);font-size:14px}.node.check strong{font-weight:600}
 .node.review{border-radius:100px;border:1.5px solid var(--blue-deep);font-size:13px;position:relative}
-.map-approved{position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:7px;white-space:nowrap;color:#842448;font-size:13px;font-weight:650;line-height:1.2}
-.map-approved-icon{color:var(--flow);font-size:22px;line-height:1}
+.map-approved{position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:7px;white-space:nowrap;color:var(--map-caption);font-size:13px;font-weight:650;line-height:1.2}
+.map-approved-icon{color:var(--map-caption);font-size:22px;line-height:1}
 .map-approved[hidden]{display:none}
 @media(max-width:600px){.map{padding-bottom:80px}.map-approved-label{position:absolute;right:0;top:calc(50% + 32px)}}
 @media(max-width:360px){.map-main>.inputs+.gap{height:56px}}
@@ -140,41 +140,44 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 @media(prefers-reduced-motion:reduce){.agent:hover{transform:none}}
 .agent:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
 .agent.is-active{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(71,95,126,.35)}
-.map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--border-color)}
-.map-svg .loop{color:var(--blue-deep)}
+.map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--map-line)}
 .map-svg g[data-step]:not(.on){display:none}
-.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.22);--focus-fade:160ms}
+.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.30);--map-line:#d5dfea;--map-line-active:#f4f6f9;--map-caption:#fff0f6;--focus-fade:160ms}
 .map.is-fast{--focus-fade:80ms}
-.map-svg g[data-step].on{color:var(--flow);stroke-width:2.4;opacity:.16}
+.map-svg g[data-step].on{color:var(--map-line-active);stroke-width:2.4;opacity:.48}
 .map-svg g[data-step].on.now{opacity:1}
-.map-svg g[data-step].on>path{stroke:var(--flow)}
+.map-svg g[data-step].on>path{stroke:currentColor}
 .map-svg g[data-step] path[marker-end]{marker-end:none}.map-svg g[data-step].done path[marker-end]{marker-end:url(#tip-on)}
 .map-svg g[data-step].done>path{mask:none}
 .map-svg:has([data-step="loop"].on)>.loop{marker-end:none}
-.map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.25}
+.map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.68}
 .map .is-lit{border-color:var(--flow)!important;background:#fff!important}
 .map .is-lit svg{color:var(--flow)}
 .map.is-playing .is-current{border-color:var(--flow)!important;background:var(--flow-soft)!important;box-shadow:0 0 0 5px var(--flow-ring)}.map.is-playing .is-current svg{color:var(--flow)}
 .map.is-playing .agent,.map.is-playing .node{transition:opacity var(--focus-fade)}
 .map.is-playing .is-current{opacity:1;transition:none}
-.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){opacity:.25}
-.map.is-playing .map-main .is-lit:not(.is-current){opacity:.48}
+.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){opacity:.75}
+.map.is-playing .map-main .is-lit:not(.is-current){opacity:.85}
 .map.is-playing .map-main .role.cap-covered:not(.is-current),.map.is-playing .map-main .node.cap-covered:not(.is-current){opacity:.09}
 .map.is-playing .role.cap-covered:not(.is-current)>*,.map.is-playing .node.cap-covered:not(.is-current)>*{opacity:0}
-.map.is-playing .v-label,.map.is-playing .map-loop{opacity:.28;transition:opacity var(--focus-fade)}
-.flow-cap{position:absolute;z-index:4;margin:0;box-sizing:border-box;padding:2px 4px;color:#842448;font-size:14px;font-weight:650;line-height:1.4;pointer-events:none}
-.flow-cap.cap-role,.flow-cap.cap-dock,.flow-cap.cap-loop-narrow{background:color-mix(in srgb,var(--bg-page,#dcdce3) 46%,transparent)}
+.map .v-label,.map-live{color:var(--map-line)}
+.map .agent:focus-visible{outline-color:var(--map-line-active)}
+.map .agent.is-active{box-shadow:0 0 0 3px var(--map-line)}
+.flow-cap{position:absolute;z-index:4;margin:0;box-sizing:border-box;padding:2px 4px;color:var(--map-caption);font-size:14px;font-weight:650;line-height:1.4;pointer-events:none}
+.flow-cap.cap-role,.flow-cap.cap-dock,.flow-cap.cap-loop-narrow{background:var(--blue-deep)}
 .flow-cap.cap-loop-narrow{font-size:13px;line-height:1.25}
 .flow-cap.cap-under{text-align:center}
 .flow-cap.to-left{text-align:right}
 .flow-cap[hidden]{display:none}
 .flow-cap .cap-rest{visibility:hidden}
 .flow-cap.cap-dock{position:fixed;left:12px!important;right:12px;top:auto!important;bottom:64px;width:auto!important;max-width:none;text-align:left}
-.map-speed{position:absolute;z-index:4;top:9px;right:14px;color:#842448;font-size:13px;font-weight:650;pointer-events:none}
+.map-speed{position:absolute;z-index:4;top:9px;right:14px;color:var(--map-caption);font-size:13px;font-weight:650;pointer-events:none}
 .map:not(.is-fast) .map-speed{display:none}
 .map.is-playing{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .map-play{position:absolute;right:14px;bottom:14px;z-index:4;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 11px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font:600 12.5px/1 inherit;cursor:pointer;transition:background-color .15s ease}
-.map-play:hover{background:#34475F}.map-play:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
+.map-play:hover{background:#34475F}.map-play:focus-visible{outline:2px solid var(--map-line-active);outline-offset:3px}
+.map:not(.is-playing) .map-play{box-shadow:inset 0 0 0 1px var(--map-line)}
+.map.is-playing .map-play:focus-visible{outline-color:var(--blue-deep)}
 .map-play svg{width:14px;height:14px}.map-play .i-pause,.map-play[aria-pressed="true"] .i-play{display:none}.map-play[aria-pressed="true"] .i-pause{display:block}
 .map-play:disabled{background:#8A97A8;cursor:default}
 @media(max-width:560px){.map-play{right:10px;bottom:10px;height:32px;padding:0 10px}.map-play-txt{display:none}}
@@ -190,9 +193,8 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 @media(max-width:560px){.map-controls{left:10px;right:10px;bottom:10px}}
 @media(prefers-reduced-motion:reduce){.map{--focus-fade:0ms}.map.is-fast{--focus-fade:0ms}}
 .map-loop{position:relative;z-index:1}
-.map-loop .label{position:absolute;left:2px;top:50%;transform:translateY(-50%) rotate(180deg);line-height:1.2;writing-mode:vertical-rl;font-size:11.5px;font-weight:600;color:var(--blue-deep);white-space:nowrap}
-.map-live{grid-column:1/-1;margin:20px 0 0;text-align:center;font-size:12px;color:#575B65}
-.map-live::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blue-deep);margin-right:8px;vertical-align:1px}
+.map-live{grid-column:1/-1;margin:20px 0 0;text-align:center;font-size:12px}
+.map-live::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--map-line);margin-right:8px;vertical-align:1px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .agent-panel{position:absolute;z-index:5;border-radius:16px;max-height:calc(100vh - 24px);overflow:auto;box-sizing:border-box;width:min(310px,calc(100% - 24px));background:#fff;border:1px solid var(--blue-deep);padding:18px 18px 16px;font-size:13px;line-height:1.45}
 .agent-panel[hidden]{display:none}.agent-panel:focus{outline:none}
@@ -405,7 +407,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       <p class="map-intro">Der Portfolio Orchestrator plant Case Studies aus Projektdateien und einem täglich geführten Projektlog. Er verteilt Aufgaben für Text, UI-Elemente, Wireframes und optional 3D und Bilder an spezialisierte Agenten. Er prüft ihre Ergebnisse, bevor Lucas die Vorschau freigibt.</p>
       <div class="map" aria-describedby="map-desc">
         <p id="map-desc" class="sr-only">Zielbild: Project Files und das Projektlog mit täglicher Agent-Überprüfung fließen in den Portfolio Orchestrator. Er verteilt Aufgaben an fünf Rollen: Struktur und Text, UI-Elemente wie Empathy Map, User-Flow und Nutzerprofil, Wireframes mit Figma-Anbindung, optional 3D mit Blender und Bilder mit ComfyUI. Die Ergebnisse ergeben den Case-Study-Output. Bei Abweichung von den Vorgaben schickt der Orchestrator sie zum Nachbessern erneut durch die Rollen. Erst wenn alles passt, prüft Lucas die lokale Vorschau. Jeder Kasten lässt sich für Details anklicken.</p>
-        <div class="map-loop map-loop--in" aria-hidden="true"><span class="label">Abweichung · nachbessern</span></div>
+        <div class="map-loop map-loop--in" aria-hidden="true"></div>
         <div class="map-main">
           <div class="inputs" id="map-in">
             <button type="button" class="role agent" data-agent="files" aria-haspopup="dialog" aria-expanded="false"><svg aria-hidden="true"><use href="#i-folder"/></svg><span>Project Files</span></button>
@@ -1160,9 +1162,8 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     }
     const cls = k => [seen.has(k) && 'on', now.has(k) && 'now', doneSet.has(k) && 'done'].filter(Boolean).join(' ');
     const ov = k => `<g data-step="${k}" class="${cls(k)}">${k === 'loop' ? `<path d="${loop}" stroke-dasharray="5 4" marker-end="url(#tip-on)" mask="url(#loop-reveal)"/>` : k === 'approval' ? `<path d="${approval}" pathLength="1" marker-end="url(#tip-on)"/>` : G[k].replaceAll('<path ', '<path pathLength="1" ')}</g>`;
-    const lab = map.querySelector('.map-loop--in .label'), cell = lab.parentElement.getBoundingClientRect();
-    lab.style.top = ((core.cy + out.cy) / 2 + m.top - cell.top) + 'px';
-    const xi = R(lab).r + 10;
+    // Keep the return line in its gutter even without the old vertical label.
+    const xi = R(map.querySelector('.map-loop--in')).l + 26;
     const loop = `M${out.l - 4} ${out.cy} H${xi + k} Q${xi} ${out.cy} ${xi} ${out.cy - k} V${core.cy + k} Q${xi} ${core.cy} ${xi + k} ${core.cy} H${core.l - 6}`;
     // Reflect the feedback loop across the map centre and reverse its travel for approval.
     const xr = 2 * x - xi;
@@ -1170,7 +1171,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
     GEO.loop = { x: xi, y1: core.cy, y2: out.cy, left: xi + k, right: core.l - 6 };
     GEO.approval = { left: 2 * x - GEO.loop.right, right: 2 * x - GEO.loop.left, y1: core.cy };
     svg.setAttribute('viewBox', `0 0 ${m.width} ${m.height}`);
-    svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--flow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--blue-deep)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
+    svg.innerHTML = '<defs><marker id="tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--map-line-active)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tip-loop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--map-line)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>' +
       `<defs><mask id="loop-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="${m.width}" height="${m.height}"><path d="${loop}" pathLength="1" fill="none" stroke="white" stroke-width="22" stroke-linecap="butt"/></mask></defs>` +
       `<g class="base" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</g>` +
       `<path class="loop" d="${loop}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#tip-loop)"/>` +
@@ -1380,7 +1381,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
       return;
     }
     // free space left and right of everything in this box's band (boxes, loop line and its label)
-    const band = [...map.querySelectorAll('.map-main .agent, .map-main .node, .map-loop--in .label')].map(e => e.getBoundingClientRect())
+    const band = [...map.querySelectorAll('.map-main .agent, .map-main .node')].map(e => e.getBoundingClientRect())
       .filter(r => r.bottom - m.top > bx.t - 24 && r.top - m.top < bx.b + 24).map(r => ({ l: r.left - m.left, r: r.right - m.left }));
     if (GEO.loop && bx.b > GEO.loop.y1 - 24 && bx.t < GEO.loop.y2 + 24) band.push({ l: GEO.loop.x - 4, r: GEO.loop.x + 4 });
     const rEdge = Math.max(bx.r, ...band.map(r => r.r)), lEdge = Math.min(bx.l, ...band.map(r => r.l));
