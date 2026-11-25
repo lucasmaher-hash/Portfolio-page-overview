@@ -301,11 +301,11 @@ pages = {
 }
 for key, (filename, label) in pages.items():
     result = page
-    nav_labels = {}
+    nav_labels = {'system': 'Agentic Overview'}
     if key == 'ui':
         result = result.replace('<html lang="de">', '<html lang="en" data-catalogue="ui">', 1)
         result = result.replace('aria-label="Beispiele der Subagenten"', 'aria-label="Agent examples"', 1)
-        nav_labels = {'struktur': 'Structure &amp; Content', 'ui': 'UI Components', 'agent-images': 'Image Generation'}
+        nav_labels |= {'struktur': 'Structure &amp; Content', 'ui': 'UI Components', 'agent-images': 'Image Generation'}
         label = nav_labels['ui']
     if key != 'ui':
         result, n = re.subn(r'(?s)(  <main>\n).*?(    <nav class="agent-nav".*?</nav>).*?(  </main>)',

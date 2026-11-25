@@ -64,9 +64,12 @@ try {
         const shell=$('.page');const limits=shell.getBoundingClientRect();
         const segmented=!flat.length||(css(shell).borderLeftWidth==='0px'&&css(shell).borderRightWidth==='0px'&&flat.every((e,i)=>{
           const r=e.getBoundingClientRect();const s=css(e);const gap=i===0?1:r.top-flat[i-1].getBoundingClientRect().bottom;
-          return Math.abs(r.left-limits.left)<1&&Math.abs(r.right-limits.right)<1&&gap>0&&['Top','Right','Bottom','Left'].every(side=>s['border'+side+'Width']==='1px'&&s['border'+side+'Style']==='solid');
+          return Math.abs(r.left-limits.left)<1&&Math.abs(r.right-limits.right)<1&&gap>0&&['Top','Right','Bottom','Left'].every(side=>s['border'+side+'Width']==='1px'&&s['border'+side+'Style']==='solid'&&s['border'+side+'Color']==='rgb(111, 111, 111)');
         }));
-        if(flat.length&&!segmented)throw Error('Catalogue sections must share the old outer rails with real gaps and no enclosing side border');
+        if(flat.length&&!segmented)throw Error('Catalogue sections must share the portfolio rails with real gaps and no enclosing side border');
+        const pad=Math.min(82,Math.max(44,innerWidth*.064));
+        if(flat.some(e=>{const s=css(e);return Math.abs(parseFloat(s.paddingTop)-pad)>.1||s.paddingTop!==s.paddingBottom||s.backgroundColor!=='rgba(0, 0, 0, 0)';}))throw Error('Specimen frames must be transparent with equal top and bottom spacing');
+        if(links[0]?.textContent.trim()!=='Agentic Overview')throw Error('Agentic Overview must be the first navigation label');
         return {errors:window.__errors,overflow:document.documentElement.scrollWidth-innerWidth,active:links.filter(e=>e.getAttribute('aria-current')==='page').map(e=>e.getAttribute('href')),links:links.length,
         broken:[...document.images].filter(e=>!e.complete||!e.naturalWidth).length, duplicate:document.querySelectorAll('[id]').length-new Set([...document.querySelectorAll('[id]')].map(e=>e.id)).size,
         count:sections.length,frame:flat.every(e=>css(e).borderTopStyle==='solid'&&parseFloat(css(e).borderRadius)>0&&e.querySelector('.chapter-heading').getBoundingClientRect().bottom<e.getBoundingClientRect().top),copies:document.querySelectorAll('.copy-section').length,altSections:sections.map(x=>x.id),video:document.querySelectorAll('video').length,eff:matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -87,6 +90,22 @@ try {
         const rule='1px solid rgba(111, 111, 111, 0.18)';
         const rows=mobile?[[0,0,rule,0],[0,0,rule,0],[0,0,rule,0],[0,0,0,0],[0,0,rule,0]]:[[0,rule,rule,0],[0,0,rule,0],[0,rule,0,0],[0,0,0,0],Array(4).fill(rule)];
         assert.deepEqual(strokes,[Array(4).fill(rule),...rows,Array(4).fill(rule)],'Empathy map: explicit single thin strokes only');
+        const details=await ev(`(()=>{
+          const $=s=>document.querySelector(s),rect=s=>$(s).getBoundingClientRect();
+          const panel=$('.insights-panel'),divider=getComputedStyle($('.insights-concerns'),'::before');
+          const pale=panel&&getComputedStyle(panel).backgroundColor==='rgba(0, 0, 0, 0)';
+          const excerpts=[...document.querySelectorAll('.evidence-entries blockquote')].every(e=>getComputedStyle(e).backgroundColor==='rgba(0, 0, 0, 0)');
+          const matrix=getComputedStyle($('#alternativen .table-wrap'));
+          const place=id=>{const p=rect(id+' .demo-phone'),b=rect(id+' .phone-turn'),c=rect(id+' .phone-feature-text'),frame=rect(id);return {right:b.left-p.right,below:b.top-p.bottom,edge:b.right-p.right,center:(b.y+b.height/2-p.top)/p.height,inside:b.left>=frame.left&&b.right<=frame.right&&b.bottom<=frame.bottom,clear:b.right<c.left||b.bottom<c.top||b.top>c.bottom};};
+          return {pale,excerpts,vertical:divider.borderLeftWidth,horizontal:divider.borderTopWidth,matrixFill:matrix.backgroundImage,matrixClip:matrix.backgroundClip,cellFill:getComputedStyle($('.decision-table th:last-child')).backgroundColor,portrait:place('#phone-portrait'),landscape:place('#phone-landscape')};
+        })()`);
+        assert(details.pale&&details.excerpts,JSON.stringify(details));
+        assert.equal(details.vertical,width>600?'1px':'0px');assert.equal(details.horizontal,width>600?'0px':'1px');
+        assert.match(details.matrixFill,/^linear-gradient\(to left/);assert.equal(details.matrixClip,'padding-box');assert.equal(details.cellFill,'rgba(0, 0, 0, 0)');
+        for(const p of [details.portrait,details.landscape])assert(p.clear&&p.inside,JSON.stringify(details));
+        assert(Math.abs(details.landscape.edge)<1&&Math.abs(details.landscape.below-(width>860?18:12))<1,JSON.stringify(details));
+        assert(width>860?Math.abs(details.portrait.right-18)<1&&Math.abs(details.portrait.center-.92)<.01:Math.abs(details.portrait.below-12)<1&&Math.abs(details.portrait.edge)<1,JSON.stringify(details));
+        await capture('#erkenntnisse',width,'findings');await capture('#phone-portrait',width,'portrait');
         await capture('#empathy',width,'empathy');
         await capture('#phone-landscape',width,'phones');await capture('#alternativen',width,'decision');await capture('#fakten',width,'facts');await capture('#statistics-pie',width,'pie');
         await click('#phone-portrait .phone-turn');
