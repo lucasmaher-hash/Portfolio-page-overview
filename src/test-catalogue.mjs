@@ -79,6 +79,15 @@ try {
       if(page==='UI-Elemente') {
         assert(!result.altSections.includes('vorher')&&!result.altSections.includes('iterationen'),msg);
         for(const [a,b] of [['statistik','statistics-pie'],['wettbewerbsanalyse','market-research'],['erkenntnisse','evidence-synthesis'],['phone-portrait','phone-landscape']])assert.equal(result.altSections.indexOf(b),result.altSections.indexOf(a)+1,msg);
+        const strokes=await ev(`(()=>{
+          const e=document.querySelector('.empathy');const borders=node=>{const s=getComputedStyle(node);return ['Top','Right','Bottom','Left'].map(edge=>s['border'+edge+'Width']==='0px'?0:s['border'+edge+'Width']+' '+s['border'+edge+'Style']+' '+s['border'+edge+'Color']);};
+          const [first,second,third,fourth,center]=[...e.children];
+          return [e,first,second,third,fourth,center,e.querySelector('.slot')].map(borders);
+        })()`);
+        const rule='1px solid rgba(111, 111, 111, 0.18)';
+        const rows=mobile?[[0,0,rule,0],[0,0,rule,0],[0,0,rule,0],[0,0,0,0],[0,0,rule,0]]:[[0,rule,rule,0],[0,0,rule,0],[0,rule,0,0],[0,0,0,0],Array(4).fill(rule)];
+        assert.deepEqual(strokes,[Array(4).fill(rule),...rows,Array(4).fill(rule)],'Empathy map: explicit single thin strokes only');
+        await capture('#empathy',width,'empathy');
         await capture('#phone-landscape',width,'phones');await capture('#alternativen',width,'decision');await capture('#fakten',width,'facts');await capture('#statistics-pie',width,'pie');
         await click('#phone-portrait .phone-turn');
         const features=await ev(`(()=>{const $=s=>document.querySelector(s);const css=s=>getComputedStyle($(s));const phone=$('#phone-portrait .demo-phone').getBoundingClientRect();const ink=css('.meta-label').color;const hair=css('.table-wrap').borderTopColor;const pre=css('.lab-pie').backgroundImage;
