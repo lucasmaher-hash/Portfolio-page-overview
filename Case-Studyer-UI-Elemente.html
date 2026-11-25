@@ -909,8 +909,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
 /* Editorial examples from to.morrow and Mac-Lamp. */
 .editorial-head{font:clamp(19px,2.2vw,26px)/1.25 'OCR-A-BT',monospace;margin-bottom:14px}
 .editorial-copy{color:var(--text-secondary);font-size:clamp(15px,1.4vw,17px);line-height:1.65}
-#image-with-text .ph-img{margin:clamp(24px,4vw,42px) calc(-1 * var(--chapter-inset)) 0;aspect-ratio:16/9;height:auto;width:auto;border-radius:0}
-@media(max-width:860px){#image-with-text .ph-img{margin-inline:calc(1px - var(--chapter-inset))}}
+#image-with-text .ph-img{margin-top:clamp(24px,4vw,42px);aspect-ratio:16/9;height:auto;border-radius:0}
 .editorial-steps{list-style:none;display:grid;gap:18px;margin-top:20px}
 .editorial-steps li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:16px;align-items:start}
 .editorial-steps strong{font-weight:600;color:var(--text-primary)}
