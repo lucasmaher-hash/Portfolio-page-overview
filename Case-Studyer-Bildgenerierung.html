@@ -817,14 +817,17 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
 /* Page-specific case-study accents: override --page-accent once on the owning page. */
 :root{--page-accent:#475f7e;--specimen-line:rgba(111,111,111,.18)}
 body:has(#auftakt),body:has(#flow),body:has(#agent-images){--blue-deep:var(--page-accent);--accent-ink:var(--page-accent);--accent-orange:color-mix(in srgb,var(--page-accent) 61%,#d8e9fd);--blue:var(--accent-orange);--wire-accent:var(--page-accent);--line:var(--specimen-line);--hair:var(--specimen-line);--border-color:var(--specimen-line)}
-body:has(#auftakt) main,body:has(#flow) main,body:has(#agent-images) main{--catalogue-rest:clamp(14px,3vw,36px)}
-main>.chapter:not(#system):not(#struktur){position:relative;margin:0 var(--catalogue-rest) clamp(62px,6vw,84px);padding:15px calc(var(--chapter-inset) - var(--catalogue-rest) - 1px) clamp(26px,4vw,48px);border:1px solid var(--specimen-line);border-radius:14px;overflow:visible}
+/* The section borders replace the page rails, leaving the gaps unruled. */
+.page:has(main>:is(#auftakt,#flow,#agent-images)){border-inline:0}
+main>.chapter:not(#system):not(#struktur){position:relative;margin:0 0 clamp(62px,6vw,84px);padding:15px var(--chapter-inset) clamp(26px,4vw,48px);border:1px solid var(--specimen-line);border-radius:14px;overflow:visible}
+@media(max-width:860px){main>.chapter:not(#system):not(#struktur){padding-inline:calc(var(--chapter-inset) - 1px)}}
 main>.chapter:not(#system):not(#struktur)>.chapter-heading{margin:0;padding:0;background:transparent;color:var(--blue-deep);position:absolute;top:auto;bottom:calc(100% + 8px);inset-inline:0}
 main>.chapter:not(#system):not(#struktur)>.chapter-heading h2,.copy-section{background:var(--bg-surface)}
 main>#auftakt>.chapter-heading{margin-block-end:0}
-main>#auftakt .ph-hero{border-radius:0;margin-inline:calc(1px + var(--catalogue-rest) - var(--chapter-inset))}
+main>#auftakt .ph-hero{border-radius:0;margin-inline:calc(-1 * var(--chapter-inset))}
+@media(max-width:860px){main>#auftakt .ph-hero{margin-inline:calc(1px - var(--chapter-inset))}}
 .agent-nav:has(+.chapter:not(#system):not(#struktur)){margin-block-end:66px}
-@media(max-width:640px){main>.chapter:not(#system):not(#struktur){border-radius:11px;--catalogue-rest:10px}}
+@media(max-width:640px){main>.chapter:not(#system):not(#struktur){border-radius:11px}main>.chapter:not(#system):not(#struktur)>.chapter-heading{inset-inline:10px}}
 #fakten .meta-label{color:var(--page-accent)}
 #fakten .meta-tile{position:relative;border:0;box-shadow:none}
 #fakten .meta-tile+.meta-tile::before{content:'';position:absolute;inset:8px auto 8px 0;border-left:1px solid var(--specimen-line)}

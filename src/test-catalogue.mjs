@@ -61,6 +61,12 @@ try {
       const result=await ev(`(()=>{
         const $=s=>document.querySelector(s);const css=e=>getComputedStyle(e);const sections=[...document.querySelectorAll('main>section')];
         const flat=sections.filter(e=>!['system','struktur'].includes(e.id));const links=[...document.querySelectorAll('.agent-nav a')];
+        const shell=$('.page');const limits=shell.getBoundingClientRect();
+        const segmented=!flat.length||(css(shell).borderLeftWidth==='0px'&&css(shell).borderRightWidth==='0px'&&flat.every((e,i)=>{
+          const r=e.getBoundingClientRect();const s=css(e);const gap=i===0?1:r.top-flat[i-1].getBoundingClientRect().bottom;
+          return Math.abs(r.left-limits.left)<1&&Math.abs(r.right-limits.right)<1&&gap>0&&['Top','Right','Bottom','Left'].every(side=>s['border'+side+'Width']==='1px'&&s['border'+side+'Style']==='solid');
+        }));
+        if(flat.length&&!segmented)throw Error('Catalogue sections must share the old outer rails with real gaps and no enclosing side border');
         return {errors:window.__errors,overflow:document.documentElement.scrollWidth-innerWidth,active:links.filter(e=>e.getAttribute('aria-current')==='page').map(e=>e.getAttribute('href')),links:links.length,
         broken:[...document.images].filter(e=>!e.complete||!e.naturalWidth).length, duplicate:document.querySelectorAll('[id]').length-new Set([...document.querySelectorAll('[id]')].map(e=>e.id)).size,
         count:sections.length,frame:flat.every(e=>css(e).borderTopStyle==='solid'&&parseFloat(css(e).borderRadius)>0&&e.querySelector('.chapter-heading').getBoundingClientRect().bottom<e.getBoundingClientRect().top),copies:document.querySelectorAll('.copy-section').length,altSections:sections.map(x=>x.id),video:document.querySelectorAll('video').length,eff:matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -105,11 +111,20 @@ try {
   await load('UI-Elemente');
   const pie=()=>ev(`parseFloat(getComputedStyle(document.querySelector('.lab-pie')).getPropertyValue('--lab-pie-reveal'))`);
   assert.equal(await pie(),0);
-  await ev(`document.querySelector('.lab-pie').scrollIntoView({block:'center',behavior:'instant'})`);
-  let mid=0;
-  for(let i=0;i<28 && mid===0;i++){await sleep(50);mid=await pie();}
-  assert(mid>0&&mid<100,`pie midway ${mid}`);
-  await sleep(1300);assert.equal(await pie(),100);
+  const samples=await ev(`new Promise(resolve=>{
+    const element=document.querySelector('.lab-pie');let mid=0;
+    const until=performance.now()+3000;
+    const sample=()=>{
+      const value=parseFloat(getComputedStyle(element).getPropertyValue('--lab-pie-reveal'));
+      if(value>0&&value<100)mid=value;
+      if(value===100||performance.now()>until)resolve({mid,final:value});
+      else requestAnimationFrame(sample);
+    };
+    element.scrollIntoView({block:'center',behavior:'instant'});
+    sample();
+  })`);
+  assert(samples.mid>0&&samples.mid<100,`pie midway ${samples.mid}`);
+  assert.equal(samples.final,100);
   console.log('Pie animates 0 → intermediate → 100; reduced-motion and accent checks passed.');
 } finally {
   ws?.close();chrome.kill();
