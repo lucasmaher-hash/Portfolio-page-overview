@@ -308,6 +308,7 @@ for key, (filename, label) in pages.items():
         nav_labels |= {'struktur': 'Structure &amp; Content', 'ui': 'UI Components', 'agent-images': 'Image Generation'}
         label = nav_labels['ui']
     if key != 'ui':
+        result = re.sub(r'(?s)/\* EDITORIAL:start \*/.*?/\* EDITORIAL:end \*/\n|<!--EDITORIAL:script-->\n<script>.*?</script>\n', '', result)
         result, n = re.subn(r'(?s)(  <main>\n).*?(    <nav class="agent-nav".*?</nav>).*?(  </main>)',
                             lambda m: m[1] + m[2] + '\n\n' + sections[key] + m[3], result)
         if n != 1:

@@ -38,6 +38,8 @@ if (section) await evaluate(`(() => {
   if (s.tab === 'portrait' || s.tab === 'landscape') {
     const feature = document.querySelector(${JSON.stringify(first)} + ' .phone-feature');
     if (feature) feature.dataset.orientation = s.tab;
+  } else if (/^photo-[1-9][0-9]?$/.test(s.tab)) {
+    document.querySelector(${JSON.stringify(first)} + " .photo-gallery")?.dispatchEvent(new CustomEvent("gallery-restore", {detail: Number(s.tab.slice(6))}));
   }
   return true;
 })()`);

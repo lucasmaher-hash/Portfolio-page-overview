@@ -473,6 +473,46 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
 [data-wf-page-accent] svg.wireflow-svg [data-wf-accent~="stroke"]{stroke:var(--wf-page-accent,var(--wf-export-accent))}
 [data-wf-page-accent] svg.wireflow-svg [data-wf-accent~="fill"]{fill:var(--wf-page-accent,var(--wf-export-accent))}
 .flowmap .fm-callout{display:none;pointer-events:none}.flowmap .fm-detail:is(:hover,:focus-visible) .fm-callout{display:block}
+/* EDITORIAL:start */
+/* Editorial examples from to.morrow and Mac-Lamp. */
+.editorial-head{font:clamp(19px,2.2vw,26px)/1.25 'OCR-A-BT',monospace;margin-bottom:14px}
+.editorial-copy{color:var(--text-secondary);font-size:clamp(15px,1.4vw,17px);line-height:1.65}
+#image-with-text .ph-img{margin:clamp(24px,4vw,42px) calc(-1 * var(--chapter-inset)) 0;aspect-ratio:16/9;height:auto;width:auto;border-radius:0}
+@media(max-width:860px){#image-with-text .ph-img{margin-inline:calc(1px - var(--chapter-inset))}}
+.editorial-steps{list-style:none;display:grid;gap:18px;margin-top:20px}
+.editorial-steps li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:16px;align-items:start}
+.editorial-steps strong{font-weight:600;color:var(--text-primary)}
+.editorial-step-no{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#fff;background:var(--page-accent);font:500 14px/1 ui-monospace,monospace}
+.photo-stage{position:relative;isolation:isolate;aspect-ratio:4/3;overflow:hidden;touch-action:pan-y}
+.photo-placeholder{display:grid;place-items:center;gap:0;background:var(--photo-bg,#aeb4be);color:#222831;font:500 clamp(12px,1.3vw,16px)/1.3 'Roboto Flex',sans-serif}
+.photo-placeholder[data-photo="1"]{--photo-bg:#bcc3cb}
+.photo-placeholder[data-photo="2"]{--photo-bg:#a6aeb8}
+.photo-placeholder[data-photo="3"]{--photo-bg:#c4c7cc}
+.photo-placeholder[data-photo="4"]{--photo-bg:#9aa4af}
+.photo-placeholder[data-photo="5"]{--photo-bg:#b4b9c2}
+.photo-current{position:absolute;inset:0;transition:opacity .18s ease}
+.photo-current.is-fading{opacity:0}
+.photo-track{display:none;position:absolute;inset:0;transition:transform .34s cubic-bezier(.22,.61,.36,1);pointer-events:none}
+.photo-track.is-dragging{transition:none}
+.photo-track>.photo-placeholder{flex:0 0 100%;height:100%}
+.photo-stage.is-sliding .photo-current{visibility:hidden}
+.photo-stage.is-sliding .photo-track{display:flex}
+.photo-arrow{position:absolute;z-index:1;top:50%;translate:0 -50%;border:0;padding:0;display:grid;place-items:center;width:44px;height:44px;color:#fff;background:transparent;cursor:pointer;filter:drop-shadow(0 1px 2px #41454c)}
+.photo-arrow[data-prev]{left:8px}.photo-arrow[data-next]{right:8px}
+.photo-pickers{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;align-items:center}
+.photo-thumb{border:0;padding:0;width:clamp(38px,4.3vw,56px);aspect-ratio:1;border-radius:8px;cursor:pointer;opacity:.46;transition:opacity .18s,scale .18s}
+.photo-thumb[aria-pressed=true]{opacity:1;scale:1.08}
+.photo-thumb:hover,.photo-thumb:focus-visible{opacity:1}
+.photo-dots{display:none}
+@media(max-width:640px){
+  .photo-track{display:flex}.photo-current,.photo-arrow,.photo-pickers{display:none}
+  .photo-dots{display:flex;gap:2px;justify-content:center;margin-top:12px}
+  .photo-dot{border:0;display:grid;place-items:center;min-width:28px;min-height:28px;padding:0;background:none;cursor:pointer}
+  .photo-dot::before{content:'';width:7px;height:7px;border-radius:20px;background:#777e88;transition:width .18s}
+  .photo-dot[aria-pressed=true]::before{width:18px;background:var(--page-accent)}
+}
+@media(pointer:coarse){.photo-track{display:flex}.photo-current{display:none}}
+/* EDITORIAL:end */
 </style>
 </head>
 <body>
@@ -650,6 +690,18 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
         <div class="dot-divider"></div>
         <p class="guide-text">Placeholder for the section’s main takeaway. <b class="kw">A highlighted phrase</b> stands out when scanning. The next sentence leads into the following element.</p>
       </div>
+    </section>
+
+    <section class="chapter" id="numbered-steps" aria-labelledby="h-numbered-steps">
+      <div class="chapter-heading"><h2 id="h-numbered-steps">Numbered list</h2></div>
+      <h3 class="editorial-head">How the work came together</h3>
+      <ol class="editorial-steps editorial-copy" role="list">
+        <li><span class="editorial-step-no" aria-hidden="true">1</span><p><strong>Define the problem.</strong> Name what the work needs to change.</p></li>
+        <li><span class="editorial-step-no" aria-hidden="true">2</span><p><strong>Compare the options.</strong> Explain what differs and what that means for the decision.</p></li>
+        <li><span class="editorial-step-no" aria-hidden="true">3</span><p><strong>Build a first version.</strong> Show enough detail to evaluate the idea.</p></li>
+        <li><span class="editorial-step-no" aria-hidden="true">4</span><p><strong>Check what works.</strong> Describe what was tested and what remains open.</p></li>
+        <li><span class="editorial-step-no" aria-hidden="true">5</span><p><strong>Record the decision.</strong> State what changed and why.</p></li>
+      </ol>
     </section>
 
     <section class="chapter" id="recherche" aria-labelledby="h-recherche">
@@ -857,6 +909,48 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     </section>
 
 
+    <section class="chapter" id="image-with-text" aria-labelledby="h-image-with-text">
+      <div class="chapter-heading"><h2 id="h-image-with-text">Text and wide image</h2></div>
+      <h3 class="editorial-head">Show one important detail</h3>
+      <p class="editorial-copy">Introduce what the image will show. Use a short paragraph to explain why it matters.</p>
+      <div class="ph-img" role="img" aria-label="Wide image placeholder">{placeholder}</div>
+    </section>
+
+    <section class="chapter" id="photo-slideshow" aria-labelledby="h-photo-slideshow">
+      <div class="chapter-heading"><h2 id="h-photo-slideshow">Photo slideshow</h2></div>
+      <div class="photo-gallery" role="region" aria-roledescription="carousel" aria-label="Photo slideshow" data-active="1" tabindex="0">
+        <div class="photo-stage">
+          <div class="photo-current photo-placeholder" data-photo="1" aria-hidden="true">Image 01 · placeholder</div>
+          <div class="photo-track" aria-hidden="true" style="transform:translateX(-100%)">
+            <div class="photo-placeholder" data-photo="5">Image 05 · placeholder</div>
+            <div class="photo-placeholder" data-photo="1">Image 01 · placeholder</div>
+            <div class="photo-placeholder" data-photo="2">Image 02 · placeholder</div>
+            <div class="photo-placeholder" data-photo="3">Image 03 · placeholder</div>
+            <div class="photo-placeholder" data-photo="4">Image 04 · placeholder</div>
+            <div class="photo-placeholder" data-photo="5">Image 05 · placeholder</div>
+            <div class="photo-placeholder" data-photo="1">Image 01 · placeholder</div>
+          </div>
+          <button class="photo-arrow" type="button" data-prev aria-label="Previous image"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6L9 12l6 6"/></svg></button>
+          <button class="photo-arrow" type="button" data-next aria-label="Next image"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="photo-pickers" role="group" aria-label="Image thumbnails">
+          <button type="button" class="photo-thumb photo-placeholder" data-photo="1" aria-label="Show image 1" aria-pressed="true">1</button>
+          <button type="button" class="photo-thumb photo-placeholder" data-photo="2" aria-label="Show image 2" aria-pressed="false">2</button>
+          <button type="button" class="photo-thumb photo-placeholder" data-photo="3" aria-label="Show image 3" aria-pressed="false">3</button>
+          <button type="button" class="photo-thumb photo-placeholder" data-photo="4" aria-label="Show image 4" aria-pressed="false">4</button>
+          <button type="button" class="photo-thumb photo-placeholder" data-photo="5" aria-label="Show image 5" aria-pressed="false">5</button>
+        </div>
+        <div class="photo-dots" role="group" aria-label="Choose an image">
+          <button type="button" class="photo-dot" data-photo="1" aria-label="Show image 1" aria-pressed="true"></button>
+          <button type="button" class="photo-dot" data-photo="2" aria-label="Show image 2" aria-pressed="false"></button>
+          <button type="button" class="photo-dot" data-photo="3" aria-label="Show image 3" aria-pressed="false"></button>
+          <button type="button" class="photo-dot" data-photo="4" aria-label="Show image 4" aria-pressed="false"></button>
+          <button type="button" class="photo-dot" data-photo="5" aria-label="Show image 5" aria-pressed="false"></button>
+        </div>
+        <div class="sr" role="status">Image 1 of 5</div>
+      </div>
+    </section>
+
     <section class="chapter" id="screen" aria-labelledby="h-screen">
       <div class="chapter-heading"><h2 id="h-screen">Screen &amp; Callouts</h2></div>
       <div class="callouts">
@@ -1055,6 +1149,76 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
 
 </div>
 
+<!--EDITORIAL:script-->
+<script>
+// Photo-only adaptation of the Mac-Lamp gallery: desktop fade, mobile loop,
+// live trackpad/touch drag and one advance per momentum tail. No autoplay.
+for (const g of document.querySelectorAll('.photo-gallery')) {
+  const stage=g.querySelector('.photo-stage'),track=g.querySelector('.photo-track'),photo=g.querySelector('.photo-current');
+  const options=[...g.querySelectorAll('button[data-photo]')],count=g.querySelectorAll('.photo-thumb').length;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  let index=1, physical=1, timer, snapTimer, wheelTimer, drag=0, wheel='idle', wheelTime=0, tail=Infinity, snapAt=0, touch;
+  function position(px=0,animate=true) {
+    track.classList.toggle('is-dragging',!animate||reduced.matches);
+    track.style.transform=`translateX(calc(${-100*physical}% + ${px}px))`;
+  }
+  function normalize(){if(physical!==index){physical=index;position(0,false);void track.offsetWidth;}}
+  function paint(){photo.dataset.photo=index;photo.textContent=`Image ${String(index).padStart(2,'0')} · placeholder`;photo.classList.remove('is-fading');}
+  function choose(to,step=0,fade=true){
+    normalize();const next=(to-1+count)%count+1;
+    physical=step&&!reduced.matches?physical+step:next;index=next;
+    g.dataset.active=index;
+    for(const b of options)b.setAttribute('aria-pressed',Number(b.dataset.photo)===index?'true':'false');
+    g.querySelector('[role=status]').textContent=`Image ${index} of ${count}`;
+    position();clearTimeout(timer);clearTimeout(snapTimer);
+    if(fade&&!reduced.matches&&!stage.classList.contains('is-sliding')&&getComputedStyle(photo).display!=='none'){
+      photo.classList.add('is-fading');timer=setTimeout(paint,180);
+    }else paint();
+    snapTimer=setTimeout(normalize,360);
+  }
+  track.addEventListener('transitionend',e=>{if(e.propertyName==='transform')normalize();});
+  for(const b of options)b.addEventListener('click',()=>choose(Number(b.dataset.photo)));
+  const step=direction=>choose(index+direction,direction);
+  g.querySelector('[data-prev]').addEventListener('click',()=>step(-1));
+  g.querySelector('[data-next]').addEventListener('click',()=>step(1));
+  g.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();step(e.key==='ArrowLeft'?-1:1);});
+  g.addEventListener('gallery-restore',e=>{const n=e.detail;if(Number.isInteger(n)&&n>=1&&n<=count)choose(n,0,false);});
+  const clamp=px=>Math.max(-stage.clientWidth,Math.min(stage.clientWidth,px));
+  stage.addEventListener('touchstart',e=>{
+    const p=e.touches[0];touch=e.touches.length===1?{x:p.clientX,y:p.clientY,last:p.clientX,t:e.timeStamp,axis:null,v:0}:null;
+  },{passive:true});
+  stage.addEventListener('touchmove',e=>{
+    if(!touch||e.touches.length!==1)return;
+    const p=e.touches[0],dx=p.clientX-touch.x,dy=p.clientY-touch.y;
+    if(!touch.axis&&Math.hypot(dx,dy)>10){touch.axis=Math.abs(dx)>Math.abs(dy)?'x':'y';if(touch.axis==='x')normalize();}
+    if(touch.axis!=='x')return;
+    if(e.cancelable)e.preventDefault();
+    if(e.timeStamp>touch.t)touch.v=(p.clientX-touch.last)/(e.timeStamp-touch.t);
+    touch.last=p.clientX;touch.t=e.timeStamp;
+    if(!reduced.matches)position(clamp(dx),false);
+  },{passive:false});
+  stage.addEventListener('touchend',e=>{
+    const t=touch;touch=null;if(t?.axis!=='x')return;
+    const dx=e.changedTouches[0].clientX-t.x;
+    if(Math.abs(dx)>=Math.max(40,stage.clientWidth*.25)||(Math.abs(t.v)>=.5&&e.timeStamp-t.t<90&&Math.sign(dx)===Math.sign(t.v))) step(dx<0?1:-1);
+    else position();
+  },{passive:true});
+  stage.addEventListener('touchcancel',()=>{touch=null;position();});
+  stage.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaX)<=Math.abs(e.deltaY)||e.ctrlKey)return;
+    e.preventDefault();clearTimeout(wheelTimer);
+    const n=Math.abs(e.deltaX),gap=e.timeStamp-wheelTime;wheelTime=e.timeStamp;
+    const quiet=()=>{if(wheel==='drag'){position();snapAt=performance.now();}wheel='idle';setTimeout(()=>{if(wheel==='idle'){normalize();stage.classList.remove('is-sliding');}},Math.max(0,snapAt+420-performance.now()));};
+    if(wheel==='lock'&&gap<=90&&n<Math.max(10,tail*2.5)){tail=Math.min(tail,n);wheelTimer=setTimeout(quiet,260);return;}
+    if(wheel!=='drag'){normalize();wheel='drag';drag=0;if(!reduced.matches)stage.classList.add('is-sliding');}
+    drag=clamp(drag-e.deltaX*.7);
+    if(Math.abs(drag)>=Math.max(40,stage.clientWidth*.18)){
+      step(drag<0?1:-1);wheel='lock';tail=n;snapAt=performance.now();
+    }else if(!reduced.matches)position(drag,false);
+    wheelTimer=setTimeout(quiet,wheel==='lock'?260:130);
+  },{passive:false});
+}
+</script>
 <script>
 for (const detail of document.querySelectorAll('.fm-detail')) {
   const tip = detail.querySelector('title');

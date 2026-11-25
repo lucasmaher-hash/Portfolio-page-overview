@@ -53,7 +53,7 @@
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: section.id, width: document.documentElement.clientWidth, height: innerHeight,
           touch: matchMedia('(pointer: coarse)').matches, macbook: document.documentElement.dataset.screen === 'macbook',
-          tab: section.querySelector(".phone-feature")?.dataset.orientation })
+          tab: section.querySelector(".phone-feature")?.dataset.orientation ?? (section.querySelector(".photo-gallery") ? `photo-${section.querySelector(".photo-gallery").dataset.active}` : undefined) })
       }).then(response => {
         if (!response.ok || response.headers.get('Content-Type') !== 'image/png') throw Error(t('PNG nicht verfügbar', 'PNG unavailable'));
         return response.blob();
