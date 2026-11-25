@@ -112,7 +112,7 @@ TOMORROW_CLASSES = ["meta-grid", "meta-tile", "meta-label", "meta-inset", "secti
 TOMORROW_DROP = ["rot-ip", "rot-text", "land-box", "trio-band", "trio-shots", "ic-copy", "color-card", "media-copy",
                  "guide-section", "centered-note", "stagger-figure", "morrow-devices", "dna"]
 ITERATION1_CLASSES = ["research-card", "grid", "three", "mini-label", "journey", "matrix", "phone", "task", "sketch",
-                      "version-tabs", "version-stage", "mock-button", "before-after", "range-row", "caption", "closing"]
+                      "caption", "closing"]
 UNIFY_CLASSES = ["stat-block", "stat-kicker", "stat-head", "statbar", "statbar-track", "statbar-seg", "seg-words",
                  "statbar-brace", "statbar-brace-line", "statbar-brace-text", "ba-chart", "ba-legend", "ba-group",
                  "ba-row", "chart-key", "chart-track", "chart-fill", "chart-val", "res-block", "res-note", "cs-sub"]
@@ -198,9 +198,9 @@ FRAGMENTS = {
     "lab:js:section-copy": lambda: (HERE / "section-copy.js").read_text(),
     "portfolio:css:nav": portfolio_nav_css,
     "portfolio:js:nav-light": portfolio_nav_lighting,
-    "tomorrow:wireflow:reschedule": lambda: (HERE.parent / 'projekte/tomorrow/visuals/tomorrow-reschedule.svg').read_text().strip(),
-    "tomorrow:wireflow:draft": lambda: (HERE.parent / 'projekte/tomorrow/visuals/tomorrow-draft.svg').read_text().strip(),
-    "tomorrow:wireflow:live": lambda: (HERE.parent / 'projekte/tomorrow/visuals/tomorrow-live.svg').read_text().strip(),
+    "tomorrow:wireflow:reschedule": lambda: (HERE / 'assets/approved-wireflows/tomorrow-reschedule.svg').read_text().strip(),
+    "tomorrow:wireflow:draft": lambda: (HERE / 'assets/approved-wireflows/tomorrow-draft.svg').read_text().strip(),
+    "tomorrow:wireflow:live": lambda: (HERE / 'assets/approved-wireflows/tomorrow-live.svg').read_text().strip(),
     "tomorrow:fact-bar": lambda: clean(block(TOMORROW, '<div class="fact-bar">')),
     # The live page hides these <br> (".meta-inset br{display:none}"), which glues "Produktdesign,Designsystem";
     # a space before each keeps the words apart in both layouts.

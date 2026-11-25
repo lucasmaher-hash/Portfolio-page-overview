@@ -1,0 +1,150 @@
+<svg class="wireflow-svg" role="img" aria-labelledby="tm-res-title tm-res-desc" viewBox="0 0 1096 701" fill="none" xmlns="http://www.w3.org/2000/svg">
+<title id="tm-res-title">to.morrow · Von Heute nach Morgen</title>
+<desc id="tm-res-desc">Ein Wisch verschiebt die Aufgabe. Rückgängig bleibt ein optionaler Schritt. 01 Ausgangsliste. 02 Nach rechts wischen. 03 Unter Morgen. 04 Optional: Rückgängig.</desc>
+<rect x="0.5" y="0.5" width="1095" height="700" rx="21.4688" fill="#F7F7F7"/>
+<rect x="0.5" y="0.5" width="1095" height="700" rx="21.4688" stroke="#CCCCCC"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="26.3626" font-weight="600" letter-spacing="0em"><tspan x="40.2761" y="67.7406">Von Heute nach Morgen</tspan></text>
+<text fill="#626262" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="17.0869" letter-spacing="0em"><tspan x="40" y="96.5097">Ein Wisch verschiebt die Aufgabe. R&#xfc;ckg&#xe4;ngig bleibt ein optionaler Schritt.</tspan></text>
+<text fill="#777777" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="13.4254" letter-spacing="0em"><tspan x="42.7172" y="615.389">01</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="17.0869" font-weight="600" letter-spacing="0em"><tspan x="69.7015" y="617.367">Ausgangsliste</tspan></text>
+<text fill="#777777" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="13.4254" letter-spacing="0em"><tspan x="314.386" y="615.389">02</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="17.0869" font-weight="600" letter-spacing="0em"><tspan x="341.37" y="617.367">Nach rechts wischen</tspan></text>
+<text fill="#777777" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="13.4254" letter-spacing="0em"><tspan x="586.067" y="615.389">03</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="17.0869" font-weight="600" letter-spacing="0em"><tspan x="613.052" y="617.367">Unter Morgen</tspan></text>
+<text fill="#777777" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="13.4254" letter-spacing="0em"><tspan x="857.736" y="615.389">04</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="'Roboto Flex', sans-serif" font-size="17.0869" font-weight="600" letter-spacing="0em"><tspan x="884.72" y="617.367">Optional: R&#xfc;ckg&#xe4;ngig</tspan></text>
+<path d="M209.61 157.842H71.3472C56.6922 157.842 44.812 169.722 44.812 184.377V546.093C44.812 560.748 56.6922 572.629 71.3472 572.629H209.61C224.265 572.629 236.145 560.748 236.145 546.093V184.377C236.145 169.722 224.265 157.842 209.61 157.842Z" fill="#242424"/>
+<path d="M209.61 161.333H71.3472C58.6205 161.333 48.3035 171.65 48.3035 184.377V546.093C48.3035 558.82 58.6205 569.137 71.3472 569.137H209.61C222.336 569.137 232.653 558.82 232.653 546.093V184.377C232.653 171.65 222.336 161.333 209.61 161.333Z" fill="white"/>
+<path d="M160.729 168.316H120.228C115.986 168.316 112.547 171.755 112.547 175.997C112.547 180.24 115.986 183.679 120.228 183.679H160.729C164.971 183.679 168.41 180.24 168.41 175.997C168.41 171.755 164.971 168.316 160.729 168.316Z" fill="#171717"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.07783" font-weight="bold" letter-spacing="0em"><tspan x="59.4762" y="208.599">Personal</tspan></text>
+<path transform="translate(0.307 -2.234)" d="M103.818 206.233L105.843 209.027L107.868 206.233" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke="#303030"/>
+<path d="M219.26 204.229L220.873 204.544V206.108L219.26 206.422L218.645 207.916L219.56 209.278L218.45 210.388L217.088 209.473L215.594 210.088L215.28 211.701H213.716L213.401 210.088L211.907 209.473L210.545 210.388L209.435 209.278L210.35 207.916L209.735 206.422L208.122 206.108V204.544L209.735 204.229L210.35 202.735L209.435 201.373L210.545 200.263L211.907 201.178L213.401 200.563L213.716 198.95H215.28L215.594 200.563L217.088 201.178L218.45 200.263L219.56 201.373L218.645 202.735L219.26 204.229Z" stroke-width="1.5" stroke-linejoin="round" stroke="#777777"/>
+<path d="M216.592 205.326C216.592 206.483 215.655 207.42 214.498 207.42C213.341 207.42 212.403 206.483 212.403 205.326C212.403 204.169 213.341 203.231 214.498 203.231C215.655 203.231 216.592 204.169 216.592 205.326Z" stroke-width="1.5" stroke="#777777"/>
+<path d="M56.6831 218.593H224.274Z" fill="black"/>
+<path d="M56.6831 218.593H224.274" stroke="#DDDDDD"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="18.854" font-weight="bold" letter-spacing="0em"><tspan x="59.4762" y="241.101">Heute</tspan></text>
+<text fill="#777777" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.07783" letter-spacing="0em"><tspan x="214.498" y="240.022">3</tspan></text>
+<path d="M74.1404 277.25C74.1404 280.335 71.6393 282.836 68.554 282.836C65.4687 282.836 62.9677 280.335 62.9677 277.25C62.9677 274.165 65.4687 271.664 68.554 271.664C71.6393 271.664 74.1404 274.165 74.1404 277.25Z" stroke-width="1.5" stroke="#777777"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77612" letter-spacing="0em"><tspan x="80.425" y="280.622">Skizzen sortieren</tspan></text>
+<path d="M218.687 300.294H62.2695C59.1842 300.294 56.6831 302.795 56.6831 305.88V329.622C56.6831 332.707 59.1842 335.208 62.2695 335.208H218.687C221.773 335.208 224.274 332.707 224.274 329.622V305.88C224.274 302.795 221.773 300.294 218.687 300.294Z" fill="#EDEDED" stroke-width="1.95" stroke="#607D9E"/>
+<path d="M74.1404 317.751C74.1404 320.836 71.6393 323.337 68.554 323.337C65.4687 323.337 62.9677 320.836 62.9677 317.751C62.9677 314.666 65.4687 312.165 68.554 312.165C71.6393 312.165 74.1404 314.666 74.1404 317.751Z" stroke-width="1.5" stroke="#777777"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77612" letter-spacing="0em"><tspan x="80.425" y="321.123">Portfolio senden</tspan></text>
+<path d="M74.1404 358.252C74.1404 361.337 71.6393 363.838 68.554 363.838C65.4687 363.838 62.9677 361.337 62.9677 358.252C62.9677 355.167 65.4687 352.666 68.554 352.666C71.6393 352.666 74.1404 355.167 74.1404 358.252Z" stroke-width="1.5" stroke="#777777"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77612" letter-spacing="0em"><tspan x="80.425" y="361.624">Einkaufen</tspan></text>
+<mask id="tm-res-mask0_37_26" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="48" y="161" width="185" height="409">
+<path d="M209.61 161.333H71.3472C58.6205 161.333 48.3035 171.65 48.3035 184.377V546.093C48.3035 558.82 58.6205 569.137 71.3472 569.137H209.61C222.336 569.137 232.653 558.82 232.653 546.093V184.377C232.653 171.65 222.336 161.333 209.61 161.333Z" fill="white"/>
+</mask>
+<g mask="url(#tm-res-mask0_37_26)">
+<path d="M232.653 529.334H48.3035V574.723H232.653V529.334Z" fill="#EFEFEF"/>
+<path d="M49.0018 529.334H231.955Z" fill="black"/>
+<path d="M49.0018 529.334H231.955" stroke="#DDDDDD"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="68.3046" y="552.463">Live</tspan></text>
+<path d="M134.892 539.809H103.469C100.384 539.809 97.8824 542.31 97.8824 545.395V553.076C97.8824 556.162 100.384 558.663 103.469 558.663H134.892C137.977 558.663 140.478 556.162 140.478 553.076V545.395C140.478 542.31 137.977 539.809 134.892 539.809Z" fill="#D6D6D6"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" font-weight="bold" letter-spacing="0em"><tspan x="108.679" y="552.463">Heute</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="150.376" y="552.463">Morgen</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="199.443" y="552.463">Bald</tspan></text>
+</g>
+<path d="M481.278 157.842H343.016C328.361 157.842 316.481 169.722 316.481 184.377V546.093C316.481 560.748 328.361 572.629 343.016 572.629H481.278C495.933 572.629 507.814 560.748 507.814 546.093V184.377C507.814 169.722 495.933 157.842 481.278 157.842Z" fill="#242424"/>
+<path d="M481.278 161.333H343.016C330.289 161.333 319.972 171.65 319.972 184.377V546.093C319.972 558.82 330.289 569.137 343.016 569.137H481.278C494.005 569.137 504.322 558.82 504.322 546.093V184.377C504.322 171.65 494.005 161.333 481.278 161.333Z" fill="white"/>
+<path d="M432.398 168.316H391.897C387.655 168.316 384.216 171.755 384.216 175.997C384.216 180.24 387.655 183.679 391.897 183.679H432.398C436.64 183.679 440.079 180.24 440.079 175.997C440.079 171.755 436.64 168.316 432.398 168.316Z" fill="#171717"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.07783" font-weight="bold" letter-spacing="0em"><tspan x="331.145" y="208.599">Personal</tspan></text>
+<path transform="translate(0.307 -2.234)" d="M375.487 206.233L377.512 209.027L379.537 206.233" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke="#303030"/>
+<path d="M490.929 204.229L492.542 204.544V206.108L490.929 206.422L490.315 207.916L491.229 209.278L490.119 210.388L488.757 209.473L487.263 210.088L486.949 211.701H485.385L485.07 210.088L483.576 209.473L482.214 210.388L481.104 209.278L482.019 207.916L481.404 206.422L479.791 206.108V204.544L481.404 204.229L482.019 202.735L481.104 201.373L482.214 200.263L483.576 201.178L485.07 200.563L485.385 198.95H486.949L487.263 200.563L488.757 201.178L490.119 200.263L491.229 201.373L490.315 202.735L490.929 204.229Z" stroke-width="1.5" stroke-linejoin="round" stroke="#777777"/>
+<path d="M488.262 205.326C488.262 206.483 487.324 207.42 486.167 207.42C485.01 207.42 484.072 206.483 484.072 205.326C484.072 204.169 485.01 203.231 486.167 203.231C487.324 203.231 488.262 204.169 488.262 205.326Z" stroke-width="1.5" stroke="#777777"/>
+<path d="M328.352 218.593H495.943Z" fill="black"/>
+<path d="M328.352 218.593H495.943" stroke="#DDDDDD"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="18.854" font-weight="bold" letter-spacing="0em"><tspan x="331.145" y="241.101">Heute</tspan></text>
+<text fill="#777777" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.07783" letter-spacing="0em"><tspan x="486.167" y="240.022">3</tspan></text>
+<path d="M345.809 277.25C345.809 280.335 343.308 282.836 340.223 282.836C337.138 282.836 334.637 280.335 334.637 277.25C334.637 274.165 337.138 271.664 340.223 271.664C343.308 271.664 345.809 274.165 345.809 277.25Z" stroke-width="1.5" stroke="#777777"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77612" letter-spacing="0em"><tspan x="352.094" y="280.622">Skizzen sortieren</tspan></text>
+<path d="M564.376 300.294H407.958C404.872 300.294 402.371 302.795 402.371 305.88V329.622C402.371 332.707 404.872 335.208 407.958 335.208H564.376C567.461 335.208 569.962 332.707 569.962 329.622V305.88C569.962 302.795 567.461 300.294 564.376 300.294Z" fill="#62676F" stroke-width="1.95" stroke="#607D9E"/>
+<path d="M419.829 317.751C419.829 320.836 417.328 323.337 414.242 323.337C411.157 323.337 408.656 320.836 408.656 317.751C408.656 314.666 411.157 312.165 414.242 312.165C417.328 312.165 419.829 314.666 419.829 317.751Z" stroke-width="1.5" stroke="white"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77612" letter-spacing="0em"><tspan x="426.113" y="321.123">Portfolio senden</tspan></text>
+<path d="M345.809 358.252C345.809 361.337 343.308 363.838 340.223 363.838C337.138 363.838 334.637 361.337 334.637 358.252C334.637 355.167 337.138 352.666 340.223 352.666C343.308 352.666 345.809 355.167 345.809 358.252Z" stroke-width="1.5" stroke="#777777"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77612" letter-spacing="0em"><tspan x="352.094" y="361.624">Einkaufen</tspan></text>
+<mask id="tm-res-mask1_37_26" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="319" y="161" width="186" height="409">
+<path d="M481.278 161.333H343.016C330.289 161.333 319.972 171.65 319.972 184.377V546.093C319.972 558.82 330.289 569.137 343.016 569.137H481.278C494.005 569.137 504.322 558.82 504.322 546.093V184.377C504.322 171.65 494.005 161.333 481.278 161.333Z" fill="white"/>
+</mask>
+<g mask="url(#tm-res-mask1_37_26)">
+<path d="M504.322 529.334H319.972V574.723H504.322V529.334Z" fill="#EFEFEF"/>
+<path d="M320.671 529.334H503.624Z" fill="black"/>
+<path d="M320.671 529.334H503.624" stroke="#DDDDDD"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="339.974" y="552.463">Live</tspan></text>
+<path d="M406.561 539.809H375.138C372.052 539.809 369.551 542.31 369.551 545.395V553.076C369.551 556.162 372.052 558.663 375.138 558.663H406.561C409.646 558.663 412.147 556.162 412.147 553.076V545.395C412.147 542.31 409.646 539.809 406.561 539.809Z" fill="#D6D6D6"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" font-weight="bold" letter-spacing="0em"><tspan x="380.348" y="552.463">Heute</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="422.045" y="552.463">Morgen</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="471.112" y="552.463">Bald</tspan></text>
+</g>
+<path d="M752.96 157.842H614.697C600.042 157.842 588.162 169.722 588.162 184.377V546.093C588.162 560.748 600.042 572.629 614.697 572.629H752.96C767.615 572.629 779.495 560.748 779.495 546.093V184.377C779.495 169.722 767.615 157.842 752.96 157.842Z" fill="#242424"/>
+<path d="M752.96 161.333H614.697C601.971 161.333 591.654 171.65 591.654 184.377V546.093C591.654 558.82 601.971 569.137 614.697 569.137H752.96C765.686 569.137 776.003 558.82 776.003 546.093V184.377C776.003 171.65 765.686 161.333 752.96 161.333Z" fill="white"/>
+<path d="M704.079 168.316H663.578C659.336 168.316 655.897 171.755 655.897 175.997C655.897 180.24 659.336 183.679 663.578 183.679H704.079C708.321 183.679 711.76 180.24 711.76 175.997C711.76 171.755 708.321 168.316 704.079 168.316Z" fill="#171717"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.07783" font-weight="bold" letter-spacing="0em"><tspan x="602.826" y="208.599">Personal</tspan></text>
+<path transform="translate(0.307 -2.234)" d="M647.168 206.233L649.193 209.027L651.218 206.233" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke="#303030"/>
+<path d="M762.61 204.229L764.223 204.544V206.108L762.61 206.422L761.996 207.916L762.91 209.278L761.8 210.388L760.439 209.473L758.944 210.088L758.63 211.701H757.066L756.752 210.088L755.257 209.473L753.895 210.388L752.785 209.278L753.7 207.916L753.085 206.422L751.472 206.108V204.544L753.085 204.229L753.7 202.735L752.785 201.373L753.895 200.263L755.257 201.178L756.752 200.563L757.066 198.95H758.63L758.944 200.563L760.439 201.178L761.8 200.263L762.91 201.373L761.996 202.735L762.61 204.229Z" stroke-width="1.5" stroke-linejoin="round" stroke="#777777"/>
+<path d="M759.943 205.326C759.943 206.483 759.005 207.42 757.848 207.42C756.691 207.42 755.753 206.483 755.753 205.326C755.753 204.169 756.691 203.231 757.848 203.231C759.005 203.231 759.943 204.169 759.943 205.326Z" stroke-width="1.5" stroke="#777777"/>
+<path d="M600.033 218.593H767.624Z" fill="black"/>
+<path d="M600.033 218.593H767.624" stroke="#DDDDDD"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="18.854" font-weight="bold" letter-spacing="0em"><tspan x="602.826" y="241.101">Morgen</tspan></text>
+<text fill="#777777" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.07783" letter-spacing="0em"><tspan x="757.848" y="240.022">1</tspan></text>
+<path d="M762.038 259.793H605.62C602.534 259.793 600.033 262.294 600.033 265.379V289.121C600.033 292.206 602.534 294.707 605.62 294.707H762.038C765.123 294.707 767.624 292.206 767.624 289.121V265.379C767.624 262.294 765.123 259.793 762.038 259.793Z" fill="#EDEDED" stroke-width="1.95" stroke="#607D9E"/>
+<path d="M617.491 277.25C617.491 280.335 614.989 282.836 611.904 282.836C608.819 282.836 606.318 280.335 606.318 277.25C606.318 274.165 608.819 271.664 611.904 271.664C614.989 271.664 617.491 274.165 617.491 277.25Z" stroke-width="1.5" stroke="#777777"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77612" letter-spacing="0em"><tspan x="623.775" y="280.622">Portfolio senden</tspan></text>
+<path d="M761.339 425.288H606.318C602.847 425.288 600.033 428.102 600.033 431.573V455.315C600.033 458.786 602.847 461.6 606.318 461.6H761.339C764.81 461.6 767.624 458.786 767.624 455.315V431.573C767.624 428.102 764.81 425.288 761.339 425.288Z" fill="#E4E4E4"/>
+<text fill="#666666" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="608.413" y="439.339">Verschoben</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77612" font-weight="bold" letter-spacing="0em"><tspan x="608.413" y="452.402">R&#xfc;ckg&#xe4;ngig</tspan></text>
+<path d="M761.339 443.444C761.339 448.843 756.962 453.22 751.563 453.22C746.164 453.22 741.787 448.843 741.787 443.444C741.787 438.045 746.164 433.668 751.563 433.668C756.962 433.668 761.339 438.045 761.339 443.444Z" stroke-width="1.95" stroke="#607D9E"/>
+<path d="M755.753 442.746C755.347 441.752 754.625 440.919 753.699 440.376C752.773 439.833 751.694 439.61 750.628 439.742C749.563 439.874 748.57 440.352 747.804 441.104C747.038 441.856 746.54 442.839 746.388 443.902C746.237 444.965 746.439 446.048 746.964 446.984C747.489 447.921 748.308 448.658 749.294 449.083C750.28 449.507 751.379 449.596 752.42 449.334C753.461 449.072 754.387 448.475 755.055 447.634M755.753 439.254V442.746H752.261" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#444444"/>
+<mask id="tm-res-mask2_37_26" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="591" y="161" width="186" height="409">
+<path d="M752.96 161.333H614.697C601.971 161.333 591.654 171.65 591.654 184.377V546.093C591.654 558.82 601.971 569.137 614.697 569.137H752.96C765.686 569.137 776.003 558.82 776.003 546.093V184.377C776.003 171.65 765.686 161.333 752.96 161.333Z" fill="white"/>
+</mask>
+<g mask="url(#tm-res-mask2_37_26)">
+<path d="M776.003 529.334H591.654V574.723H776.003V529.334Z" fill="#EFEFEF"/>
+<path d="M592.352 529.334H775.305Z" fill="black"/>
+<path d="M592.352 529.334H775.305" stroke="#DDDDDD"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="611.655" y="552.463">Live</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="652.298" y="552.463">Heute</tspan></text>
+<path d="M722.235 539.809H690.811C687.726 539.809 685.225 542.31 685.225 545.395V553.076C685.225 556.162 687.726 558.663 690.811 558.663H722.235C725.32 558.663 727.821 556.162 727.821 553.076V545.395C727.821 542.31 725.32 539.809 722.235 539.809Z" fill="#D6D6D6"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" font-weight="bold" letter-spacing="0em"><tspan x="692.68" y="552.463">Morgen</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.68124" letter-spacing="0em"><tspan x="742.793" y="552.463">Bald</tspan></text>
+</g>
+<path d="M1024.65 157.842H886.37C871.713 157.842 859.831 169.723 859.831 184.38V546.142C859.831 560.799 871.713 572.681 886.37 572.681H1024.65C1039.31 572.681 1051.19 560.799 1051.19 546.142V184.38C1051.19 169.723 1039.31 157.842 1024.65 157.842Z" fill="#242424"/>
+<path d="M1024.65 161.334H886.37C873.641 161.334 863.323 171.652 863.323 184.38V546.142C863.323 558.87 873.641 569.189 886.37 569.189H1024.65C1037.38 569.189 1047.7 558.87 1047.7 546.142V184.38C1047.7 171.652 1037.38 161.334 1024.65 161.334Z" fill="white"/>
+<path d="M975.763 168.318H935.256C931.014 168.318 927.574 171.757 927.574 176C927.574 180.243 931.014 183.682 935.256 183.682H975.763C980.005 183.682 983.445 180.243 983.445 176C983.445 171.757 980.005 168.318 975.763 168.318Z" fill="#171717"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.07896" font-weight="bold" letter-spacing="0em"><tspan x="874.497" y="208.605">Personal</tspan></text>
+<path transform="translate(0.307 -2.234)" d="M918.844 206.24L920.87 209.033L922.895 206.24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke="#303030"/>
+<path d="M1034.3 204.235L1035.91 204.55V206.114L1034.3 206.428L1033.69 207.923L1034.6 209.285L1033.49 210.395L1032.13 209.48L1030.63 210.095L1030.32 211.708H1028.76L1028.44 210.095L1026.95 209.48L1025.59 210.395L1024.47 209.285L1025.39 207.923L1024.77 206.428L1023.16 206.114V204.55L1024.77 204.235L1025.39 202.741L1024.47 201.379L1025.59 200.269L1026.95 201.183L1028.44 200.569L1028.76 198.956H1030.32L1030.63 200.569L1032.13 201.183L1033.49 200.269L1034.6 201.379L1033.69 202.741L1034.3 204.235Z" stroke-width="1.5" stroke-linejoin="round" stroke="#777777"/>
+<path d="M1031.63 205.332C1031.63 206.489 1030.69 207.427 1029.54 207.427C1028.38 207.427 1027.44 206.489 1027.44 205.332C1027.44 204.175 1028.38 203.237 1029.54 203.237C1030.69 203.237 1031.63 204.175 1031.63 205.332Z" stroke-width="1.5" stroke="#777777"/>
+<path d="M871.704 218.601H1039.32Z" fill="black"/>
+<path d="M871.704 218.601H1039.32" stroke="#DDDDDD"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="18.8563" font-weight="bold" letter-spacing="0em"><tspan x="874.497" y="241.11">Heute</tspan></text>
+<text fill="#777777" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.07896" letter-spacing="0em"><tspan x="1029.54" y="240.032">3</tspan></text>
+<path d="M889.163 277.265C889.163 280.351 886.662 282.852 883.576 282.852C880.49 282.852 877.989 280.351 877.989 277.265C877.989 274.18 880.49 271.678 883.576 271.678C886.662 271.678 889.163 274.18 889.163 277.265Z" stroke-width="1.5" stroke="#777777"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77734" letter-spacing="0em"><tspan x="895.448" y="280.637">Skizzen sortieren</tspan></text>
+<path d="M1033.73 300.312H877.291C874.205 300.312 871.704 302.813 871.704 305.899V329.644C871.704 332.729 874.205 335.231 877.291 335.231H1033.73C1036.81 335.231 1039.32 332.729 1039.32 329.644V305.899C1039.32 302.813 1036.81 300.312 1033.73 300.312Z" fill="#EDEDED" stroke-width="1.95" stroke="#607D9E"/>
+<path d="M889.163 317.771C889.163 320.857 886.662 323.358 883.576 323.358C880.49 323.358 877.989 320.857 877.989 317.771C877.989 314.686 880.49 312.184 883.576 312.184C886.662 312.184 889.163 314.686 889.163 317.771Z" stroke-width="1.5" stroke="#777777"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77734" letter-spacing="0em"><tspan x="895.448" y="321.143">Portfolio senden</tspan></text>
+<path d="M889.163 358.277C889.163 361.363 886.662 363.865 883.576 363.865C880.49 363.865 877.989 361.363 877.989 358.277C877.989 355.192 880.49 352.69 883.576 352.69C886.662 352.69 889.163 355.192 889.163 358.277Z" stroke-width="1.5" stroke="#777777"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.77734" letter-spacing="0em"><tspan x="895.448" y="361.649">Einkaufen</tspan></text>
+<path d="M1033.73 428.116H877.291C874.205 428.116 871.704 430.617 871.704 433.703V450.464C871.704 453.549 874.205 456.051 877.291 456.051H1033.73C1036.81 456.051 1039.32 453.549 1039.32 450.464V433.703C1039.32 430.617 1036.81 428.116 1033.73 428.116Z" fill="#EDEDED"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="9.07896" letter-spacing="0em"><tspan x="916.154" y="445.356">Wieder unter Heute</tspan></text>
+<mask id="tm-res-mask3_37_26" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="863" y="161" width="185" height="409">
+<path d="M1024.65 161.334H886.37C873.641 161.334 863.323 171.652 863.323 184.38V546.142C863.323 558.87 873.641 569.189 886.37 569.189H1024.65C1037.38 569.189 1047.7 558.87 1047.7 546.142V184.38C1047.7 171.652 1037.38 161.334 1024.65 161.334Z" fill="white"/>
+</mask>
+<g mask="url(#tm-res-mask3_37_26)">
+<path d="M1047.7 529.381H863.323V574.776H1047.7V529.381Z" fill="#EFEFEF"/>
+<path d="M864.021 529.381H1047Z" fill="black"/>
+<path d="M864.021 529.381H1047" stroke="#DDDDDD"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.6822" letter-spacing="0em"><tspan x="883.326" y="552.512">Live</tspan></text>
+<path d="M949.922 539.857H918.495C915.41 539.857 912.908 542.358 912.908 545.444V553.126C912.908 556.212 915.41 558.713 918.495 558.713H949.922C953.008 558.713 955.509 556.212 955.509 553.126V545.444C955.509 542.358 953.008 539.857 949.922 539.857Z" fill="#D6D6D6"/>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.6822" font-weight="bold" letter-spacing="0em"><tspan x="923.704" y="552.512">Heute</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.6822" letter-spacing="0em"><tspan x="965.406" y="552.512">Morgen</tspan></text>
+<text fill="#303030" style="white-space: pre" xml:space="preserve" font-family="Arimo, Arial, Helvetica, sans-serif" font-size="7.6822" letter-spacing="0em"><tspan x="1014.48" y="552.512">Bald</tspan></text>
+</g>
+<path d="M262.894 317.755H289.744M283.744 314.255L289.744 317.755L283.744 321.255" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round" stroke="#607D9E"/>
+<path d="M572.41 317.755C586.31 317.755 582.47 277.255 596.37 277.255M590.37 273.755L596.37 277.255L590.37 280.755" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round" stroke="#607D9E"/>
+<path d="M763.783 443.441C824.263 443.441 807.573 317.771 868.053 317.771M862.053 314.271L868.053 317.771L862.053 321.271" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round" stroke="#607D9E"/>
+<rect class="wf-screen" x="42.7" y="155.7" width="195.5" height="419.0" fill="transparent"><title>Heute mit drei Aufgaben, darunter Portfolio senden.</title></rect>
+<rect class="wf-screen" x="314.4" y="155.7" width="195.5" height="419.0" fill="transparent"><title>Portfolio senden wird aus dem Bildschirm nach rechts gezogen.</title></rect>
+<rect class="wf-screen" x="586.1" y="155.7" width="195.5" height="419.0" fill="transparent"><title>Portfolio senden steht unter Morgen. Rückgängig ist verfügbar.</title></rect>
+<rect class="wf-screen" x="857.7" y="155.7" width="195.5" height="419.0" fill="transparent"><title>Optional: Rückgängig stellt Portfolio senden unter Heute wieder her.</title></rect>
+</svg>

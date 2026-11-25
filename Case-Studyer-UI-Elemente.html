@@ -170,7 +170,7 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 
 
 /* ── Struktur & Text: abstract page-structure map. Boxes are the overview's .role.agent buttons and open the same .agent-panel card ── */
-.smap{position:relative;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px)}
+.smap{position:relative;padding:clamp(8px,1.5vw,16px) 0}
 .smap-main{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0}
 .smap-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--border-color)}
 .srow{position:relative;z-index:1;display:flex;justify-content:center;align-items:flex-start;gap:10px;width:100%}
@@ -190,77 +190,94 @@ main>.chapter:not(#system):not(#struktur){scroll-margin-top:92px}
 
 /* ── 00 Agent map: one orchestrator; the role boxes are a target picture, not running agents ── */
 .map-intro{margin:0 0 clamp(20px,2.4vw,28px);font-size:16px;line-height:1.6;color:var(--text-secondary)}
-.map{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;gap:0 14px;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px) clamp(60px,6vw,68px);position:relative}
+.map{display:grid;grid-template-columns:64px minmax(0,1fr) 64px;gap:0 14px;border:1px solid var(--hair);border-radius:20px;padding:clamp(24px,3vw,36px) clamp(14px,3vw,28px) clamp(60px,6vw,68px);position:relative;background:var(--blue-deep)}
 .map-main{display:flex;flex-direction:column;align-items:center;min-width:0;position:relative;z-index:1}
 .node{display:flex;align-items:center;gap:12px;border:1px solid var(--border-color);border-radius:16px;padding:10px 18px;max-width:100%;background:#fff;font:inherit;color:inherit;text-align:left;line-height:1.3}
 .node svg{width:22px;height:22px;flex:none;color:var(--blue-deep)}
 .node.pill{border-radius:100px;font-size:13px}
 .node.core{border-color:var(--blue-deep);border-width:1.5px;padding:14px 22px}.core-txt strong{display:block;font:22px/1.1 'OCR-A-BT',monospace}.core-txt span{font-size:12px;color:#575B65}
 .node.check{border:1.5px solid var(--blue-deep);font-size:14px}.node.check strong{font-weight:600}
-.node.review{border-radius:100px;border:1.5px solid var(--blue-deep);font-size:13px}
+.node.review{border-radius:100px;border:1.5px solid var(--blue-deep);font-size:13px;position:relative}
+.map-approved{position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:7px;white-space:nowrap;color:var(--map-caption);font-size:13px;font-weight:650;line-height:1.2}
+.map-approved .map-approved-icon{width:14px;height:14px;flex:none;color:var(--map-caption)}
+.map-approved[hidden]{display:none}
+@media(max-width:600px){.map{padding-bottom:80px}.map-approved-label{position:absolute;right:calc(100% + 6px);top:calc(50% + 32px)}}
+@media(max-width:360px){.map-main>.inputs+.gap{height:56px}}
 .gap{height:32px;width:100%;position:relative}.gap--bus{height:40px}
 .v-label{position:absolute;left:calc(50% + 10px);top:50%;transform:translateY(-50%);font-size:11px;color:#575B65}
 .roles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;width:100%}
 .inputs{display:flex;gap:10px;justify-content:center;width:100%}.inputs .role{flex:0 0 calc((100% - 40px) / 5)}
 .role{border:1px solid var(--border-color);border-radius:16px;padding:14px 6px;height:var(--role-h,auto);box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-height:112px;justify-content:center;background:#fff;font:inherit;color:inherit}
 .role svg{width:22px;height:22px;color:var(--blue-deep);margin-bottom:2px}.role span{font-size:11.5px;font-weight:600;line-height:1.25}.role small{font-size:10.5px;line-height:1.3;color:var(--text-secondary)}
+.map .role small,.map .core-txt span{color:#172432}
 .agent{cursor:pointer;transition:transform .18s cubic-bezier(.2,.7,.2,1),border-color .18s ease,background-color .18s ease}
 .agent:hover{transform:scale(1.04)}
 .agent[aria-expanded="true"]{border-color:var(--blue-deep)}
 @media(prefers-reduced-motion:reduce){.agent:hover{transform:none}}
 .agent:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
 .agent.is-active{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(71,95,126,.35)}
-.map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--border-color)}
-.map-svg .loop{color:var(--blue-deep)}
+.map-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--map-line)}
 .map-svg g[data-step]:not(.on){display:none}
-.map{--flow:#E0457B;--flow-soft:#FDECF2;--flow-ring:rgba(224,69,123,.22);--focus-fade:160ms}
+.map{--flow:#E0457B;--flow-soft:#fff1f9;--flow-ring:rgba(224,69,123,.30);--map-line:#d5dfea;--map-line-active:#f4f6f9;--map-line-flow:#ff8eb8;--map-playback-bg:#273a54;--map-card-idle:#7c8da1;--lower-idle-opacity:.45;--map-caption:#fff0f6;--focus-fade:160ms}
 .map.is-fast{--focus-fade:80ms}
-.map-svg g[data-step].on{color:var(--flow);stroke-width:2.4;opacity:.16}
+.map-svg g[data-step].on{color:var(--map-line-flow);stroke-width:2.4;opacity:.33}
 .map-svg g[data-step].on.now{opacity:1}
-.map-svg g[data-step].on>path{stroke:var(--flow)}
+.map-svg g[data-step].on>path{stroke:currentColor}
 .map-svg g[data-step] path[marker-end]{marker-end:none}.map-svg g[data-step].done path[marker-end]{marker-end:url(#tip-on)}
 .map-svg g[data-step].done>path{mask:none}
 .map-svg:has([data-step="loop"].on)>.loop{marker-end:none}
-.map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.25}
+.map-svg .base{transition:opacity .5s ease}.map.is-playing .map-svg .base,.map.is-playing .map-svg>.loop{opacity:.52}
 .map .is-lit{border-color:var(--flow)!important;background:#fff!important}
 .map .is-lit svg{color:var(--flow)}
-.map.is-playing .is-current{border-color:var(--flow)!important;background:var(--flow-soft)!important;box-shadow:0 0 0 5px var(--flow-ring)}.map.is-playing .is-current svg{color:var(--flow)}
+.map.is-playing .is-current{border-color:var(--flow)!important;background:var(--flow-soft)!important;box-shadow:0 0 0 5px var(--flow-ring)}.map.is-playing .is-current{color:var(--map-ink-active,#172432)}.map.is-playing .is-current svg{color:var(--flow)}
+.map.is-playing .role:not(.is-current) small,.map.is-playing .core:not(.is-current) .core-txt span{color:var(--map-ink-idle,#172432)}
+.map.is-playing .is-current small,.map.is-playing .is-current .core-txt span{color:var(--map-ink-active,#172432)}
 .map.is-playing .agent,.map.is-playing .node{transition:opacity var(--focus-fade)}
 .map.is-playing .is-current{opacity:1;transition:none}
-.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){opacity:.25}
-.map.is-playing .map-main .is-lit:not(.is-current){opacity:.48}
-.map.is-playing .map-main .role.cap-covered:not(.is-current){opacity:.09}
-.map.is-playing .role.cap-covered:not(.is-current)>*{opacity:0}
-.map.is-playing .v-label,.map.is-playing .map-loop{opacity:.28;transition:opacity var(--focus-fade)}
-.flow-cap{position:absolute;z-index:4;margin:0;box-sizing:border-box;padding:2px 4px;color:#842448;font-size:14px;font-weight:650;line-height:1.4;pointer-events:none}
-.flow-cap.cap-role,.flow-cap.cap-dock,.flow-cap.cap-loop-narrow{background:color-mix(in srgb,var(--bg-page,#dcdce3) 46%,transparent)}
+.map.is-playing .map-main .agent:not(.is-current),.map.is-playing .map-main .node:not(.is-current){background:var(--map-card-idle);border-color:color-mix(in srgb,var(--map-card-idle) 85%,white);color:var(--map-ink-idle,#172432)}
+.map.is-playing .map-main .is-lit:not(.is-current){background:color-mix(in srgb,var(--map-card-idle) 76%,white)!important}
+.map.is-playing .map-main .role.cap-covered:not(.is-current),.map.is-playing .map-main .node.cap-covered:not(.is-current){opacity:.09}
+.map.is-playing :is(#map-check,#map-review):not(.is-current),.map.is-playing .map-svg .base-lower{opacity:var(--lower-idle-opacity)}
+.map.is-playing .map-svg g.on:not(.now):is([data-step="join"],[data-step^="join-"],[data-step="rev"]){opacity:calc(.33 * var(--lower-idle-opacity))}
+@media(min-width:1001px){.map.is-playing .roles+.gap--bus{height:62px}}
+.map.is-playing .role.cap-covered:not(.is-current)>*,.map.is-playing .node.cap-covered:not(.is-current)>*{opacity:0}
+.map .v-label,.map-live{color:var(--map-line)}
+.map .agent:focus-visible{outline-color:var(--map-line-active)}
+.map .agent.is-active{box-shadow:0 0 0 3px var(--map-line)}
+.flow-cap{position:absolute;z-index:4;margin:0;box-sizing:border-box;padding:2px 4px;color:var(--map-caption);font-size:14px;font-weight:650;line-height:1.4;pointer-events:none}
+.flow-cap.cap-dock,.flow-cap.cap-loop-narrow{background:var(--map-playback-bg)}
+.flow-cap.cap-role.cap-dock{position:absolute;bottom:58px;background:transparent;text-align:center}
+@media(max-width:1000px){.map.is-playing{padding-bottom:112px}}
 .flow-cap.cap-loop-narrow{font-size:13px;line-height:1.25}
+.flow-cap.cap-under{text-align:center}
 .flow-cap.to-left{text-align:right}
 .flow-cap[hidden]{display:none}
+.flow-cap .cap-rest{visibility:hidden}
 .flow-cap.cap-dock{position:fixed;left:12px!important;right:12px;top:auto!important;bottom:64px;width:auto!important;max-width:none;text-align:left}
-.map-speed{position:absolute;z-index:4;top:9px;right:14px;color:#842448;font-size:13px;font-weight:650;pointer-events:none}
+.map-speed{position:absolute;z-index:4;top:9px;right:14px;color:var(--map-caption);font-size:13px;font-weight:650;pointer-events:none}
 .map:not(.is-fast) .map-speed{display:none}
-.map.is-playing{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.map.is-playing{background:var(--map-playback-bg);user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .map-play{position:absolute;right:14px;bottom:14px;z-index:4;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px 0 11px;border:0;border-radius:100px;background:var(--blue-deep);color:#fff;font:600 12.5px/1 inherit;cursor:pointer;transition:background-color .15s ease}
-.map-play:hover{background:#34475F}.map-play:focus-visible{outline:2px solid var(--blue-deep);outline-offset:3px}
+.map-play:hover{background:#34475F}.map-play:focus-visible{outline:2px solid var(--map-line-active);outline-offset:3px}
+.map:not(.is-playing) .map-play{box-shadow:inset 0 0 0 1px var(--map-line)}
+.map.is-playing .map-play:focus-visible{outline-color:var(--blue-deep)}
 .map-play svg{width:14px;height:14px}.map-play .i-pause,.map-play[aria-pressed="true"] .i-play{display:none}.map-play[aria-pressed="true"] .i-pause{display:block}
 .map-play:disabled{background:#8A97A8;cursor:default}
 @media(max-width:560px){.map-play{right:10px;bottom:10px;height:32px;padding:0 10px}.map-play-txt{display:none}}
 .map-controls{position:absolute;z-index:5;left:14px;right:14px;bottom:14px;display:flex;gap:8px;align-items:center;pointer-events:none}
 .map-controls .map-play{position:static;margin-left:auto;pointer-events:auto}
 .map-controls [hidden]{display:none}
-.map.is-playing .map-controls{pointer-events:auto;border-radius:100px;padding:2px 4px;background:color-mix(in srgb,var(--bg-page,#dcdce3) 86%,#fff)}
+.map.is-playing .map-controls{pointer-events:auto;border-radius:100px;padding:2px;background:color-mix(in srgb,var(--bg-page,#dcdce3) 86%,#fff)}
 .map.is-playing .map-play,.map-close{margin:0;width:34px;height:34px;padding:0;display:grid;place-items:center;flex:none}
 .map.is-playing .map-play-txt{display:none}
-.map-seek{min-width:0;height:24px;margin:0;flex:1;accent-color:#a42c58;cursor:pointer}
+.map-seek{min-width:0;height:24px;margin:0;flex:1;accent-color:var(--blue-deep);cursor:pointer}
 .map-close{border:0;border-radius:100px;background:transparent;color:var(--blue-deep);cursor:pointer;font-size:20px;line-height:1}
 .map-close:hover{background:#fff}.map-close:focus-visible,.map-seek:focus-visible{outline:2px solid var(--blue-deep);outline-offset:2px}
 @media(max-width:560px){.map-controls{left:10px;right:10px;bottom:10px}}
 @media(prefers-reduced-motion:reduce){.map{--focus-fade:0ms}.map.is-fast{--focus-fade:0ms}}
 .map-loop{position:relative;z-index:1}
-.map-loop .label{position:absolute;left:2px;top:50%;transform:translateY(-50%) rotate(180deg);line-height:1.2;writing-mode:vertical-rl;font-size:11.5px;font-weight:600;color:var(--blue-deep);white-space:nowrap}
-.map-live{grid-column:1/-1;margin:20px 0 0;text-align:center;font-size:12px;color:#575B65}
-.map-live::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blue-deep);margin-right:8px;vertical-align:1px}
+.map-live{grid-column:1/-1;margin:20px 0 0;text-align:center;font-size:12px}
+.map-live::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--map-line);margin-right:8px;vertical-align:1px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .agent-panel{position:absolute;z-index:5;border-radius:16px;max-height:calc(100vh - 24px);overflow:auto;box-sizing:border-box;width:min(310px,calc(100% - 24px));background:#fff;border:1px solid var(--blue-deep);padding:18px 18px 16px;font-size:13px;line-height:1.45}
 .agent-panel[hidden]{display:none}.agent-panel:focus{outline:none}
@@ -654,8 +671,6 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
    cut at build time from backup/Case-Studyer-UI-Elemente.vor-Ueberarbeitung-2026-11-22.html ── */
 .caption{font-size:12px;color:var(--soft);margin-top:10px!important}
 .mini-label{font:600 11px/1.3 'Roboto Flex',Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep)}
-.mock-button{padding:10px 20px;border:1px solid var(--line);border-radius:100px;background:transparent;color:var(--ink)}
-.mock-button.active{background:var(--blue);border-color:var(--blue);color:#111b2b}
 .grid{display:grid;gap:18px}
 .three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .hero-phones .phone{width:clamp(125px,20vw,250px);flex:none;margin:0}
@@ -691,22 +706,9 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
 .sketch i:nth-child(4){margin-top:auto}
 .sketch .sketch-lines{display:flex;gap:5px}
 .sketch .sketch-lines i{flex:1;height:15px}
-.version-tabs{display:flex;gap:8px;flex-wrap:wrap}
-.version-tabs button[aria-selected=true]{background:var(--blue);border-color:var(--blue)}
-.version-stage{margin-top:18px;display:flex;gap:22px;align-items:center;justify-content:center;min-height:300px;border:1px solid var(--hair);padding:22px}
-.version-stage[hidden]{display:none}
 .version-stage .phone{width:145px}
-.version-stage p{max-width:30ch;color:var(--soft)}
-.before-after{--split:50%;position:relative;height:clamp(220px,36vw,400px);overflow:hidden;border:1px solid var(--hair);background:#c3c5ce}
-.before-after .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px}
-.before-after .before{background:#c4c6ce}
-.before-after .after{background:#cbd7e4;clip-path:inset(0 0 0 var(--split))}
-.before-after .divider{position:absolute;left:var(--split);top:0;bottom:0;border-left:2px solid #273449;pointer-events:none}
-.before-after .divider:after{content:'↔';position:absolute;top:50%;left:-16px;margin-top:-16px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--blue);font:18px/32px Arial}
 .before-after .scene .sketch{width:120px;height:214px}
 .before-after .scene .phone{width:118px;height:214px;border-radius:22px;border-width:4px;font-size:9px}
-.range-row{display:flex;align-items:center;gap:16px;margin-top:16px}
-.range-row input{width:min(100%,420px);accent-color:var(--blue-deep)}
 .annotated .phone{width:175px}
 .feature-triplet .phone{width:83px;height:160px;border-width:3px;border-radius:15px;padding:15px 6px}
 .feature-triplet .phone:before{height:5px}
@@ -715,7 +717,7 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
 .closing h3{font-size:20px;font-weight:500;margin:10px 0}
 .closing p{max-width:48ch;color:var(--soft)}
 @media(max-width:700px){.three,.closing{grid-template-columns:1fr}.journey{grid-template-columns:1fr;gap:10px}.journey>div{padding:14px 0}.matrix>*{font-size:11px;padding:7px}.annotated .phone{order:-1}}
-@media(max-width:430px){.matrix{grid-template-columns:1fr repeat(3,1fr)}.matrix>*{font-size:9px;padding:6px}.version-stage{flex-direction:column}.journey>div{padding:10px 0}.hero-phones .phone{width:150px}.hero-phones .phone:nth-child(3){display:none}}
+@media(max-width:430px){.matrix{grid-template-columns:1fr repeat(3,1fr)}.matrix>*{font-size:9px;padding:6px}.journey>div{padding:10px 0}.hero-phones .phone{width:150px}.hero-phones .phone:nth-child(3){display:none}}
 :root{--line:#6f6f6f;--soft:#575B65;--blue:#809BBC;--paper:#DCDCE3}
 
 /* ── One flat language for the whole catalogue: hairline on top, small blue label, plain text.
@@ -728,8 +730,6 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
 .quotes p{font-size:clamp(16px,1.5vw,18px);line-height:1.5}
 .quotes cite{font:600 11px/1.3 'Roboto Flex',sans-serif;font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep)}
 .one-wire{width:min(240px,62vw);margin-inline:auto;display:flex;flex-direction:column;gap:12px;text-align:center}
-.version-tabs .mock-button{min-height:40px}
-.before-after{min-height:270px}
 
 /* Shared: phones drawn by to.morrow's wireflow, reused as single screens */
 .screen-svg{display:block;width:100%;height:auto;overflow:visible}
@@ -814,6 +814,84 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
 @media(max-width:860px){.profile,.type-samples,.quotes{grid-template-columns:minmax(0,1fr)}.swatches{grid-template-columns:repeat(3,minmax(0,1fr))}.callouts{grid-template-columns:minmax(0,1fr);justify-items:center}.callout-list{width:100%}}
 @media(max-width:640px){.empathy{grid-template-columns:1fr}.empathy>div{border-right:0!important;border-bottom:1px dashed var(--border-color);align-items:flex-start!important;text-align:left!important;min-height:0}.empathy>div:nth-child(4){border-bottom:0}.empathy-center{position:static;transform:none;width:auto;aspect-ratio:auto;border-radius:0;border:0;border-bottom:1px dashed var(--border-color)!important;order:-1;place-items:start!important}.derive-row{grid-template-columns:minmax(0,1fr);gap:12px}.derive-arrow{width:2px;height:28px;margin-left:10px}.derive-arrow::after{right:auto;left:-4px;top:auto;bottom:0;transform:rotate(135deg)}.swatches{grid-template-columns:repeat(2,minmax(0,1fr))}.chapter-heading h2{font-size:24px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important}}
+/* Page-specific case-study accents: override --page-accent once on the owning page. */
+:root{--page-accent:#475f7e;--specimen-line:rgba(111,111,111,.18)}
+body:has(#auftakt),body:has(#flow),body:has(#agent-images){--blue-deep:var(--page-accent);--accent-ink:var(--page-accent);--accent-orange:color-mix(in srgb,var(--page-accent) 61%,#d8e9fd);--blue:var(--accent-orange);--wire-accent:var(--page-accent);--line:var(--specimen-line);--hair:var(--specimen-line);--border-color:var(--specimen-line)}
+body:has(#auftakt) main,body:has(#flow) main,body:has(#agent-images) main{--catalogue-rest:clamp(14px,3vw,36px)}
+main>.chapter:not(#system):not(#struktur){position:relative;margin:0 var(--catalogue-rest) clamp(62px,6vw,84px);padding:15px calc(var(--chapter-inset) - var(--catalogue-rest) - 1px) clamp(26px,4vw,48px);border:1px solid var(--specimen-line);border-radius:14px;overflow:visible}
+main>.chapter:not(#system):not(#struktur)>.chapter-heading{margin:0;padding:0;background:transparent;color:var(--blue-deep);position:absolute;top:auto;bottom:calc(100% + 8px);inset-inline:0}
+main>.chapter:not(#system):not(#struktur)>.chapter-heading h2,.copy-section{background:var(--bg-surface)}
+main>#auftakt>.chapter-heading{margin-block-end:0}
+main>#auftakt .ph-hero{border-radius:0;margin-inline:calc(1px + var(--catalogue-rest) - var(--chapter-inset))}
+.agent-nav:has(+.chapter:not(#system):not(#struktur)){margin-block-end:66px}
+@media(max-width:640px){main>.chapter:not(#system):not(#struktur){border-radius:11px;--catalogue-rest:10px}}
+#fakten .meta-label{color:var(--page-accent)}
+#fakten .meta-tile{position:relative;border:0;box-shadow:none}
+#fakten .meta-tile+.meta-tile::before{content:'';position:absolute;inset:8px auto 8px 0;border-left:1px solid var(--specimen-line)}
+@media(max-width:640px){#fakten .meta-tile+.meta-tile::before{inset:0 8px auto;border:0;border-top:1px solid var(--specimen-line)}}
+.insights-panel{border-color:var(--specimen-line);background:color-mix(in srgb,var(--page-accent) 12%,#fbfcff)}
+.empathy{border:1px solid var(--specimen-line);border-radius:14px;overflow:hidden;padding:8px;--border-color:var(--specimen-line)}
+.empathy>div:nth-child(-n+4){border-style:solid}
+.empathy .slot{border:1px solid var(--specimen-line)}
+.empathy .empathy-center{display:flex!important;align-items:center!important;justify-content:center;text-align:center!important;border:1px solid var(--specimen-line);padding:8px}
+.empathy-center span{font-weight:650;text-align:center;color:var(--page-accent)}
+@media(max-width:640px){.empathy .empathy-center{justify-content:center;border:0;border-bottom:1px solid var(--specimen-line)!important}.empathy>div:nth-child(-n+3){border-bottom:1px solid var(--specimen-line)}}
+.table-wrap{border:1px solid var(--specimen-line);border-radius:14px;padding:8px;overflow:auto}
+.note-table{width:100%;border-spacing:0;text-align:left;table-layout:fixed;font-size:clamp(11px,1.1vw,15px);line-height:1.32}
+.note-table :is(th,td){padding:clamp(6px,1.5vw,18px);overflow-wrap:anywhere;vertical-align:top;border-bottom:1px solid var(--specimen-line)}
+.note-table thead th{color:var(--page-accent)}
+.note-table tbody th{font-weight:550}
+.note-table tbody tr:last-child>*{border-bottom:0}
+.decision-table tr>*+*{border-left:1px solid var(--specimen-line)}
+.decision-table tr>*:last-child{background:color-mix(in srgb,var(--page-accent) 10%,transparent)}
+.decision-table thead tr>*:last-child{border-radius:0 7px 0 0}
+.decision-table tbody tr:last-child>*:last-child{border-radius:0 0 7px 0}
+.specimen-title{font:650 clamp(19px,2vw,27px)/1.25 'Roboto Flex',sans-serif}
+.specimen-intro{margin:8px 0 20px;color:var(--text-secondary);max-width:58ch}
+.evidence-entries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.evidence-entries blockquote{display:grid;align-content:start;gap:10px;padding:15px;border:1px solid var(--specimen-line);border-inline-start:2px solid var(--page-accent);background:color-mix(in srgb,var(--page-accent) 6%,transparent);border-radius:7px}
+.evidence-entries cite{font-style:normal;font-size:12px;color:var(--page-accent)}
+.evidence-bracket{position:relative;border:1px solid var(--page-accent);border-block-start:0;width:67%;height:14px;margin:12px auto 23px;border-radius:0 0 6px 6px}
+.evidence-bracket::after{content:'';position:absolute;left:50%;top:100%;height:14px;border-left:1px solid var(--page-accent)}
+.evidence-synthesis figcaption{text-align:center;font-weight:650;font-size:clamp(18px,2.5vw,29px)}
+@media(max-width:600px){.evidence-entries{grid-template-columns:1fr}.evidence-bracket{width:0;border:0}}
+.phone-feature{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(16px,4vw,52px);align-items:center;min-height:clamp(360px,40vw,530px)}
+.phone-feature-media{display:grid;place-items:center;gap:12px}
+.demo-phone{position:relative;display:grid;width:min(100%,205px);aspect-ratio:9/19;overflow:hidden;border:5px solid #252832;border-radius:30px;background:#bbc1cb;transition:width .36s ease,aspect-ratio .36s ease}
+.demo-screen{position:relative;display:grid;align-content:start;gap:14px;padding:30px 16px 14px;background:#eef0f3;color:#21242a}
+.demo-notch{position:absolute;background:#252832;border-radius:18px;top:8px;left:50%;width:28%;height:11px;transform:translateX(-50%)}
+.demo-cards{display:grid;gap:7px;font-size:12px}.demo-cards span{padding:6px;border:1px solid var(--specimen-line);border-radius:6px}
+.phone-feature[data-orientation=landscape] .demo-phone{width:min(100%,422px);aspect-ratio:19/9}
+.phone-feature[data-orientation=landscape] .demo-screen{padding:16px 14px 12px 25px}
+.phone-feature[data-orientation=landscape] .demo-notch{width:10px;height:28%;top:36%;left:7px;transform:none}
+.phone-feature[data-orientation=landscape] .demo-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+.phone-turn{display:grid;place-items:center;min-width:44px;min-height:44px;border:1px solid var(--specimen-line);border-radius:50%;color:var(--page-accent);background:transparent;cursor:pointer}
+.phone-turn:hover{background:color-mix(in srgb,var(--page-accent) 12%,transparent)}
+@media(max-width:640px){.phone-feature{grid-template-columns:1fr;min-height:0}.demo-phone{width:min(100%,154px)}}
+@property --lab-pie-reveal{syntax:'<number>';initial-value:100;inherits:false}
+.specimen-pie{display:grid;gap:14px;justify-items:center;text-align:center}
+.pie-layout{width:clamp(135px,25vw,262px);position:relative;margin-right:clamp(90px,16vw,135px)}
+.lab-pie{width:100%;aspect-ratio:1;border-radius:50%;background:conic-gradient(from 106.4deg,var(--page-accent) 0 70%,color-mix(in srgb,var(--page-accent) 72%,#f4f7fc) 70% 90%,color-mix(in srgb,var(--page-accent) 46%,#f4f7fc) 90% 95%,color-mix(in srgb,var(--page-accent) 23%,#f4f7fc) 95%);mask-image:conic-gradient(#000 0 calc(var(--lab-pie-reveal)*1%),transparent 0);transition:--lab-pie-reveal 1.2s cubic-bezier(.25,.75,.35,1)}
+.lab-pie.is-pending{--lab-pie-reveal:0}
+.pie-leaders{width:100%;height:100%;overflow:visible;position:absolute;inset:0;pointer-events:none;fill:none;stroke:var(--page-accent);opacity:.45}
+.pie-leaders polyline{vector-effect:non-scaling-stroke;stroke-width:1;stroke-linejoin:round}
+.pie-labels{list-style:none;position:absolute;left:123%;top:0;bottom:0;white-space:nowrap;font-size:clamp(10px,1.15vw,14px);text-align:left;color:var(--text-secondary)}
+.pie-labels li{position:absolute;transform:translateY(-50%)}.pie-labels li:nth-child(1){top:12%}.pie-labels li:nth-child(2){top:39%}.pie-labels li:nth-child(3){top:58%}.pie-labels li:nth-child(4){top:88%}
+.pie-labels b{color:var(--text-primary)}
+.specimen-pie figcaption{max-width:42ch;color:var(--text-secondary)}
+.lab-pie.is-pending~.pie-labels,.lab-pie.is-pending~.pie-leaders{opacity:0;transition:none}
+.pie-labels,.pie-leaders{transition:opacity .5s ease .9s}
+@media(prefers-reduced-motion:reduce){.lab-pie.is-pending{--lab-pie-reveal:100}.lab-pie.is-pending~.pie-labels{opacity:1}.lab-pie.is-pending~.pie-leaders{opacity:.45}}
+.note-art{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.note-art img{display:block;width:100%;border-radius:8px}
+@media(max-width:580px){.note-art{grid-template-columns:1fr}}
+.flowmap .fm-detail{cursor:help}.flowmap .fm-detail:focus-visible rect{stroke:var(--page-accent);stroke-width:3}
+body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)}
+/* Existing approved exports use this annotation-only blue. Keep source SVGs unchanged. */
+.wireflow-svg [stroke="#607D9E" i]{stroke:var(--wire-accent,#607D9E)}
+.wireflow-svg [fill="#607D9E" i]{fill:var(--wire-accent,#607D9E)}
+.wireflow-svg [data-wire-accent="stroke"]{stroke:var(--wire-accent,#607D9E)}
+.wireflow-svg [data-wire-accent="fill"]{fill:var(--wire-accent,#607D9E)}
+.flowmap .fm-callout{display:none;pointer-events:none}.flowmap .fm-detail:is(:hover,:focus-visible) .fm-callout{display:block}
 </style>
 </head>
 <body>
@@ -919,6 +997,39 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
     </section>
 
 
+    <section class="chapter" id="statistik" aria-labelledby="h-statistik">
+      <div class="chapter-heading"><h2 id="h-statistik">Comparison bars</h2></div>
+      <div class="res-block">
+        <span class="src">Test · 00 people · 0 weeks</span>
+        <h3 class="cs-sub">Placeholder for the metric being compared</h3>
+        <div class="ba-chart" role="img" aria-label="Placeholder: metric A rises from 4 to 6, and metric B from 1 to 2">
+          <div class="ba-legend"><span><i></i>Before</span><span><i class="is-after"></i>After</span></div>
+          <div class="ba-group"><span class="chart-key">Metric A</span>
+            <div class="ba-row"><span class="chart-track"><span class="chart-fill" style="--v: 40;"></span></span><span class="chart-val">4</span></div>
+            <div class="ba-row is-after"><span class="chart-track"><span class="chart-fill" style="--v: 60;"></span></span><span class="chart-val">6</span></div></div>
+          <div class="ba-group"><span class="chart-key">Metric B</span>
+            <div class="ba-row"><span class="chart-track"><span class="chart-fill" style="--v: 10;"></span></span><span class="chart-val">1</span></div>
+            <div class="ba-row is-after"><span class="chart-track"><span class="chart-fill" style="--v: 20;"></span></span><span class="chart-val">2</span></div></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="chapter" id="statistics-pie" aria-labelledby="h-statistics-pie">
+      <div class="chapter-heading"><h2 id="h-statistics-pie">Pie chart</h2></div>
+      <figure class="specimen-pie">
+        <h3 class="specimen-title">Share by category</h3>
+        <div class="pie-layout">
+          <div class="lab-pie" aria-hidden="true"></div>
+          <ol class="pie-labels" aria-label="Example category shares">
+            <li><span>Category B</span> <b>20%</b></li><li><span>Category C</span> <b>5%</b></li><li><span>Category D</span> <b>5%</b></li><li><span>Category A</span> <b>70%</b></li>
+          </ol>
+          <svg class="pie-leaders" viewBox="0 0 100 100" aria-hidden="true"><polyline points="80,10 97,10 120,12"/><polyline points="99,38 106,38 120,39"/><polyline points="100,54 109,54 120,58"/><polyline points="80,90 98,90 120,88"/></svg>
+        </div>
+        <figcaption>Illustrative values. Use a pie when the shares describe parts of one whole.</figcaption>
+      </figure>
+    </section>
+
     <section class="chapter" id="vergleich" aria-labelledby="h-vergleich">
       <div class="chapter-heading"><h2 id="h-vergleich">Competitor comparison</h2></div>
       <div class="taps-wrap"><h3 class="chart-title">Task being compared</h3>
@@ -959,6 +1070,23 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
       </div>
     </section>
 
+    <section class="chapter" id="market-research" aria-labelledby="h-market-research">
+      <div class="chapter-heading"><h2 id="h-market-research">Market research</h2></div>
+      <h3 class="specimen-title">Market research</h3>
+      <p class="specimen-intro">Use this table to compare the same verified capabilities across products.</p>
+      <div class="table-wrap">
+        <table class="note-table market-table" aria-label="Example capability comparison">
+          <thead><tr><th scope="col">Capability</th><th scope="col">Product A</th><th scope="col">Product B</th><th scope="col">Product C</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Quick setup</th><td>Yes</td><td>No</td><td>No</td></tr>
+            <tr><th scope="row">Shared access</th><td>Yes</td><td>Yes</td><td>No</td></tr>
+            <tr><th scope="row">Offline use</th><td>No</td><td>Yes</td><td>Yes</td></tr>
+            <tr><th scope="row">Custom controls</th><td>Yes</td><td>No</td><td>Not checked</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="chapter" id="empathy" aria-labelledby="h-empathy">
       <div class="chapter-heading"><h2 id="h-empathy">Empathy Map</h2></div>
       <div class="empathy" role="group" aria-label="Blank empathy map with four fields: Says, Thinks, Does, Feels">
@@ -966,9 +1094,24 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
         <div><h3>Thinks</h3><span class="slot">[ Assumption supported by … ]</span></div>
         <div><h3>Does</h3><span class="slot">[ Observed behavior ]</span><span class="slot">[ Observed behavior ]</span></div>
         <div><h3>Feels</h3><span class="slot">[ Inferred from an interview ]</span></div>
-        <div class="empathy-center"><span class="slot">[ Target audience ]</span></div>
+        <div class="empathy-center"><span>Target audience</span></div>
       </div>
     </section>
+
+    <section class="chapter" id="profil" aria-labelledby="h-profil">
+      <div class="chapter-heading"><h2 id="h-profil">User profile</h2></div>
+      <div class="profile">
+        <div><span class="src">Target audience</span><h3>Describe the target audience in one sentence.</h3>
+          <div class="need"><span class="src">What they need</span>Placeholder for the main need.</div></div>
+        <ul class="traits">
+          <li><b>01</b>Trait A</li>
+          <li><b>02</b>Trait B</li>
+          <li><b>03</b>Trait C</li>
+          <li><b>00</b>People in the sample</li>
+        </ul>
+      </div>
+    </section>
+
 
     <section class="chapter" id="erkenntnisse" aria-labelledby="h-erkenntnisse">
       <div class="chapter-heading"><h2 id="h-erkenntnisse">Key findings</h2></div>
@@ -991,23 +1134,22 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
         </div>
       </div>
     </section>
-    <section class="chapter" id="profil" aria-labelledby="h-profil">
-      <div class="chapter-heading"><h2 id="h-profil">User profile</h2></div>
-      <div class="profile">
-        <div><span class="src">Target audience</span><h3>Describe the target audience in one sentence.</h3>
-          <div class="need"><span class="src">What they need</span>Placeholder for the main need.</div></div>
-        <ul class="traits">
-          <li><b>01</b>Trait A</li>
-          <li><b>02</b>Trait B</li>
-          <li><b>03</b>Trait C</li>
-          <li><b>00</b>People in the sample</li>
-        </ul>
-      </div>
+    <section class="chapter" id="evidence-synthesis" aria-labelledby="h-evidence-synthesis">
+      <div class="chapter-heading"><h2 id="h-evidence-synthesis">Research, interview or test findings</h2></div>
+      <figure class="evidence-synthesis" aria-label="Three evidence excerpts support one finding">
+        <div class="evidence-entries">
+          <blockquote><p>“Placeholder for a participant’s observation.”</p><cite>Interview excerpt</cite></blockquote>
+          <blockquote><p>“Placeholder for a second independently observed difficulty.”</p><cite>Usability test excerpt</cite></blockquote>
+          <blockquote><p>“Placeholder for another observation that supports the same finding.”</p><cite>Research note</cite></blockquote>
+        </div>
+        <div class="evidence-bracket" aria-hidden="true"></div>
+        <figcaption>State the one finding these excerpts support.</figcaption>
+      </figure>
     </section>
 
     <section class="chapter" id="journey" aria-labelledby="h-journey">
       <div class="chapter-heading"><h2 id="h-journey">User flow</h2></div>
-      <div class="hscroll flowmap-scroll" tabindex="0" role="group" aria-label="User flow diagram. Swipe sideways on mobile."><!--FLOWMAP:start--><svg class="flowmap" viewBox="0 0 1000 545" role="img" font-family="'Roboto Flex',Arial,sans-serif" aria-label="Example user flow: users without an account sign up first. The home screen leads to five areas with screens, lists, and options. Area C leads through the detail and results screens to the end. Dashed lines connect the areas."><defs><marker id="fm-tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="#475F7E" stroke-width="1.4"/></marker></defs><rect x="435.0" y="7.0" width="130" height="26" rx="5" fill="none" stroke="#475F7E" stroke-width="1.2"/><text x="500" y="24" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Start</text><path d="M500 33 L500 55" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><polygon points="500,55 532,76 500,97 468,76" fill="#DCDCE3" stroke="#475F7E" stroke-width="1.2"/><text x="500" y="80" text-anchor="middle" font-size="10.5" fill="#1A1A1A">Account?</text><path d="M500 97 L500 119" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><text x="506" y="112" font-size="10.5" fill="#475F7E" font-weight="600">yes</text><path d="M532 76 L623 76" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><text x="556" y="70" font-size="10.5" fill="#475F7E" font-weight="600">no</text><rect x="625.0" y="63.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="690" y="80" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Sign up</text><path d="M690 89 L690 134 L567 134" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="435.0" y="121.0" width="130" height="26" rx="5" fill="none" stroke="#475F7E" stroke-width="1.2"/><text x="500" y="138" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Home</text><path d="M500 147 L500 168" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M110 168 L890 168" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M110 168 L110 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="45.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="110" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area A</text><path d="M305 168 L305 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="240.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="305" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area B</text><path d="M500 168 L500 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="435.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="500" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area C</text><path d="M695 168 L695 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="630.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="695" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area D</text><path d="M890 168 L890 187" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="825.0" y="187.0" width="130" height="26" rx="5" fill="#475F7E" stroke="#475F7E" stroke-width="1.2"/><text x="890" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area E</text><path d="M110 213 L110 228" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M55 228 L170 228" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M55 228 L55 240" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M170 228 L170 240" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="5.0" y="240.0" width="100" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="55" y="257" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Profile</text><rect x="115.0" y="240.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="170" y="257" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Settings</text><path d="M170 266 L170 276 L125 276 L125 366" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M125 294 L130 294" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="130.0" y="281.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="185" y="298" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Option 1</text><path d="M125 330 L130 330" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="130.0" y="317.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="185" y="334" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Option 2</text><path d="M125 366 L130 366" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="130.0" y="353.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="185" y="370" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Option 3</text><path d="M305 213 L305 232 L255 232 L255 320" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M255 250 L260 250" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="260.0" y="237.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="315" y="254" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">List</text><path d="M255 285 L260 285" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="260.0" y="272.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="315" y="289" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Status</text><path d="M255 320 L260 320" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="260.0" y="307.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="315" y="324" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Comment</text><path d="M500 213 L500 232" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M440 232 L560 232" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M440 232 L440 370" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M560 232 L560 370" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="445.0" y="235.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="252" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Action 1</text><rect x="445.0" y="268.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="285" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Action 2</text><rect x="445.0" y="301.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="318" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Action 3</text><rect x="445.0" y="334.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="351" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Action 4</text><path d="M440 370 L560 370" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M500 370 L500 385" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="435.0" y="387.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="404" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Details</text><path d="M500 413 L500 430" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="435.0" y="432.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="500" y="449" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Save result</text><path d="M500 458 L500 477" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><circle cx="500" cy="490" r="13" fill="none" stroke="#1A1A1A" stroke-width="1.6"/><text x="520" y="494" font-size="10.5" fill="#475F7E" font-weight="600">End</text><rect x="630.0" y="237.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="254" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Contacts</text><path d="M695 263 L695 281" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="630.0" y="282.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="299" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Call</text><path d="M695 308 L695 320" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M640 320 L750 320" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M640 320 L640 418" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M750 320 L750 418" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><rect x="640.0" y="323.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="340" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Message</text><rect x="640.0" y="353.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="370" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Share screen</text><rect x="640.0" y="383.0" width="110" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="400" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Share camera</text><path d="M640 418 L750 418" fill="none" stroke="#6f6f6f" stroke-width="1.2"/><path d="M695 418 L695 431" fill="none" stroke="#475F7E" stroke-width="1.2" marker-end="url(#fm-tip)"/><rect x="630.0" y="432.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="695" y="449" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Summary</text><path d="M630 445 L600 445 L600 400 L567 400" fill="none" stroke="#475F7E" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#fm-tip)"/><rect x="825.0" y="237.0" width="130" height="26" rx="5" fill="#cbd6e5" stroke="#809BBC" stroke-width="1.2"/><text x="890" y="254" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Overview</text><path d="M565 452 L585 470 L980 470 L980 250 L957 250" fill="none" stroke="#475F7E" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#fm-tip)"/><g transform="translate(20 528)" font-size="10.5" fill="#575B65"><rect x="0" y="-9" width="22" height="12" rx="3" fill="none" stroke="#475F7E"/><text x="30" y="1">Start</text><rect x="100" y="-9" width="22" height="12" rx="3" fill="#475F7E"/><text x="130" y="1">Area</text><rect x="195" y="-9" width="22" height="12" rx="3" fill="#cbd6e5" stroke="#809BBC"/><text x="225" y="1">Screen</text><polygon points="300,-9 311,-3 300,3 289,-3" fill="none" stroke="#475F7E"/><text x="320" y="1">Decision</text><path d="M410 -3 H440" stroke="#475F7E" stroke-dasharray="3 3"/><text x="448" y="1">Cross-link</text></g></svg><!--FLOWMAP:end--></div>
+      <div class="hscroll flowmap-scroll" tabindex="0" role="group" aria-label="User flow diagram. Swipe sideways on mobile."><!--FLOWMAP:start--><svg class="flowmap" viewBox="0 0 1000 512" role="group" font-family="'Roboto Flex',Arial,sans-serif" aria-label="Example user flow: users without an account sign up first. The home screen leads to five areas with screens, lists, and options. Area C leads through the detail and results screens to the end. Dashed lines connect the areas."><defs><marker id="fm-tip" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 7 4 1 7" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="435.0" y="7.0" width="130" height="26" rx="7" style="fill:none;stroke:var(--page-accent,#475F7E)" stroke-width="1.2"/><text x="500" y="24" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Start</text><path d="M500 33 L500 55" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M496.5 57.3 Q500 55 503.5 57.3 L528.5 73.7 Q532 76 528.5 78.3 L503.5 94.7 Q500 97 496.5 94.7 L471.5 78.3 Q468 76 471.5 73.7 Z" fill="#DCDCE3" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2"/><text x="500" y="80" text-anchor="middle" font-size="10.5" fill="#1A1A1A">Account?</text><path d="M500 97 L500 119" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fm-tip)"/><text x="506" y="112" font-size="10.5" style="fill:var(--page-accent,#475F7E)" font-weight="600">yes</text><path d="M532 76 L623 76" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fm-tip)"/><text x="556" y="70" font-size="10.5" style="fill:var(--page-accent,#475F7E)" font-weight="600">no</text><rect x="625.0" y="63.0" width="130" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="690" y="80" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Sign up</text><path d="M690 89 L690.00 129.00 Q690 134 685.00 134.00 L567 134" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fm-tip)"/><g class="fm-detail" tabindex="0" role="img" aria-label="Home: Start screen. Choose one of the five areas."><title>Start screen. Choose one of the five areas.</title><rect x="435.0" y="121.0" width="130" height="26" rx="7" style="fill:none;stroke:var(--page-accent,#475F7E)" stroke-width="1.2"/><text x="500" y="138" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Home</text></g><path d="M500 147 L500 168" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M110 168 L890 168" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M110 168 L110 187" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="45.0" y="187.0" width="130" height="26" rx="7" style="fill:var(--page-accent,#475F7E);stroke:var(--page-accent,#475F7E)" stroke-width="1.2"/><text x="110" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area A</text><path d="M305 168 L305 187" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="240.0" y="187.0" width="130" height="26" rx="7" style="fill:var(--page-accent,#475F7E);stroke:var(--page-accent,#475F7E)" stroke-width="1.2"/><text x="305" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area B</text><path d="M500 168 L500 187" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="435.0" y="187.0" width="130" height="26" rx="7" style="fill:var(--page-accent,#475F7E);stroke:var(--page-accent,#475F7E)" stroke-width="1.2"/><text x="500" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area C</text><path d="M695 168 L695 187" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="630.0" y="187.0" width="130" height="26" rx="7" style="fill:var(--page-accent,#475F7E);stroke:var(--page-accent,#475F7E)" stroke-width="1.2"/><text x="695" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area D</text><path d="M890 168 L890 187" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="825.0" y="187.0" width="130" height="26" rx="7" style="fill:var(--page-accent,#475F7E);stroke:var(--page-accent,#475F7E)" stroke-width="1.2"/><text x="890" y="204" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">Area E</text><path d="M110 213 L110 228" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M55 228 L170 228" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M55 228 L55 240" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M170 228 L170 240" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="5.0" y="240.0" width="100" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="55" y="257" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Profile</text><rect x="115.0" y="240.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="170" y="257" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Settings</text><path d="M170 266 L170.00 271.00 Q170 276 165.00 276.00 L130.00 276.00 Q125 276 125.00 281.00 L125 366" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M125 294 L130 294" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="130.0" y="281.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="185" y="298" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Option 1</text><path d="M125 330 L130 330" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="130.0" y="317.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="185" y="334" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Option 2</text><path d="M125 366 L130 366" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="130.0" y="353.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="185" y="370" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Option 3</text><path d="M305 213 L305.00 227.00 Q305 232 300.00 232.00 L260.00 232.00 Q255 232 255.00 237.00 L255 320" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M255 250 L260 250" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="260.0" y="237.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="315" y="254" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">List</text><path d="M255 285 L260 285" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="260.0" y="272.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="315" y="289" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Status</text><path d="M255 320 L260 320" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="260.0" y="307.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="315" y="324" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Comment</text><path d="M500 213 L500 232" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M440 232 L560 232" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M440 232 L440 370" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M560 232 L560 370" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="445.0" y="235.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="500" y="252" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Action 1</text><rect x="445.0" y="268.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="500" y="285" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Action 2</text><rect x="445.0" y="301.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="500" y="318" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Action 3</text><rect x="445.0" y="334.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="500" y="351" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Action 4</text><path d="M440 370 L560 370" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M500 370 L500 385" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fm-tip)"/><g class="fm-detail" tabindex="0" role="img" aria-label="Details: Review the selected item before saving."><title>Review the selected item before saving.</title><rect x="435.0" y="387.0" width="130" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="500" y="404" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Details</text></g><path d="M500 413 L500 430" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fm-tip)"/><rect x="435.0" y="432.0" width="130" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="500" y="449" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Save result</text><path d="M500 458 L500 477" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="500" cy="490" r="13" fill="none" stroke="#1A1A1A" stroke-width="1.6"/><text x="520" y="494" font-size="10.5" style="fill:var(--page-accent,#475F7E)" font-weight="600">End</text><rect x="630.0" y="237.0" width="130" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="695" y="254" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Contacts</text><path d="M695 263 L695 281" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fm-tip)"/><rect x="630.0" y="282.0" width="130" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="695" y="299" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Call</text><path d="M695 308 L695 320" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M640 320 L750 320" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M640 320 L640 418" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M750 320 L750 418" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="640.0" y="323.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="695" y="340" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Message</text><rect x="640.0" y="353.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="695" y="370" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Share screen</text><rect x="640.0" y="383.0" width="110" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="695" y="400" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Share camera</text><path d="M640 418 L750 418" fill="none" style="stroke:#6f6f6f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M695 418 L695 431" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fm-tip)"/><rect x="630.0" y="432.0" width="130" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="695" y="449" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Summary</text><path d="M630 445 L605.00 445.00 Q600 445 600.00 440.00 L600.00 405.00 Q600 400 595.00 400.00 L567 400" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3" marker-end="url(#fm-tip)"/><rect x="825.0" y="237.0" width="130" height="26" rx="7" style="fill:var(--flow-fill,#cbd6e5);stroke:var(--accent-orange,#809BBC)" stroke-width="1.2"/><text x="890" y="254" text-anchor="middle" font-size="11.5" font-weight="500" fill="#1A1A1A">Overview</text><path d="M565 452 L581.28 466.66 Q585 470 590.00 470.00 L975.00 470.00 Q980 470 980.00 465.00 L980.00 255.00 Q980 250 975.00 250.00 L957 250" fill="none" style="stroke:var(--page-accent,#475F7E)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3" marker-end="url(#fm-tip)"/></svg><!--FLOWMAP:end--></div>
     </section>
 
     <section class="chapter" id="ableitung" aria-labelledby="h-ableitung">
@@ -1018,27 +1160,22 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
       </div>
     </section>
 
+
     <section class="chapter" id="alternativen" aria-labelledby="h-alternativen">
       <div class="chapter-heading"><h2 id="h-alternativen">Decision matrix</h2></div>
-      <div class="matrix" role="table" aria-label="Placeholder: three options compared across five criteria">
-        <div class="head" role="columnheader">Criterion</div><div class="head" role="columnheader">Option A</div><div class="head" role="columnheader">Option B</div><div class="head selected" role="columnheader">Option C</div>
-        <div role="rowheader">Criterion 1</div><div>High</div><div>Medium</div><div class="selected">Low</div>
-        <div role="rowheader">Criterion 2</div><div>No</div><div>Yes</div><div class="selected"><span class="tick">✓</span></div>
-        <div role="rowheader">Criterion 3</div><div>3 steps</div><div>2 steps</div><div class="selected">1 step</div>
-        <div role="rowheader">Test result</div><div>–</div><div>Placeholder</div><div class="selected">Implemented</div>
+      <div class="table-wrap">
+        <table class="note-table decision-table" aria-label="Example decision criteria compared across three options">
+          <thead><tr><th scope="col">Criterion</th><th scope="col">Option A</th><th scope="col">Option B</th><th scope="col">Option C</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Effort</th><td>High</td><td>Medium</td><td>Low</td></tr>
+            <tr><th scope="row">Works offline</th><td>No</td><td>Yes</td><td>Yes</td></tr>
+            <tr><th scope="row">Steps</th><td>3</td><td>2</td><td>1</td></tr>
+            <tr><th scope="row">Decision</th><td>Not selected</td><td>Not selected</td><td><strong>✓ Selected</strong></td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-
-    <section class="chapter" id="iterationen" aria-labelledby="h-iterationen">
-      <div class="chapter-heading"><h2 id="h-iterationen">Iterations</h2></div>
-      <div class="version-tabs" role="tablist" aria-label="Design version"><button class="mock-button" id="tab-v1" type="button" role="tab" aria-selected="true" aria-controls="panel-v1" data-version="v1">01 · First draft</button><button class="mock-button" id="tab-v2" type="button" role="tab" aria-selected="false" aria-controls="panel-v2" data-version="v2">02 · Revised design</button></div><div class="version-stage" id="panel-v1" role="tabpanel" aria-labelledby="tab-v1"><div class="phone"><div class="ph-top">Title <span>•••</span></div><div class="ph-list"><span class="current">Tab A</span><span>Tab B</span><span>Tab C</span></div><div class="task"><span class="circle"></span><b>Entry 1</b></div><div class="task"><span class="circle"></span><b>Entry 2</b></div><div class="task"><span class="circle"></span><b>Entry 3</b></div></div><p>Describe this version and what you learned from it.</p></div><div class="version-stage" id="panel-v2" role="tabpanel" aria-labelledby="tab-v2" hidden><div class="phone"><div class="ph-top">Title <span>•••</span></div><div class="ph-list"><span class="current">Tab A</span><span>Tab B</span><span>Tab C</span></div><div class="task"><span class="circle"></span><b>Entry 2</b></div><div class="task highlight"><span class="circle"></span><b>Entry 2 →</b></div></div><p>Describe what changed and why.</p></div>
-    </section>
-
-    <section class="chapter" id="vorher" aria-labelledby="h-vorher">
-      <div class="chapter-heading"><h2 id="h-vorher">Before / After</h2></div>
-      <div class="before-after" id="compare" role="img" aria-label="Placeholder: early draft on the left, current screen on the right"><div class="scene before"><div class="sketch" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div><div class="scene after"><div class="phone" aria-hidden="true"><div class="ph-top">Title</div><div class="ph-list"><span class="current">Tab A</span><span>Tab B</span><span>Tab C</span></div><div class="task"><span class="circle"></span><b>Entry 1</b></div><div class="task highlight"><span class="circle"></span><b>Entry 2</b></div></div></div><div class="divider"></div></div><div class="range-row"><span class="mini-label">Before</span><input type="range" min="5" max="95" value="50" id="split" aria-label="Adjust the before-and-after comparison"><span class="mini-label">After</span></div>
-    </section>
 
     <section class="chapter" id="screen" aria-labelledby="h-screen">
       <div class="chapter-heading"><h2 id="h-screen">Screen &amp; Callouts</h2></div>
@@ -1052,6 +1189,32 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
           <li><span>2</span><div><strong>Feature B</strong><p>Placeholder for the second callout.</p></div></li>
           <li><span>3</span><div><strong>Feature C</strong><p>Placeholder for the third callout.</p></div></li>
         </ol>
+      </div>
+    </section>
+
+    <section class="chapter" id="phone-portrait" aria-labelledby="h-phone-portrait">
+      <div class="chapter-heading"><h2 id="h-phone-portrait">Phone and text · Portrait</h2></div>
+      <div class="phone-feature" data-orientation="portrait">
+        <div class="phone-feature-media">
+          <div class="demo-phone" aria-label="Example phone screen" role="img">
+            <div class="demo-screen" aria-hidden="true"><span class="demo-notch"></span><b>Overview</b><div class="demo-cards"><span>Item A</span><span>Item B</span><span>Item C</span></div></div>
+          </div>
+          <button type="button" class="phone-turn" aria-label="Switch to landscape"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="7" width="8" height="11" rx="2" transform="rotate(-22 12 12)"/><path d="M5 13a7 7 0 0 1 11-7l2 2m0-4v4h-4M19 12a7 7 0 0 1-11 7l-2-2m0 4v-4h4"/></svg></button>
+        </div>
+        <div class="phone-feature-text"><h3 class="specimen-title">One screen, one task</h3><p class="specimen-intro">Explain the action the reader should notice in this screen.</p></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="phone-landscape" aria-labelledby="h-phone-landscape">
+      <div class="chapter-heading"><h2 id="h-phone-landscape">Phone and text · Landscape</h2></div>
+      <div class="phone-feature" data-orientation="landscape">
+        <div class="phone-feature-media">
+          <div class="demo-phone" aria-label="Example phone screen" role="img">
+            <div class="demo-screen" aria-hidden="true"><span class="demo-notch"></span><b>Overview</b><div class="demo-cards"><span>Item A</span><span>Item B</span><span>Item C</span></div></div>
+          </div>
+          <button type="button" class="phone-turn" aria-label="Switch to portrait"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="7" width="8" height="11" rx="2" transform="rotate(-22 12 12)"/><path d="M5 13a7 7 0 0 1 11-7l2 2m0-4v4h-4M19 12a7 7 0 0 1-11 7l-2-2m0 4v-4h4"/></svg></button>
+        </div>
+        <div class="phone-feature-text"><h3 class="specimen-title">More room to compare</h3><p class="specimen-intro">Explain what becomes visible when the layout has more horizontal space.</p></div>
       </div>
     </section>
 
@@ -1078,23 +1241,6 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
         <div class="fact"><span class="fact-num">3 → 1</span><span class="fact-label">Placeholder for a before-and-after metric</span></div>
         <div class="fact"><span class="fact-num">X of Y</span><span class="fact-label">Placeholder for a proportion</span><span class="fact-src">Source · Sample</span></div>
         <div class="fact"><span class="fact-num">000</span><span class="fact-label">Placeholder for a total</span><span class="fact-src">(As of Month Year)</span></div>
-      </div>
-    </section>
-
-    <section class="chapter" id="statistik" aria-labelledby="h-statistik">
-      <div class="chapter-heading"><h2 id="h-statistik">Comparison bars</h2></div>
-      <div class="res-block">
-        <span class="src">Test · 00 people · 0 weeks</span>
-        <h3 class="cs-sub">Placeholder for the metric being compared</h3>
-        <div class="ba-chart" role="img" aria-label="Placeholder: metric A rises from 4 to 6, and metric B from 1 to 2">
-          <div class="ba-legend"><span><i></i>Before</span><span><i class="is-after"></i>After</span></div>
-          <div class="ba-group"><span class="chart-key">Metric A</span>
-            <div class="ba-row"><span class="chart-track"><span class="chart-fill" style="--v: 40;"></span></span><span class="chart-val">4</span></div>
-            <div class="ba-row is-after"><span class="chart-track"><span class="chart-fill" style="--v: 60;"></span></span><span class="chart-val">6</span></div></div>
-          <div class="ba-group"><span class="chart-key">Metric B</span>
-            <div class="ba-row"><span class="chart-track"><span class="chart-fill" style="--v: 10;"></span></span><span class="chart-val">1</span></div>
-            <div class="ba-row is-after"><span class="chart-track"><span class="chart-fill" style="--v: 20;"></span></span><span class="chart-val">2</span></div></div>
-        </div>
       </div>
     </section>
 
@@ -1143,29 +1289,41 @@ html[data-catalogue="ui"] .flowmap>g>text{fill:var(--catalogue-secondary)}
 </div>
 
 <script>
-// Iteration tabs: click, arrow keys, Home/End (WAI-ARIA tabs pattern).
-(() => {
-  const tabs = [...document.querySelectorAll('[role="tab"]')];
-  const select = tab => tabs.forEach(t => {
-    const on = t === tab;
-    t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
-    document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+for (const detail of document.querySelectorAll('.fm-detail')) {
+  const tip = detail.querySelector('title');
+  const rect = detail.querySelector('rect');
+  const ns = 'http://www.w3.org/2000/svg';
+  const callout = document.createElementNS(ns, 'g');
+  callout.classList.add('fm-callout'); callout.setAttribute('aria-hidden', 'true');
+  const x = Number(rect.getAttribute('x')) + Number(rect.getAttribute('width')) + 6;
+  const y = Number(rect.getAttribute('y'));
+  const surface = document.createElementNS(ns, 'rect');
+  for (const [key, val] of Object.entries({x, y, width: 238, height: 26, rx: 5, fill: '#f7f8fb', stroke: 'var(--page-accent)'})) surface.setAttribute(key, val);
+  const copy = document.createElementNS(ns, 'text');
+  for (const [key, val] of Object.entries({x: x + 8, y: y + 17, 'font-size': 11, fill: '#1a1a1a'})) copy.setAttribute(key, val);
+  copy.textContent = tip.textContent;
+  callout.append(surface, copy);
+  detail.append(callout);
+  for (const event of ['pointerenter','focus']) detail.addEventListener(event, () => detail.parentNode.append(detail));
+}
+for (const feature of document.querySelectorAll('.phone-feature')) {
+  const button = feature.querySelector('.phone-turn');
+  button.addEventListener('click', () => {
+    const next = feature.dataset.orientation === 'portrait' ? 'landscape' : 'portrait';
+    feature.dataset.orientation = next;
+    button.setAttribute('aria-label', 'Switch to ' + (next === 'portrait' ? 'landscape' : 'portrait'));
   });
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => select(tab));
-    tab.addEventListener('keydown', e => {
-      const n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
-      if (n === undefined) return;
-      e.preventDefault(); const next = tabs[(n + tabs.length) % tabs.length]; select(next); next.focus();
-    });
-  });
-})();
-// Before/after (first-iteration markup): the range moves the split.
-(() => {
-  const range = document.getElementById('split'), box = document.getElementById('compare');
-  const set = () => { box.style.setProperty('--split', range.value + '%'); range.setAttribute('aria-valuetext', range.value + (document.documentElement.lang === 'en' ? ' percent' : ' Prozent')); };
-  range.addEventListener('input', set); set();
-})();
+}
+const labPie = document.querySelector('.lab-pie');
+if (labPie && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  labPie.classList.add('is-pending');
+  const observer = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    labPie.classList.remove('is-pending');
+    observer.disconnect();
+  }, {threshold: .2});
+  observer.observe(labPie);
+}
 </script>
 <script>
 // The portfolio's down/up thresholds, measured only once the island is docked.

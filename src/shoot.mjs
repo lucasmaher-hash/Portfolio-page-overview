@@ -35,9 +35,10 @@ for (let i = 0; i < 60 && (await evaluate('document.readyState')) !== 'complete'
 if (section) await evaluate(`(() => {
   const s = ${JSON.stringify(section)};
   if (typeof s.macbook === 'boolean') s.macbook ? document.documentElement.dataset.screen = 'macbook' : delete document.documentElement.dataset.screen;
-  if (typeof s.tab === 'string' && /^tab-v[0-9]+$/.test(s.tab)) document.getElementById(s.tab)?.click();
-  const slider = document.getElementById('split');
-  if (slider && typeof s.split === 'number') { slider.value = s.split; slider.dispatchEvent(new Event('input')); }
+  if (s.tab === 'portrait' || s.tab === 'landscape') {
+    const feature = document.querySelector(${JSON.stringify(first)} + ' .phone-feature');
+    if (feature) feature.dataset.orientation = s.tab;
+  }
   return true;
 })()`);
 await sleep(500);
@@ -47,7 +48,7 @@ await sleep(400);
 const info = await evaluate(`(() => {
   const a = document.querySelector(${JSON.stringify(first)}), b = document.querySelector(${JSON.stringify(last)});
   const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
-  return { left: ra.left + scrollX, width: ra.width, top: ra.top + scrollY, bottom: rb.bottom + scrollY,
+  return { left: ra.left + scrollX, width: ra.width, top: Math.min(ra.top, a.querySelector(":scope > .chapter-heading")?.getBoundingClientRect().top ?? ra.top) + scrollY, bottom: rb.bottom + scrollY,
     pageOverflow: document.documentElement.scrollWidth - innerWidth,
     fonts: [...document.fonts].map(f => f.family + ':' + f.status).filter((v, i, x) => x.indexOf(v) === i),
     brokenImages: [...document.images].filter(i => !i.complete || !i.naturalWidth).length,
