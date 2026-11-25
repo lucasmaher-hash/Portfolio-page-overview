@@ -889,8 +889,9 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
 /* Existing approved exports use this annotation-only blue. Keep source SVGs unchanged. */
 .wireflow-svg [stroke="#607D9E" i]{stroke:var(--wire-accent,#607D9E)}
 .wireflow-svg [fill="#607D9E" i]{fill:var(--wire-accent,#607D9E)}
-.wireflow-svg [data-wire-accent="stroke"]{stroke:var(--wire-accent,#607D9E)}
-.wireflow-svg [data-wire-accent="fill"]{fill:var(--wire-accent,#607D9E)}
+[data-wf-page-accent]{--wf-page-accent:var(--page-accent)}
+[data-wf-page-accent] svg.wireflow-svg [data-wf-accent~="stroke"]{stroke:var(--wf-page-accent,var(--wf-export-accent))}
+[data-wf-page-accent] svg.wireflow-svg [data-wf-accent~="fill"]{fill:var(--wf-page-accent,var(--wf-export-accent))}
 .flowmap .fm-callout{display:none;pointer-events:none}.flowmap .fm-detail:is(:hover,:focus-visible) .fm-callout{display:block}
 </style>
 </head>

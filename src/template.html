@@ -457,8 +457,9 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
 /* Existing approved exports use this annotation-only blue. Keep source SVGs unchanged. */
 .wireflow-svg [stroke="#607D9E" i]{stroke:var(--wire-accent,#607D9E)}
 .wireflow-svg [fill="#607D9E" i]{fill:var(--wire-accent,#607D9E)}
-.wireflow-svg [data-wire-accent="stroke"]{stroke:var(--wire-accent,#607D9E)}
-.wireflow-svg [data-wire-accent="fill"]{fill:var(--wire-accent,#607D9E)}
+[data-wf-page-accent]{--wf-page-accent:var(--page-accent)}
+[data-wf-page-accent] svg.wireflow-svg [data-wf-accent~="stroke"]{stroke:var(--wf-page-accent,var(--wf-export-accent))}
+[data-wf-page-accent] svg.wireflow-svg [data-wf-accent~="fill"]{fill:var(--wf-page-accent,var(--wf-export-accent))}
 .flowmap .fm-callout{display:none;pointer-events:none}.flowmap .fm-detail:is(:hover,:focus-visible) .fm-callout{display:block}
 </style>
 </head>
@@ -949,21 +950,21 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow" aria-labelledby="h-flow" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow">Wireflow · Erster Entwurf</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=37-15" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Erster Entwurf – Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Erster Entwurf – Wireflow, horizontal scrollbar" tabindex="0">
         <!--@src:tomorrow:wireflow:draft-->
       </div>
     </section>
     <section class="chapter" id="flow-reschedule" aria-labelledby="h-flow-reschedule" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-reschedule">Wireflow · Von Heute nach Morgen</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=37-26" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Von Heute nach Morgen – Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Von Heute nach Morgen – Wireflow, horizontal scrollbar" tabindex="0">
         <!--@src:tomorrow:wireflow:reschedule-->
       </div>
     </section>
     <section class="chapter" id="flow-live" aria-labelledby="h-flow-live" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-live">Wireflow · Von der Eingabe bis zum Abhaken</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=37-40" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Von der Eingabe bis zum Abhaken – Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Von der Eingabe bis zum Abhaken – Wireflow, horizontal scrollbar" tabindex="0">
         <!--@src:tomorrow:wireflow:live-->
       </div>
     </section>
@@ -971,7 +972,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow-spotify" aria-labelledby="h-flow-spotify" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-spotify">Wireflow · Spotify Search &amp; Play</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=12-2" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Spotify-Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Spotify-Wireflow, horizontal scrollbar" tabindex="0">
         <!--@src:spotify:wireflow:svg-->
       </div>
     </section>
@@ -979,7 +980,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow-findmy" aria-labelledby="h-flow-findmy" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-findmy">Wireflow · Find My · Find Nearby</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=15-2" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Find-My-Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Find-My-Wireflow, horizontal scrollbar" tabindex="0">
         <!--@src:findmy:wireflow:svg-->
       </div>
     </section>
@@ -987,7 +988,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow-passwords" aria-labelledby="h-flow-passwords" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-passwords">Wireflow · Passwords · Share with a Group</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=18-2" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Passwords-Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Passwords-Wireflow, horizontal scrollbar" tabindex="0">
         <!--@src:passwords:wireflow:svg-->
       </div>
     </section>

@@ -85,6 +85,12 @@ try {
       } else if(page==='Wireframes') {
         const r=await ev(`(()=>{const a=[...document.querySelectorAll('.wireflow-svg')], nodes=[...document.querySelectorAll('.wireflow-svg [stroke="#607D9E" i],.wireflow-svg [fill="#607D9E" i]')]; const paints=()=>nodes.map(x=>getComputedStyle(x)[x.getAttribute('stroke')?.toUpperCase()==='#607D9E'?'stroke':'fill']); const blue=paints().every(x=>x==='rgb(71, 95, 126)');document.documentElement.style.setProperty('--page-accent','#9e2c69');return {count:a.length,annotationCount:nodes.length,blue,pink:paints().every(x=>x==='rgb(158, 44, 105)'),raster:a.some(x=>x.querySelector('image'))}})()`);
         assert.equal(r.count,publicBuild?6:7);assert(r.annotationCount>0&&r.blue&&r.pink&&!r.raster,JSON.stringify(r));
+        const contract=await ev(`(()=>{const wrapper=document.querySelector('[data-wf-page-accent]');
+          const fixture=document.createElement('div');fixture.innerHTML='<svg class="wireflow-svg" style="--wf-export-accent:#a04358"><path data-wf-accent="stroke fill" stroke="#a04358" fill="#a04358"/><path data-wf-accent="stroke" stroke="#a04358" fill="none"/><path fill="#212121"/></svg>';wrapper.append(fixture);
+          const [both,ring,neutral]=fixture.querySelectorAll('path');const paint=()=>[getComputedStyle(both).stroke,getComputedStyle(both).fill,getComputedStyle(ring).stroke,getComputedStyle(ring).fill,getComputedStyle(neutral).fill];
+          const themed=paint();wrapper.removeAttribute('data-wf-page-accent');const standalone=paint();wrapper.setAttribute('data-wf-page-accent','');fixture.remove();return {themed,standalone};})()`);
+        assert.deepEqual(contract.themed,['rgb(158, 44, 105)','rgb(158, 44, 105)','rgb(158, 44, 105)','none','rgb(33, 33, 33)']);
+        assert.deepEqual(contract.standalone,['rgb(160, 67, 88)','rgb(160, 67, 88)','rgb(160, 67, 88)','none','rgb(33, 33, 33)']);
       } else if(page==='Bildgenerierung') {
         const r=await ev(`Array.from(document.querySelectorAll('.note-art img')).map(x=>[x.naturalWidth,x.naturalHeight])`);
         assert.deepEqual(r,publicBuild?[]:[[224,222],[224,222],[224,222]]);

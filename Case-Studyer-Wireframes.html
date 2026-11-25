@@ -889,8 +889,9 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
 /* Existing approved exports use this annotation-only blue. Keep source SVGs unchanged. */
 .wireflow-svg [stroke="#607D9E" i]{stroke:var(--wire-accent,#607D9E)}
 .wireflow-svg [fill="#607D9E" i]{fill:var(--wire-accent,#607D9E)}
-.wireflow-svg [data-wire-accent="stroke"]{stroke:var(--wire-accent,#607D9E)}
-.wireflow-svg [data-wire-accent="fill"]{fill:var(--wire-accent,#607D9E)}
+[data-wf-page-accent]{--wf-page-accent:var(--page-accent)}
+[data-wf-page-accent] svg.wireflow-svg [data-wf-accent~="stroke"]{stroke:var(--wf-page-accent,var(--wf-export-accent))}
+[data-wf-page-accent] svg.wireflow-svg [data-wf-accent~="fill"]{fill:var(--wf-page-accent,var(--wf-export-accent))}
 .flowmap .fm-callout{display:none;pointer-events:none}.flowmap .fm-detail:is(:hover,:focus-visible) .fm-callout{display:block}
 </style>
 </head>
@@ -940,7 +941,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow" aria-labelledby="h-flow" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow">Wireflow · Erster Entwurf</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=37-15" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Erster Entwurf – Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Erster Entwurf – Wireflow, horizontal scrollbar" tabindex="0">
 <svg class="wireflow-svg" role="img" aria-labelledby="tm-draft-title tm-draft-desc" viewBox="0 0 1096 701" fill="none" xmlns="http://www.w3.org/2000/svg">
 <title id="tm-draft-title">to.morrow · Erster Entwurf: alles in einer Liste</title>
 <desc id="tm-draft-desc">Gedrückt halten und die Aufgabe in eine andere Liste ziehen. 01 Gedrückt halten. 02 In eine andere Liste ziehen. 03 Unter Morgen.</desc>
@@ -1062,7 +1063,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow-reschedule" aria-labelledby="h-flow-reschedule" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-reschedule">Wireflow · Von Heute nach Morgen</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=37-26" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Von Heute nach Morgen – Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Von Heute nach Morgen – Wireflow, horizontal scrollbar" tabindex="0">
 <svg class="wireflow-svg" role="img" aria-labelledby="tm-res-title tm-res-desc" viewBox="0 0 1096 701" fill="none" xmlns="http://www.w3.org/2000/svg">
 <title id="tm-res-title">to.morrow · Von Heute nach Morgen</title>
 <desc id="tm-res-desc">Ein Wisch verschiebt die Aufgabe. Rückgängig bleibt ein optionaler Schritt. 01 Ausgangsliste. 02 Nach rechts wischen. 03 Unter Morgen. 04 Optional: Rückgängig.</desc>
@@ -1218,7 +1219,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow-live" aria-labelledby="h-flow-live" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-live">Wireflow · Von der Eingabe bis zum Abhaken</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=37-40" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Von der Eingabe bis zum Abhaken – Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Von der Eingabe bis zum Abhaken – Wireflow, horizontal scrollbar" tabindex="0">
 <svg class="wireflow-svg" role="img" aria-labelledby="tm-live-title tm-live-desc" viewBox="0 0 1096 701" fill="none" xmlns="http://www.w3.org/2000/svg">
 <title id="tm-live-title">to.morrow · Von der Eingabe bis zum Abhaken</title>
 <desc id="tm-live-desc">Eine Aufgabe auf dem Sperrbildschirm und in der Dynamic Island. 01 Aufgabe eingeben. 02 Sperrbildschirm. 03 Dynamic Island. 04 Öffnen und abhaken.</desc>
@@ -1410,7 +1411,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow-spotify" aria-labelledby="h-flow-spotify" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-spotify">Wireflow · Spotify Search &amp; Play</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=12-2" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Spotify-Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Spotify-Wireflow, horizontal scrollbar" tabindex="0">
 <svg class="wireflow-svg" role="img" aria-labelledby="sp-title sp-desc" viewBox="0 0 1096 701" fill="none" xmlns="http://www.w3.org/2000/svg">
 <title id="sp-title">Spotify · Search &amp; Play</title>
 <desc id="sp-desc">The active Spotify search field is ready for the artist name. The results for grentperez include Cherry Wine, highlighted as the next selection. Cherry Wine is playing in the mini-player while the search results stay on screen.</desc>
@@ -1586,7 +1587,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow-findmy" aria-labelledby="h-flow-findmy" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-findmy">Wireflow · Find My · Find Nearby</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=15-2" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Find-My-Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Find-My-Wireflow, horizontal scrollbar" tabindex="0">
 <svg class="wireflow-svg" viewBox="0 0 1096 701" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fm-title fm-desc">
 <title id="fm-title">Find My · Find Nearby</title>
 <desc id="fm-desc">Three iPhone screens: tap Danny’s Keys in Items, tap Find, then follow the arrow, which shows 5 ft to your right.</desc>
@@ -1718,7 +1719,7 @@ body:has(#auftakt){--flow-fill:color-mix(in srgb,var(--page-accent) 26%,#f5f9ff)
     <section class="chapter" id="flow-passwords" aria-labelledby="h-flow-passwords" tabindex="-1">
       <div class="chapter-heading"><h2 id="h-flow-passwords">Wireflow · Passwords · Share with a Group</h2></div>
       <p class="agent-example-source"><a class="wireframe-figma" href="https://www.figma.com/design/AyHYeOoTBz8Y0sSCM52x2I/wireframes?node-id=18-2" target="_blank" rel="noopener noreferrer">Open in Figma ↗</a></p>
-      <div class="figma-flow-scroll" role="region" aria-label="Passwords-Wireflow, horizontal scrollbar" tabindex="0">
+      <div class="figma-flow-scroll" data-wf-page-accent role="region" aria-label="Passwords-Wireflow, horizontal scrollbar" tabindex="0">
 <svg class="wireflow-svg" role="img" aria-labelledby="pw-title pw-desc" viewBox="0 0 1096 905" fill="none" xmlns="http://www.w3.org/2000/svg">
 <title id="pw-title">Passwords · Share with a Group</title>
 <desc id="pw-desc">New Group is highlighted under Shared Groups in the Passwords app. The new group is named Family, and Add People is highlighted. Danny Rico is selected in Add People, with Add highlighted. Danny Rico is listed under Members, and Create is highlighted. DoorDash, Atlas Obscura and Etsy are selected, with Move highlighted. The Family group contains the three shared passwords.</desc>
